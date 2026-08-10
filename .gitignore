@@ -1,0 +1,9 @@
+venv/
+__pycache__/
+*.pyc
+*.pyo
+.env
+*.db
+*.csv
+.vscode/
+evaluation/eval_results_*.csv
