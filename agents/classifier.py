@@ -1,15 +1,28 @@
 from agents.state import AgentState
+from agents.framework_detector import detect_framework
+from agents.prompts import CLASSIFIER_PROMPTS, get_prompt
 from ml_classifier.predict import predict_classification
 import os
 
-# Check if model exists, fallback to LLM if not
 MODEL_PATH = "ml_classifier/qa_classifier_model.pkl"
 
 def classifier_node(state: AgentState) -> AgentState:
     print("--- CLASSIFIER AGENT RUNNING (ML + LLM Hybrid) ---")
 
+    # Step 1: Detect framework
+    framework_info = detect_framework(
+        state['testcase_logs'],
+        state['testcase_code'],
+        state['testcase_description']
+    )
+
+    # Store framework in state
+    state['framework'] = framework_info['framework']
+    state['test_type'] = framework_info['test_type']
+    state['language'] = framework_info['language']
+
+    # Step 2: ML Classification
     if os.path.exists(MODEL_PATH):
-        # Use fast ML classifier
         result = predict_classification(
             logs=state['testcase_logs'],
             description=state['testcase_description'],
@@ -19,22 +32,32 @@ def classifier_node(state: AgentState) -> AgentState:
         state['classification_confidence'] = result['confidence']
         print(f"ML Classification: {state['classification']} "
               f"({state['classification_confidence']:.2%} confidence)")
-        print(f"Bug probability: {result['bug_probability']:.2%}")
-        print(f"Failed TC probability: {result['failed_tc_probability']:.2%}")
+        print(f"Framework: {framework_info['framework']} "
+              f"({framework_info['test_type']}) "
+              f"Language: {framework_info['language']}")
     else:
-        # Fallback to LLM if model not trained yet
-        print("ML model not found, falling back to LLM classifier...")
+        # Fallback to LLM with framework-specific prompt
+        print("ML model not found — using LLM fallback...")
         from langchain_ollama import ChatOllama
         from langchain_core.messages import HumanMessage, SystemMessage
         import json, re
 
         llm = ChatOllama(model="llama3.2", temperature=0)
-        SYSTEM_PROMPT = """Classify as failed_testcase or bug. 
-        Return JSON only: {"classification": "...", "confidence": 0.9, "reason": "..."}"""
+        system_prompt = get_prompt(
+            CLASSIFIER_PROMPTS,
+            framework_info['framework']
+        )
 
         messages = [
-            SystemMessage(content=SYSTEM_PROMPT),
-            HumanMessage(content=f"LOGS: {state['testcase_logs']}\nCODE: {state['testcase_code']}")
+            SystemMessage(content=system_prompt),
+            HumanMessage(content=f"""
+FRAMEWORK DETECTED: {framework_info['framework']}
+TEST TYPE: {framework_info['test_type']}
+
+LOGS: {state['testcase_logs']}
+DESCRIPTION: {state['testcase_description']}
+CODE: {state['testcase_code']}
+""")
         ]
         response = llm.invoke(messages)
         raw = response.content.strip()

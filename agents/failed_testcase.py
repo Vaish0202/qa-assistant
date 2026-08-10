@@ -1,33 +1,24 @@
 from langchain_ollama import ChatOllama
 from langchain_core.messages import HumanMessage, SystemMessage
 from agents.state import AgentState
+from agents.prompts import FAILED_TC_PROMPTS, get_prompt
 import json
 import re
 
 llm = ChatOllama(model="llama3.2", temperature=0)
 
-SYSTEM_PROMPT = """You are a senior QA engineer. Analyze this failed test case and identify WHY the test itself is failing.
-
-Classify into exactly one of:
-- bad_coding_practice: wrong selectors, bad assertions, poor test structure
-- locator_relocation: element locators changed, need updating
-- awaiting_action: test depends on data/config/environment not ready yet
-
-You MUST respond in this exact JSON only, no other text:
-{
-  "analysis_type": "bad_coding_practice",
-  "severity": "medium",
-  "root_cause": "one sentence explanation",
-  "suggestions": [
-    {"issue": "what is wrong", "fix": "exact fix to apply"}
-  ],
-  "fixed_code": "corrected version of the test code"
-}"""
-
 def failed_testcase_node(state: AgentState) -> AgentState:
     print("--- FAILED TESTCASE AGENT RUNNING ---")
 
+    # Get framework-specific prompt
+    framework = state.get('framework', 'default')
+    system_prompt = get_prompt(FAILED_TC_PROMPTS, framework)
+
     user_message = f"""
+FRAMEWORK: {framework}
+TEST TYPE: {state.get('test_type', 'unknown')}
+LANGUAGE: {state.get('language', 'python')}
+
 TESTCASE LOGS:
 {state['testcase_logs']}
 
@@ -37,11 +28,11 @@ TESTCASE DESCRIPTION:
 TESTCASE CODE:
 {state['testcase_code']}
 
-Analyze why this test is failing and suggest fixes.
+Analyze why this {framework} test is failing and suggest fixes.
 """
 
     messages = [
-        SystemMessage(content=SYSTEM_PROMPT),
+        SystemMessage(content=system_prompt),
         HumanMessage(content=user_message)
     ]
 
@@ -59,13 +50,16 @@ Analyze why this test is failing and suggest fixes.
         state['code_suggestions'] = result.get('suggestions', [])
         state['final_output'] = {
             "type": "failed_testcase",
+            "framework": framework,
+            "test_type": state.get('test_type', 'unknown'),
+            "language": state.get('language', 'python'),
             "analysis_type": result.get('analysis_type'),
             "severity": result.get('severity', 'medium'),
             "root_cause": result.get('root_cause', ''),
             "suggestions": result.get('suggestions', []),
             "fixed_code": result.get('fixed_code', '')
         }
-        print(f"Analysis type: {state['analysis_type']}")
+        print(f"Analysis type: {state['analysis_type']} | Framework: {framework}")
 
     except json.JSONDecodeError:
         print(f"JSON parse failed. Raw: {raw}")
@@ -73,9 +67,10 @@ Analyze why this test is failing and suggest fixes.
         state['code_suggestions'] = []
         state['final_output'] = {
             "type": "failed_testcase",
+            "framework": framework,
             "analysis_type": "bad_coding_practice",
             "severity": "medium",
-            "root_cause": "Analysis failed to parse",
+            "root_cause": raw[:200] if raw else "Could not determine root cause",
             "suggestions": [],
             "fixed_code": ""
         }

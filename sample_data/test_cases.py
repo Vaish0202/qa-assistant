@@ -190,4 +190,147 @@ def test_stock_deduction():
         "expected": "bug",
         "reason": "Stock decrements without purchase — real inventory bug"
     },
+
+    # API Testing cases
+    {
+        "id": "TC011",
+        "testcase_logs": """FAILED test_api.py::test_create_user
+AssertionError: assert 400 == 201
+response.status_code = 400
+response.json() = {'error': 'email already exists'}""",
+        "testcase_description": "Test creates new user via POST API",
+        "testcase_code": """def test_create_user():
+    response = requests.post('/api/users',
+        json={'email': 'existing@test.com', 'name': 'Test'})
+    assert response.status_code == 201""",
+        "expected": "failed_testcase",
+        "reason": "Test uses already existing email — test data setup issue"
+    },
+    {
+        "id": "TC012",
+        "testcase_logs": """FAILED test_auth_api.py::test_protected_endpoint
+AssertionError: assert 200 == 401
+Unauthenticated request returned 200 instead of 401""",
+        "testcase_description": "Test verifies protected endpoint rejects unauthenticated requests",
+        "testcase_code": """def test_protected_endpoint():
+    r = requests.get('/api/admin/users')
+    assert r.status_code == 401""",
+        "expected": "bug",
+        "reason": "API not enforcing authentication — security bug"
+    },
+    {
+        "id": "TC013",
+        "testcase_logs": """FAILED test_api.py::test_get_user
+requests.exceptions.ConnectionError: HTTPConnectionPool
+Max retries exceeded with url: /api/users/1""",
+        "testcase_description": "Test fetches user by ID from API",
+        "testcase_code": """def test_get_user():
+    r = requests.get('http://localhost:8000/api/users/1')
+    assert r.status_code == 200""",
+        "expected": "failed_testcase",
+        "reason": "Server not running during test — environment setup issue"
+    },
+    {
+        "id": "TC014",
+        "testcase_logs": """FAILED test_payment_api.py::test_payment_deduction
+AssertionError: assert 100.0 == 50.0
+Balance not deducted after successful payment
+Payment API returned 200 but balance unchanged""",
+        "testcase_description": "Test verifies account balance deducted after payment",
+        "testcase_code": """def test_payment_deduction():
+    initial = get_balance()
+    make_payment(50.0)
+    final = get_balance()
+    assert final == initial - 50.0""",
+        "expected": "bug",
+        "reason": "Payment processed but balance not updated — backend bug"
+    },
+    {
+        "id": "TC015",
+        "testcase_logs": """FAILED test_api.py::test_pagination
+AssertionError: assert 10 == 5
+GET /api/items?page=1&limit=5 returned 10 items instead of 5""",
+        "testcase_description": "Test verifies pagination returns correct number of items",
+        "testcase_code": """def test_pagination():
+    r = requests.get('/api/items?page=1')
+    assert len(r.json()['items']) == 5""",
+        "expected": "failed_testcase",
+        "reason": "Test missing limit parameter in URL — incomplete test code"
+    },
+
+    # DB Testing cases
+    {
+        "id": "TC016",
+        "testcase_logs": """FAILED test_db.py::test_user_insert
+sqlalchemy.exc.IntegrityError: UNIQUE constraint failed: users.email
+INSERT INTO users (email) VALUES ('test@test.com')""",
+        "testcase_description": "Test inserts new user into database",
+        "testcase_code": """def test_user_insert(db):
+    user = User(email='test@test.com')
+    db.add(user)
+    db.commit()
+    assert db.query(User).count() == 1""",
+        "expected": "failed_testcase",
+        "reason": "Test not cleaning up data between runs — missing teardown"
+    },
+    {
+        "id": "TC017",
+        "testcase_logs": """FAILED test_db.py::test_cascade_delete
+AssertionError: assert 0 == 3
+Child records still exist after parent deleted
+Expected 0 children but found 3""",
+        "testcase_description": "Test verifies cascade delete removes child records",
+        "testcase_code": """def test_cascade_delete(db):
+    parent = db.query(Parent).first()
+    db.delete(parent)
+    db.commit()
+    children = db.query(Child).filter_by(parent_id=parent.id).all()
+    assert len(children) == 0""",
+        "expected": "bug",
+        "reason": "Cascade delete not configured — database schema bug"
+    },
+    {
+        "id": "TC018",
+        "testcase_logs": """FAILED test_db.py::test_update_persists
+AssertionError: assert 'new_name' == 'old_name'
+Update not persisted to database
+After commit value still shows old data""",
+        "testcase_description": "Test verifies name update persists after commit",
+        "testcase_code": """def test_update_persists(db):
+    user = db.query(User).first()
+    user.name = 'new_name'
+    db.commit()
+    fresh = db.query(User).filter_by(id=user.id).first()
+    assert fresh.name == 'new_name'""",
+        "expected": "bug",
+        "reason": "Database not persisting updates — ORM or DB configuration bug"
+    },
+    {
+        "id": "TC019",
+        "testcase_logs": """FAILED test_db.py::test_query_filter
+OperationalError: no such column: users.role
+SELECT * FROM users WHERE users.role = 'admin'""",
+        "testcase_description": "Test queries users by role column",
+        "testcase_code": """def test_query_filter(db):
+    admins = db.query(User).filter_by(role='admin').all()
+    assert len(admins) > 0""",
+        "expected": "failed_testcase",
+        "reason": "Column 'role' doesn't exist in schema — missing migration"
+    },
+    {
+        "id": "TC020",
+        "testcase_logs": """FAILED test_db.py::test_duplicate_prevention
+AssertionError: assert 1 == 2
+Duplicate order created for same transaction ID
+Expected 1 order but found 2 with same transaction_id""",
+        "testcase_description": "Test verifies duplicate orders prevented by unique constraint",
+        "testcase_code": """def test_duplicate_prevention(db):
+    create_order(transaction_id='TXN001')
+    create_order(transaction_id='TXN001')
+    count = db.query(Order).filter_by(transaction_id='TXN001').count()
+    assert count == 1""",
+        "expected": "bug",
+        "reason": "Unique constraint missing on transaction_id — allows duplicates"
+    },
+
 ]
