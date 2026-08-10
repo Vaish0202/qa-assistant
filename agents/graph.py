@@ -8,8 +8,8 @@ from agents.code_suggestions import code_suggestions_node
 
 def route_after_classification(state: AgentState) -> str:
     classification = state.get('classification', 'failed_testcase')
-    print(f"--- ROUTER: classification = {classification} | "
-          f"framework = {state.get('framework', 'unknown')} ---")
+    print(f"--- ROUTER: {classification} | "
+          f"framework={state.get('framework')} ---")
     if classification == 'bug':
         return 'bug_handler'
     return 'failed_testcase_handler'
@@ -42,10 +42,13 @@ def run_analysis(
     testcase_logs: str,
     testcase_description: str,
     testcase_code: str,
-    user_id: str = "default_user"
+    user_id: str = "default_user",
+    project_id: str = None          # NEW
 ) -> dict:
     initial_state: AgentState = {
         "user_id": user_id,
+        "project_id": project_id,
+        "project_context": None,
         "testcase_logs": testcase_logs,
         "testcase_description": testcase_description,
         "testcase_code": testcase_code,

@@ -2,19 +2,19 @@ from langchain_ollama import ChatOllama
 from langchain_core.messages import HumanMessage, SystemMessage
 from agents.state import AgentState
 from agents.prompts import FAILED_TC_PROMPTS, get_prompt
-import json
-import re
+import json, re
 
 llm = ChatOllama(model="llama3.2", temperature=0)
 
 def failed_testcase_node(state: AgentState) -> AgentState:
     print("--- FAILED TESTCASE AGENT RUNNING ---")
 
-    # Get framework-specific prompt
     framework = state.get('framework', 'default')
     system_prompt = get_prompt(FAILED_TC_PROMPTS, framework)
+    project_context = state.get('project_context', '')
 
     user_message = f"""
+{project_context}
 FRAMEWORK: {framework}
 TEST TYPE: {state.get('test_type', 'unknown')}
 LANGUAGE: {state.get('language', 'python')}
@@ -28,7 +28,8 @@ TESTCASE DESCRIPTION:
 TESTCASE CODE:
 {state['testcase_code']}
 
-Analyze why this {framework} test is failing and suggest fixes.
+Analyze why this {framework} test is failing.
+Give suggestions SPECIFIC to the project tech stack above.
 """
 
     messages = [
@@ -41,10 +42,7 @@ Analyze why this {framework} test is failing and suggest fixes.
 
     try:
         json_match = re.search(r'\{.*\}', raw, re.DOTALL)
-        if json_match:
-            result = json.loads(json_match.group())
-        else:
-            result = json.loads(raw)
+        result = json.loads(json_match.group() if json_match else raw)
 
         state['analysis_type'] = result.get('analysis_type', 'bad_coding_practice')
         state['code_suggestions'] = result.get('suggestions', [])
@@ -59,7 +57,7 @@ Analyze why this {framework} test is failing and suggest fixes.
             "suggestions": result.get('suggestions', []),
             "fixed_code": result.get('fixed_code', '')
         }
-        print(f"Analysis type: {state['analysis_type']} | Framework: {framework}")
+        print(f"Analysis: {state['analysis_type']} | Framework: {framework}")
 
     except json.JSONDecodeError:
         print(f"JSON parse failed. Raw: {raw}")

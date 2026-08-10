@@ -4,14 +4,15 @@ from pydantic import BaseModel
 from typing import Optional
 from agents.graph import run_analysis
 from auth.routes import router as auth_router
+from api.projects import router as projects_router
 from database.models import init_db, AnalysisHistory, SessionLocal
 import uvicorn
 import time
 
 app = FastAPI(
     title="QA Assistant API",
-    description="Agentic AI system for intelligent test failure classification",
-    version="1.0.0"
+    description="Agentic AI for intelligent test failure classification",
+    version="2.0.0"
 )
 
 app.add_middleware(
@@ -22,22 +23,23 @@ app.add_middleware(
 )
 
 app.include_router(auth_router)
+app.include_router(projects_router)
 
 @app.on_event("startup")
 def startup():
     init_db()
-    print("✓ QA Assistant API started")
+    print("✓ QA Assistant API v2.0 started")
 
 class AnalyzeRequest(BaseModel):
     user_id: str = "default_user"
+    project_id: Optional[str] = None    # NEW
     testcase_logs: str
     testcase_description: str
     testcase_code: str
-    project_key: Optional[str] = "QA"
 
 @app.get("/api/health")
 def health():
-    return {"status": "ok", "model": "llama3.2", "version": "1.0.0"}
+    return {"status": "ok", "model": "llama3.2", "version": "2.0.0"}
 
 @app.post("/api/analyze")
 def analyze(request: AnalyzeRequest):
@@ -47,7 +49,8 @@ def analyze(request: AnalyzeRequest):
             testcase_logs=request.testcase_logs,
             testcase_description=request.testcase_description,
             testcase_code=request.testcase_code,
-            user_id=request.user_id
+            user_id=request.user_id,
+            project_id=request.project_id
         )
         processing_time = round(time.time() - start_time, 2)
         final = result.get('final_output', {})
@@ -61,15 +64,16 @@ def analyze(request: AnalyzeRequest):
 
         db = SessionLocal()
         try:
-            from database.models import AnalysisHistory
             history = AnalysisHistory(
                 user_id=request.user_id,
+                project_id=request.project_id,
                 testcase_logs=request.testcase_logs,
                 testcase_description=request.testcase_description,
                 testcase_code=request.testcase_code,
                 classification=result.get('classification'),
                 classification_confidence=result.get('classification_confidence'),
                 analysis_type=result.get('analysis_type'),
+                framework=result.get('framework'),
                 final_output=final,
                 channel_alert=result.get('channel_alert')
             )
@@ -82,9 +86,11 @@ def analyze(request: AnalyzeRequest):
             "status": "success",
             "classification": result.get('classification', 'unknown'),
             "action_type": action_type,
+            "framework": result.get('framework', 'unknown'),
             "payload": final,
             "processing_time_seconds": processing_time
         }
+
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
@@ -104,6 +110,8 @@ def get_history(user_id: str = "default_user"):
                     "id": r.id,
                     "classification": r.classification,
                     "analysis_type": r.analysis_type,
+                    "framework": r.framework,
+                    "project_id": r.project_id,
                     "created_at": str(r.created_at),
                     "alert": r.channel_alert
                 }

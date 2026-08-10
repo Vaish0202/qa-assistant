@@ -1,6 +1,7 @@
 from agents.state import AgentState
 from agents.framework_detector import detect_framework
 from agents.prompts import CLASSIFIER_PROMPTS, get_prompt
+from agents.project_context import get_project_context
 from ml_classifier.predict import predict_classification
 import os
 
@@ -9,19 +10,32 @@ MODEL_PATH = "ml_classifier/qa_classifier_model.pkl"
 def classifier_node(state: AgentState) -> AgentState:
     print("--- CLASSIFIER AGENT RUNNING (ML + LLM Hybrid) ---")
 
-    # Step 1: Detect framework
+    # Step 1: Get project context if available
+    project_data = get_project_context(state.get('project_id'))
+    state['project_context'] = project_data['context_string']
+
+    if project_data['project']:
+        print(f"Project: {project_data['project']['name']}")
+
+    # Step 2: Detect framework
     framework_info = detect_framework(
         state['testcase_logs'],
         state['testcase_code'],
         state['testcase_description']
     )
 
-    # Store framework in state
+    # Override framework from project if available
+    if project_data['project'] and project_data['project']['test_framework']:
+        project_framework = project_data['project']['test_framework']
+        if project_framework in ['selenium', 'pytest_requests', 'sqlalchemy', 'jest', 'junit']:
+            framework_info['framework'] = project_framework
+            print(f"Framework overridden by project: {project_framework}")
+
     state['framework'] = framework_info['framework']
     state['test_type'] = framework_info['test_type']
     state['language'] = framework_info['language']
 
-    # Step 2: ML Classification
+    # Step 3: ML Classification
     if os.path.exists(MODEL_PATH):
         result = predict_classification(
             logs=state['testcase_logs'],
@@ -31,38 +45,27 @@ def classifier_node(state: AgentState) -> AgentState:
         state['classification'] = result['classification']
         state['classification_confidence'] = result['confidence']
         print(f"ML Classification: {state['classification']} "
-              f"({state['classification_confidence']:.2%} confidence)")
-        print(f"Framework: {framework_info['framework']} "
-              f"({framework_info['test_type']}) "
-              f"Language: {framework_info['language']}")
+              f"({state['classification_confidence']:.2%})")
     else:
-        # Fallback to LLM with framework-specific prompt
-        print("ML model not found — using LLM fallback...")
         from langchain_ollama import ChatOllama
         from langchain_core.messages import HumanMessage, SystemMessage
         import json, re
 
         llm = ChatOllama(model="llama3.2", temperature=0)
-        system_prompt = get_prompt(
-            CLASSIFIER_PROMPTS,
-            framework_info['framework']
-        )
-
+        system_prompt = get_prompt(CLASSIFIER_PROMPTS, framework_info['framework'])
         messages = [
             SystemMessage(content=system_prompt),
             HumanMessage(content=f"""
-FRAMEWORK DETECTED: {framework_info['framework']}
-TEST TYPE: {framework_info['test_type']}
-
+{state.get('project_context', '')}
+FRAMEWORK: {framework_info['framework']}
 LOGS: {state['testcase_logs']}
-DESCRIPTION: {state['testcase_description']}
 CODE: {state['testcase_code']}
 """)
         ]
         response = llm.invoke(messages)
         raw = response.content.strip()
         try:
-            json_match = re.search(r'\{.*\}', raw, re.DOTALL)
+            json_match = __import__('re').search(r'\{.*\}', raw, __import__('re').DOTALL)
             result = json.loads(json_match.group() if json_match else raw)
             state['classification'] = result.get('classification', 'failed_testcase')
             state['classification_confidence'] = result.get('confidence', 0.5)

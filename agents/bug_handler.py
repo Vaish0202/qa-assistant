@@ -2,8 +2,7 @@ from langchain_ollama import ChatOllama
 from langchain_core.messages import HumanMessage, SystemMessage
 from agents.state import AgentState
 from agents.prompts import BUG_PROMPTS, get_prompt
-import json
-import re
+import json, re
 
 llm = ChatOllama(model="llama3.2", temperature=0)
 
@@ -12,11 +11,12 @@ def bug_handler_node(state: AgentState) -> AgentState:
 
     framework = state.get('framework', 'default')
     system_prompt = get_prompt(BUG_PROMPTS, framework)
+    project_context = state.get('project_context', '')
 
     user_message = f"""
+{project_context}
 FRAMEWORK: {framework}
 TEST TYPE: {state.get('test_type', 'unknown')}
-LANGUAGE: {state.get('language', 'python')}
 
 TESTCASE LOGS:
 {state['testcase_logs']}
@@ -27,7 +27,8 @@ TESTCASE DESCRIPTION:
 TESTCASE CODE:
 {state['testcase_code']}
 
-Analyze this {framework} bug and prepare Jira ticket details.
+Analyze this bug. Give Jira ticket details SPECIFIC
+to the project tech stack above.
 """
 
     messages = [
@@ -40,18 +41,13 @@ Analyze this {framework} bug and prepare Jira ticket details.
 
     try:
         json_match = re.search(r'\{.*\}', raw, re.DOTALL)
-        if json_match:
-            result = json.loads(json_match.group())
-        else:
-            result = json.loads(raw)
+        result = json.loads(json_match.group() if json_match else raw)
 
         is_ui_bug = result.get('is_ui_bug', False)
         state['analysis_type'] = 'ui_bug' if is_ui_bug else 'code_bug'
         state['final_output'] = {
             "type": "bug",
             "framework": framework,
-            "test_type": state.get('test_type', 'unknown'),
-            "language": state.get('language', 'python'),
             "is_ui_bug": is_ui_bug,
             "bug_type": result.get('bug_type', 'backend'),
             "severity": result.get('severity', 'medium'),
@@ -62,9 +58,7 @@ Analyze this {framework} bug and prepare Jira ticket details.
             "actual_result": result.get('actual_result', ''),
             "suggested_fix": result.get('suggested_fix', '')
         }
-        print(f"Bug type: {state['analysis_type']} | "
-              f"Framework: {framework} | "
-              f"Severity: {result.get('severity')}")
+        print(f"Bug: {state['analysis_type']} | Severity: {result.get('severity')}")
 
     except json.JSONDecodeError:
         print(f"JSON parse failed. Raw: {raw}")

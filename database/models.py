@@ -6,16 +6,31 @@ import uuid
 
 Base = declarative_base()
 
+class Project(Base):
+    __tablename__ = "projects"
+    id = Column(String, primary_key=True, default=lambda: str(uuid.uuid4()))
+    name = Column(String, nullable=False)
+    description = Column(String)
+    tech_stack = Column(JSON)        # {frontend, backend, database, cloud}
+    test_framework = Column(String)  # selenium/pytest/jest/junit
+    language = Column(String)        # python/javascript/java
+    common_patterns = Column(JSON)   # known issues in this project
+    jira_project_key = Column(String)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    user_id = Column(String, nullable=False)
+
 class AnalysisHistory(Base):
     __tablename__ = "analysis_history"
     id = Column(String, primary_key=True, default=lambda: str(uuid.uuid4()))
     user_id = Column(String, nullable=False)
+    project_id = Column(String, nullable=True)  # NEW — linked to project
     testcase_logs = Column(String)
     testcase_description = Column(String)
     testcase_code = Column(String)
     classification = Column(String)
     classification_confidence = Column(Float)
     analysis_type = Column(String)
+    framework = Column(String)       # NEW
     final_output = Column(JSON)
     channel_alert = Column(String)
     created_at = Column(DateTime, default=datetime.utcnow)
