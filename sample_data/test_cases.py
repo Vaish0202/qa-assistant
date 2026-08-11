@@ -332,5 +332,147 @@ Expected 1 order but found 2 with same transaction_id""",
         "expected": "bug",
         "reason": "Unique constraint missing on transaction_id — allows duplicates"
     },
+    # 10 more diverse cases
+    {
+        "id": "TC021",
+        "testcase_logs": """FAILED test_login.py::test_invalid_password
+AssertionError: assert 200 == 401
+Login with wrong password returned 200 instead of 401""",
+        "testcase_description": "Test verifies invalid password is rejected",
+        "testcase_code": """def test_invalid_password():
+    r = requests.post('/api/login',
+        json={'email': 'user@test.com', 'password': 'wrongpass'})
+    assert r.status_code == 401""",
+        "expected": "bug",
+        "reason": "Invalid password accepted — authentication bug"
+    },
+    {
+        "id": "TC022",
+        "testcase_logs": """FAILED test_selenium.py::test_dropdown
+selenium.common.exceptions.ElementNotInteractableException:
+Message: element not interactable: dropdown is disabled""",
+        "testcase_description": "Test selects option from dropdown menu",
+        "testcase_code": """def test_dropdown(driver):
+    select = Select(driver.find_element(By.ID, 'country-select'))
+    select.select_by_value('IN')""",
+        "expected": "failed_testcase",
+        "reason": "Dropdown is disabled — test not enabling it first"
+    },
+    {
+        "id": "TC023",
+        "testcase_logs": """FAILED test_api.py::test_delete_user
+AssertionError: assert 404 == 200
+DELETE /api/users/999 returned 404
+User with ID 999 does not exist in test database""",
+        "testcase_description": "Test deletes user by ID via API",
+        "testcase_code": """def test_delete_user():
+    r = requests.delete('/api/users/999')
+    assert r.status_code == 200""",
+        "expected": "failed_testcase",
+        "reason": "Test using non-existent user ID — test data setup issue"
+    },
+    {
+        "id": "TC024",
+        "testcase_logs": """FAILED test_checkout.py::test_apply_coupon
+AssertionError: assert 90.0 == 100.0
+Coupon applied but price not reduced
+Original: 100.0, After coupon: 100.0 (should be 90.0)""",
+        "testcase_description": "Test verifies 10% coupon reduces cart total",
+        "testcase_code": """def test_apply_coupon(driver):
+    driver.find_element(By.ID, 'coupon-input').send_keys('SAVE10')
+    driver.find_element(By.ID, 'apply-coupon').click()
+    total = float(driver.find_element(By.ID, 'cart-total').text)
+    assert total == 90.0""",
+        "expected": "bug",
+        "reason": "Coupon not applied in application — pricing bug"
+    },
+    {
+        "id": "TC025",
+        "testcase_logs": """FAILED test_db.py::test_search_users
+OperationalError: no such table: user_search_index
+SELECT * FROM user_search_index WHERE name LIKE '%john%'""",
+        "testcase_description": "Test searches users by name using search index",
+        "testcase_code": """def test_search_users(db):
+    results = db.execute(
+        "SELECT * FROM user_search_index WHERE name LIKE '%john%'"
+    ).fetchall()
+    assert len(results) > 0""",
+        "expected": "failed_testcase",
+        "reason": "Search index table doesn't exist — missing migration"
+    },
+    {
+        "id": "TC026",
+        "testcase_logs": """FAILED test_notifications.py::test_push_notification
+AssertionError: assert 1 == 0
+Push notification sent 0 times
+Expected 1 notification for order confirmation""",
+        "testcase_description": "Test verifies push notification sent after order placed",
+        "testcase_code": """def test_push_notification():
+    place_order(user_id=1, items=['item1'])
+    count = get_notification_count(user_id=1)
+    assert count == 1""",
+        "expected": "bug",
+        "reason": "Push notification not sent after order — notification service bug"
+    },
+    {
+        "id": "TC027",
+        "testcase_logs": """FAILED test_selenium.py::test_file_upload
+selenium.common.exceptions.InvalidArgumentException:
+Message: File not found: /tmp/test_upload.pdf""",
+        "testcase_description": "Test uploads PDF file via file input",
+        "testcase_code": """def test_file_upload(driver):
+    file_input = driver.find_element(By.ID, 'file-upload')
+    file_input.send_keys('/tmp/test_upload.pdf')""",
+        "expected": "failed_testcase",
+        "reason": "Test file does not exist at path — missing test fixture"
+    },
+    {
+        "id": "TC028",
+        "testcase_logs": """FAILED test_api.py::test_rate_limiting
+AssertionError: assert 200 == 429
+API not rate limiting after 100 requests
+Request 101 returned 200 instead of 429 Too Many Requests""",
+        "testcase_description": "Test verifies API rate limiting after 100 requests",
+        "testcase_code": """def test_rate_limiting():
+    for i in range(100):
+        requests.get('/api/data')
+    r = requests.get('/api/data')
+    assert r.status_code == 429""",
+        "expected": "bug",
+        "reason": "Rate limiting not implemented — security bug"
+    },
+    {
+        "id": "TC029",
+        "testcase_logs": """FAILED test_selenium.py::test_modal_close
+selenium.common.exceptions.NoSuchElementException:
+Unable to locate element: .modal-close-btn
+Modal close button not found after opening modal""",
+        "testcase_description": "Test opens modal and closes it using close button",
+        "testcase_code": """def test_modal_close(driver):
+    driver.find_element(By.ID, 'open-modal').click()
+    driver.find_element(By.CSS_SELECTOR, '.modal-close-btn').click()
+    assert not driver.find_element(By.ID, 'modal').is_displayed()""",
+        "expected": "failed_testcase",
+        "reason": "Wrong CSS selector for close button — locator issue"
+    },
+    {
+        "id": "TC030",
+        "testcase_logs": """FAILED test_db.py::test_audit_log
+AssertionError: assert 1 == 0
+Audit log not created after user deletion
+Expected 1 audit record but found 0""",
+        "testcase_description": "Test verifies audit log created when user deleted",
+        "testcase_code": """def test_audit_log(db):
+    user = db.query(User).first()
+    db.delete(user)
+    db.commit()
+    audit = db.query(AuditLog).filter_by(
+        action='DELETE', entity='user'
+    ).count()
+    assert audit == 1""",
+        "expected": "bug",
+        "reason": "Audit log not created on deletion — missing audit trail implementation"
+    },
+
 
 ]
