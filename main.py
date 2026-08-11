@@ -3,11 +3,14 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import Optional
 from agents.graph import run_analysis
+from agents.conversation import create_session
 from auth.routes import router as auth_router
 from api.projects import router as projects_router
+from api.chat import router as chat_router
 from database.models import init_db, AnalysisHistory, SessionLocal
 import uvicorn
 import time
+import json
 
 app = FastAPI(
     title="QA Assistant API",
@@ -24,6 +27,7 @@ app.add_middleware(
 
 app.include_router(auth_router)
 app.include_router(projects_router)
+app.include_router(chat_router)
 
 @app.on_event("startup")
 def startup():
@@ -32,7 +36,7 @@ def startup():
 
 class AnalyzeRequest(BaseModel):
     user_id: str = "default_user"
-    project_id: Optional[str] = None    # NEW
+    project_id: Optional[str] = None
     testcase_logs: str
     testcase_description: str
     testcase_code: str
@@ -62,11 +66,34 @@ def analyze(request: AnalyzeRequest):
         else:
             action_type = 'alert'
 
+        # Build initial response summary for session
+        initial_response = json.dumps({
+            "classification": result.get('classification'),
+            "analysis_type": result.get('analysis_type'),
+            "framework": result.get('framework'),
+            "summary": final.get('root_cause') or final.get('summary', ''),
+            "action": action_type
+        })
+
+        # Create conversation session
+        session_id = create_session(
+            user_id=request.user_id,
+            logs=request.testcase_logs,
+            description=request.testcase_description,
+            code=request.testcase_code,
+            classification=result.get('classification', 'unknown'),
+            framework=result.get('framework', 'unknown'),
+            initial_response=initial_response,
+            project_id=request.project_id
+        )
+
+        # Save to analysis history
         db = SessionLocal()
         try:
             history = AnalysisHistory(
                 user_id=request.user_id,
                 project_id=request.project_id,
+                session_id=session_id,
                 testcase_logs=request.testcase_logs,
                 testcase_description=request.testcase_description,
                 testcase_code=request.testcase_code,
@@ -84,6 +111,7 @@ def analyze(request: AnalyzeRequest):
 
         return {
             "status": "success",
+            "session_id": session_id,        # NEW — for followup chat
             "classification": result.get('classification', 'unknown'),
             "action_type": action_type,
             "framework": result.get('framework', 'unknown'),
@@ -108,6 +136,7 @@ def get_history(user_id: str = "default_user"):
             "analyses": [
                 {
                     "id": r.id,
+                    "session_id": r.session_id,
                     "classification": r.classification,
                     "analysis_type": r.analysis_type,
                     "framework": r.framework,
