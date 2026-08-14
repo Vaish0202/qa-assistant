@@ -1,10 +1,13 @@
-from langchain_ollama import ChatOllama
+
 from langchain_core.messages import HumanMessage, SystemMessage
 from agents.state import AgentState
 from agents.prompts import FAILED_TC_PROMPTS, get_prompt
 import json, re
 
-llm = ChatOllama(model="llama3.2", temperature=0)
+
+
+from agents.llm import get_llm
+llm = get_llm()
 
 def failed_testcase_node(state: AgentState) -> AgentState:
     print("--- FAILED TESTCASE AGENT RUNNING ---")

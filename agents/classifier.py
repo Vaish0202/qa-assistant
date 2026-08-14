@@ -1,3 +1,4 @@
+from agents.llm import get_llm
 from agents.state import AgentState
 from agents.framework_detector import detect_framework
 from agents.prompts import CLASSIFIER_PROMPTS, get_prompt
@@ -47,11 +48,12 @@ def classifier_node(state: AgentState) -> AgentState:
         print(f"ML Classification: {state['classification']} "
               f"({state['classification_confidence']:.2%})")
     else:
-        from langchain_ollama import ChatOllama
+        from agents.llm import get_llm
         from langchain_core.messages import HumanMessage, SystemMessage
         import json, re
 
-        llm = ChatOllama(model="llama3.2", temperature=0)
+        
+        llm = get_llm()
         system_prompt = get_prompt(CLASSIFIER_PROMPTS, framework_info['framework'])
         messages = [
             SystemMessage(content=system_prompt),

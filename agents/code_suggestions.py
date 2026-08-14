@@ -1,11 +1,12 @@
-from langchain_ollama import ChatOllama
+
 from langchain_core.messages import HumanMessage, SystemMessage
 from agents.state import AgentState
 from agents.prompts import CODE_SUGGESTION_PROMPTS, get_prompt
 import json
 import re
 
-llm = ChatOllama(model="llama3.2", temperature=0)
+from agents.llm import get_llm
+llm = get_llm()
 
 def parse_improved_code_field(raw_improved_code: str) -> dict:
     if not raw_improved_code:

@@ -1,11 +1,11 @@
-from langchain_ollama import ChatOllama
+
 from langchain_core.messages import HumanMessage, SystemMessage, AIMessage
 from database.models import ConversationSession, SessionLocal
 from datetime import datetime
 import json
 import re
-
-llm = ChatOllama(model="llama3.2", temperature=0)
+from agents.llm import get_llm
+llm = get_llm()
 
 def build_conversation_messages(session: ConversationSession) -> list:
     """Build LangChain message history from session"""

@@ -122,6 +122,13 @@ def analyze(request: AnalyzeRequest):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+@app.post("/api/jira/create")
+def create_jira_manual(request: dict):
+    """Human-approved Jira ticket creation"""
+    from integrations.jira import create_jira_ticket
+    result = create_jira_ticket(request)
+    return result
+
 @app.get("/api/history")
 def get_history(user_id: str = "default_user"):
     db = SessionLocal()
