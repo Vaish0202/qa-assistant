@@ -1,8 +1,6 @@
 from agents.state import AgentState
-from integrations.jira import create_jira_ticket
 import os
 from dotenv import load_dotenv
-
 load_dotenv()
 
 def jira_generator_node(state: AgentState) -> AgentState:
@@ -10,6 +8,8 @@ def jira_generator_node(state: AgentState) -> AgentState:
 
     bug_output = state.get('final_output', {})
 
+    # Prepare Jira payload but DON'T create ticket yet
+    # Human approval happens on frontend
     jira_payload = {
         "project_key": os.getenv("JIRA_PROJECT_KEY", "QA"),
         "summary": bug_output.get('summary', 'Bug detected by QA Assistant'),
@@ -23,24 +23,15 @@ def jira_generator_node(state: AgentState) -> AgentState:
     }
 
     state['jira_payload'] = jira_payload
-    result = create_jira_ticket(jira_payload)
 
-    if result['success']:
-        state['final_output'] = {
-            **bug_output,
-            "jira_ticket": result['ticket_key'],
-            "jira_url": result['ticket_url'],
-            "action": "jira_created"
-        }
-        state['channel_alert'] = f"Jira ticket {result['ticket_key']} created: {result['ticket_url']}"
-    else:
-        state['final_output'] = {
-            **bug_output,
-            "jira_error": result.get('error'),
-            "action": "jira_failed",
-            "jira_payload": jira_payload
-        }
-        state['channel_alert'] = f"Jira creation failed — manual ticket needed for: {jira_payload['summary']}"
+    # Store payload in final_output for frontend
+    state['final_output'] = {
+        **bug_output,
+        "jira_payload_ready": jira_payload,  # Frontend uses this
+        "action": "awaiting_human_approval"   # Signal to frontend
+    }
 
-    print(f"Alert: {state['channel_alert']}")
+    state['channel_alert'] = f"Bug ready for Jira — awaiting human approval"
+    print("Jira payload prepared — waiting for human approval")
+
     return state

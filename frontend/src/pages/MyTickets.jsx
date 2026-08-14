@@ -45,7 +45,7 @@ export default function MyTickets() {
       <div className="bg-[#13131f] border border-[#2a2a3d] rounded-2xl overflow-hidden">
         <div className="px-6 py-4 border-b border-[#2a2a3d] flex justify-between items-center">
           <p className="text-sm text-[#9ca3af]">{displayTickets.length} tickets</p>
-          
+          <a
             href="https://vaishnavilikhe3578.atlassian.net/jira/software/projects/QA/list"
             target="_blank"
             rel="noopener noreferrer"
