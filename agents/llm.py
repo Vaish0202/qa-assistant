@@ -3,17 +3,13 @@ from dotenv import load_dotenv
 load_dotenv()
 
 def get_llm():
-    """
-    Returns LLM instance.
-    Uses Groq if API key available, else falls back to Ollama.
-    """
     groq_key = os.getenv("GROQ_API_KEY")
 
     if groq_key:
         from langchain_groq import ChatGroq
-        print("Using Groq API (llama-3.2-3b-preview)")
+        print("Using Groq API (llama-3.3-70b-versatile)")
         return ChatGroq(
-            model="llama-3.2-3b-preview",
+            model="llama-3.3-70b-versatile",
             temperature=0,
             api_key=groq_key
         )

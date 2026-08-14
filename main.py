@@ -157,5 +157,27 @@ def get_history(user_id: str = "default_user"):
     finally:
         db.close()
 
+class JiraCreateRequest(BaseModel):
+    summary: str
+    description: Optional[str] = ""
+    bug_type: Optional[str] = "backend"
+    severity: Optional[str] = "medium"
+    priority: Optional[str] = "Medium"
+    steps_to_reproduce: Optional[list] = []
+    expected_result: Optional[str] = ""
+    actual_result: Optional[str] = ""
+    suggested_fix: Optional[str] = ""
+    project_key: Optional[str] = "QA"
+    assignee: Optional[str] = None
+    due_date: Optional[str] = None
+
+@app.post("/api/jira/create")
+def create_jira_manual(request: JiraCreateRequest):
+    """Human-approved Jira ticket creation with custom parameters"""
+    from integrations.jira import create_jira_ticket
+    payload = request.dict()
+    result = create_jira_ticket(payload)
+    return result
+
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)

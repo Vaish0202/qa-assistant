@@ -3,6 +3,9 @@ import Sidebar from './components/Sidebar'
 import Login from './pages/Login'
 import Analyze from './pages/Analyze'
 import History from './pages/History'
+import MyTickets from './pages/MyTickets'
+import Settings from './pages/Settings'
+import ChatContext from './pages/ChatContext'
 
 function App() {
   const isLoggedIn = !!localStorage.getItem('user_id')
@@ -20,13 +23,14 @@ function App() {
                   <Routes>
                     <Route path="/analyze" element={<Analyze />} />
                     <Route path="/history" element={<History />} />
+                    <Route path="/tickets" element={<MyTickets />} />
+                    <Route path="/settings" element={<Settings />} />
+                    <Route path="/chat/:sessionId" element={<ChatContext />} />
                     <Route path="/" element={<Navigate to="/analyze" />} />
                   </Routes>
                 </div>
               </div>
-            ) : (
-              <Navigate to="/login" />
-            )
+            ) : <Navigate to="/login" />
           } />
         </Routes>
       </div>
