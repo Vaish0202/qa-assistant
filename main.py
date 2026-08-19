@@ -12,6 +12,8 @@ import uvicorn
 import time
 import json
 
+
+
 app = FastAPI(
     title="QA Assistant API",
     description="Agentic AI for intelligent test failure classification",
@@ -178,6 +180,29 @@ def create_jira_manual(request: JiraCreateRequest):
     payload = request.dict()
     result = create_jira_ticket(payload)
     return result
+
+@app.get("/")
+async def root():
+    return {"status": "ok", "message": "QA Assistant backend is running"}
+
+@app.get("/health")
+async def health():
+    return {"status": "healthy"}
+
+from fastapi.middleware.cors import CORSMiddleware
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:5173",
+        "https://qa-assistant.vercel.app",
+        "https://*.vercel.app",
+        "*"  # Allow all for now
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"]
+)
 
 if __name__ == "__main__":
     import os

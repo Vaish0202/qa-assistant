@@ -7,16 +7,19 @@ import MyTickets from './pages/MyTickets'
 import Settings from './pages/Settings'
 import ChatContext from './pages/ChatContext'
 
-function App() {
+function PrivateRoute({ children }) {
   const isLoggedIn = !!localStorage.getItem('user_id')
+  return isLoggedIn ? children : <Navigate to="/login" />
+}
 
+function App() {
   return (
     <BrowserRouter>
       <div className="min-h-screen bg-[#0f0f1a] text-white">
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/*" element={
-            isLoggedIn ? (
+            <PrivateRoute>
               <div className="flex min-h-screen">
                 <Sidebar />
                 <div className="flex-1 ml-64">
@@ -30,7 +33,7 @@ function App() {
                   </Routes>
                 </div>
               </div>
-            ) : <Navigate to="/login" />
+            </PrivateRoute>
           } />
         </Routes>
       </div>
