@@ -7,9 +7,9 @@ def get_llm():
 
     if groq_key:
         from langchain_groq import ChatGroq
-        print("Using Groq API (llama-3.3-70b-versatile)")
+        print("Using Groq API (llama3-8b-8192)")
         return ChatGroq(
-            model="llama-3.3-70b-versatile",
+            model="llama3-8b-8192",
             temperature=0,
             api_key=groq_key
         )
