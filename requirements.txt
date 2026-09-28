@@ -1,14 +1,22 @@
+# Core AI/ML
 langgraph
 langchain
 langchain-ollama
 langchain-community
+langchain-groq
+xgboost
+scikit-learn
+numpy
+pandas
+statsmodels
+
+# Backend
 fastapi
 uvicorn
 sqlalchemy
 pydantic
 python-dotenv
 requests
-xgboost
-scikit-learn 
-numpy 
-langchain-groq
+
+# Utilities
+scipy
