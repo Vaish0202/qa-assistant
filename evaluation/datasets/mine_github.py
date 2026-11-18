@@ -48,13 +48,26 @@ API = "https://api.github.com"
 CANDIDATES_CSV = os.path.join(dataset_io.DATASETS_DIR, "github_candidates.csv")
 
 # One query per framework, so each framework gets a fair share of results.
-QUERIES = {
-    "selenium": '"selenium.common.exceptions" "FAILED" in:body is:issue is:closed language:Python',
-    "playwright": '"playwright._impl._errors" "FAILED" in:body is:issue is:closed language:Python',
-    "api": '"requests.exceptions" "FAILED tests" in:body is:issue is:closed language:Python',
-    "db": '"sqlalchemy.exc" "FAILED tests" in:body is:issue is:closed language:Python',
-    "unit": '"FAILED tests/" "AssertionError" in:body is:issue is:closed language:Python',
-}
+# Several searches per framework. "pr" searches find MERGED pull requests
+# whose description contains a failing-test log: the PR itself is the fix,
+# so its changed files are known directly (most useful). "issue" searches
+# find closed issues and then look for the PR/commit that closed them.
+QUERIES = [
+    ("selenium", "pr", '"selenium.common.exceptions" in:body is:pr is:merged language:Python'),
+    ("selenium", "pr", '"NoSuchElementException" "test_" in:body is:pr is:merged language:Python'),
+    ("selenium", "issue", '"selenium.common.exceptions" "test_" in:body is:issue is:closed language:Python'),
+    ("playwright", "pr", '"playwright._impl._errors" in:body is:pr is:merged language:Python'),
+    ("playwright", "pr", '"TimeoutError: Locator" in:body is:pr is:merged'),
+    ("playwright", "issue", '"playwright._impl._errors" "test_" in:body is:issue is:closed language:Python'),
+    ("api", "pr", '"FAILED tests" "status_code" in:body is:pr is:merged language:Python'),
+    ("api", "pr", '"requests.exceptions" "FAILED" in:body is:pr is:merged language:Python'),
+    ("api", "issue", '"requests.exceptions" "FAILED tests" in:body is:issue is:closed language:Python'),
+    ("db", "pr", '"sqlalchemy.exc" in:body is:pr is:merged language:Python'),
+    ("db", "pr", '"IntegrityError" "FAILED tests" in:body is:pr is:merged language:Python'),
+    ("db", "issue", '"sqlalchemy.exc" "test_" in:body is:issue is:closed language:Python'),
+    ("unit", "pr", '"FAILED tests/" "AssertionError" in:body is:pr is:merged language:Python'),
+    ("unit", "issue", '"FAILED tests/" "AssertionError" in:body is:issue is:closed language:Python'),
+]
 
 CSV_FIELDS = ["id", "keep", "final_label", "proposed_label", "label_reason",
               "framework", "issue_url", "fix_url", "files_changed",
@@ -63,8 +76,12 @@ CSV_FIELDS = ["id", "keep", "final_label", "proposed_label", "label_reason",
 # ------------------------------------------------------------------ helpers
 TEST_PATH = re.compile(r"(^|/)(tests?|testing)/|(^|/)test_[^/]*\.py$|_test\.py$|"
                        r"(^|/)conftest\.py$|\.(spec|test)\.[jt]sx?$")
-NON_CODE = re.compile(r"\.(md|rst|txt|ya?ml|toml|cfg|ini|json|lock)$|^\.github/|^docs?/",
-                      re.IGNORECASE)
+# Docs, config and CI files don't count as "app code".
+NON_CODE = re.compile(
+    r"\.(md|rst|txt|ya?ml|toml|cfg|ini|json|lock|in)$|^\.github/|^\.gitlab|^docs?/"
+    r"|(^|/)(Jenkinsfile[^/]*|Dockerfile[^/]*|Makefile|tox\.ini|noxfile\.py|setup\.py"
+    r"|\.pre-commit-config\.yaml|CHANGELOG[^/]*|\.gitignore)$",
+    re.IGNORECASE)
 
 
 def is_test_file(path: str) -> bool:
@@ -199,6 +216,12 @@ class GitHub:
                         parents[0].get("sha"))
         return None, None, [], None
 
+    def pr_files(self, owner, repo, number):
+        """Files and base sha of a pull request (the PR is the fix)."""
+        files = self.get(f"/repos/{owner}/{repo}/pulls/{number}/files", per_page=100) or []
+        pull = self.get(f"/repos/{owner}/{repo}/pulls/{number}") or {}
+        return [f["filename"] for f in files], (pull.get("base") or {}).get("sha")
+    
     def file_at(self, owner, repo, path, ref):
         data = self.get(f"/repos/{owner}/{repo}/contents/{path}", ref=ref) if ref else None
         if not data or data.get("encoding") != "base64":
@@ -215,16 +238,17 @@ def mine(limit_per_framework: int):
         dataset_io.dataset_path("v1")) else set()
     rows, seen = [], set()
 
-    for fw, query in QUERIES.items():
-        print(f"\n[{fw}] {query}")
-        kept, page = 0, 1
-        while kept < limit_per_framework and page <= 5:
+    kept_per_fw = {}
+    for fw, kind, query in QUERIES:
+        print(f"\n[{fw} / {kind}] {query}")
+        page = 1
+        while kept_per_fw.get(fw, 0) < limit_per_framework and page <= 3:
             items = gh.search_issues(query, page=page)
             if not items:
                 break
             page += 1
             for issue in items:
-                if kept >= limit_per_framework:
+                if kept_per_fw.get(fw, 0) >= limit_per_framework:
                     break
                 owner, repo = issue["repository_url"].split("/repos/")[1].split("/")
                 rid = f"gh-{owner}-{repo}-{issue['number']}".lower()
@@ -235,7 +259,11 @@ def mine(limit_per_framework: int):
                 log = extract_log(issue.get("body", ""))
                 if not log:
                     continue
-                kind, fix_url, files, base_sha = gh.fix_for_issue(owner, repo, issue["number"])
+                if kind == "pr":                    # the PR is the fix
+                    files, base_sha = gh.pr_files(owner, repo, issue["number"])
+                    fix_url = issue["html_url"]
+                else:
+                    _, fix_url, files, base_sha = gh.fix_for_issue(owner, repo, issue["number"])
                 if not files:
                     print(f"  skip {rid}: no linked fix")
                     continue
@@ -259,7 +287,7 @@ def mine(limit_per_framework: int):
                     "log_excerpt": log,
                     "_code": code, "_title": issue.get("title", ""),
                 })
-                kept += 1
+                kept_per_fw[fw] = kept_per_fw.get(fw, 0) + 1
                 print(f"  + {rid}: {label} ({reason[:60]})")
 
     # Code and title go to a side file; the CSV stays readable in Excel.
@@ -268,13 +296,13 @@ def mine(limit_per_framework: int):
         w.writeheader()
         w.writerows(rows)
     dataset_io.save(CANDIDATES_CSV.replace(".csv", ".jsonl"), rows)
-    print(f"\nWrote {len(rows)} candidates to {CANDIDATES_CSV}")
+    print(f"\nWrote {len(rows)} candidates to {CANDIDATES_CSV}: {kept_per_fw}")
     print("Review it: set keep=yes/no and final_label=bug/failed_testcase, then run --merge")
 
 
 # ------------------------------------------------------------------ merge
 def merge():
-    with open(CANDIDATES_CSV, encoding="utf-8") as f:
+    with open(CANDIDATES_CSV, encoding="utf-8-sig") as f:
         reviewed = {r["id"]: r for r in csv.DictReader(f)}
     details = {r["id"]: r for r in dataset_io.load(CANDIDATES_CSV.replace(".csv", ".jsonl"))}
 

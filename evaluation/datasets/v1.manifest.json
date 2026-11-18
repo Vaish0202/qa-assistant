@@ -2,12 +2,19 @@
   "dataset": "v1",
   "seed": 42,
   "test_fraction": 0.2,
-  "n_records": 150,
+  "n_records": 182,
   "split_counts": {
-    "dev": 110,
-    "test": 40
+    "dev": 135,
+    "test": 47
   },
   "test_ids": [
+    "gh-coombzy-project-car-207",
+    "gh-dj-bolt-django-bolt-649",
+    "gh-jaylfc-taos-4259",
+    "gh-kaf-666-shopify-ui-automation-12",
+    "gh-ourostack-ouro-ui-1857",
+    "gh-pechst1-conversationallanguagelearning-813",
+    "gh-pingdotgg-t3code-35581",
     "syn-api-bug-003",
     "syn-api-bug-006",
     "syn-api-bug-009",
@@ -49,5 +56,5 @@
     "syn-unit-failed_testcase-008",
     "syn-unit-failed_testcase-011"
   ],
-  "test_ids_sha256": "d8a004e20acb1615814642283ddd62792566fdf75f353005c73dced36d36dbdb"
+  "test_ids_sha256": "698e2512214ae07234e49d00a08fd3a0a73137f32ed6ec07c3d482fe16d5b75b"
 }
