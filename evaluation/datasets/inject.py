@@ -121,8 +121,7 @@ def sel_missing_wait(rng):
                 button.click()
                 assert driver.find_element(By.CLASS_NAME, "toast-success").is_displayed()
             """),
-        log=f"selenium.common.exceptions.{exc}\nFAILED tests/ui/test_{page}.py::test_{page}_submit"
-            + ("\nNote: test passes when re-run locally" if rng.random() < 0.5 else ""),
+        log=f"selenium.common.exceptions.{exc}\nFAILED tests/ui/test_{page}.py::test_{page}_submit",        
         stacktrace=dedent(f"""
             Traceback (most recent call last):
               File "tests/ui/test_{page}.py", line {n}, in test_{page}_submit
@@ -195,7 +194,6 @@ def sel_wrong_value(rng):
             """),
         log=dedent(f"""
             E       AssertionError: assert '${shown:.2f}' == '${expected:.2f}'
-            Cart shows wrong total after quantity update
             FAILED tests/ui/test_cart.py::test_cart_total
             """),
         stacktrace=f'  File "tests/ui/test_cart.py", line {n}, in test_cart_total',
@@ -291,7 +289,6 @@ def pw_race(rng):
             E       AssertionError: assert False
             E        +  where False = <built-in method endswith of str object>('/{page}')
             E        +    where 'https://app/login' = <Page url='https://app/login'>.url
-            Flaky: passed 3 of 5 runs in CI
             FAILED tests/e2e/test_auth.py::test_login_redirects_to_{page}[webkit]
             """),
         stacktrace=f'  File "tests/e2e/test_auth.py", line {n}, in test_login_redirects_to_{page}',
@@ -412,7 +409,6 @@ def api_changed_field(rng):
         log=dedent(f"""
             E       KeyError: '{field}'
             Response sample: {{"id": {rng.randint(1, 500)}, "{renamed}": ...}}
-            API changelog: no change to '{field}' announced for this release
             FAILED tests/api/test_{plural}.py::test_list_{plural}_schema
             """),
         stacktrace=f'  File "tests/api/test_{plural}.py", line {n}, in test_list_{plural}_schema',

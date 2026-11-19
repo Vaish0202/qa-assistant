@@ -174,12 +174,20 @@ class GitHub:
                                "X-GitHub-Api-Version": "2022-11-28"})
 
     def get(self, url, **params):
-        for attempt in range(3):
+        for attempt in range(4):
             r = self.s.get(url if url.startswith("http") else API + url,
                            params=params, timeout=30)
-            if r.status_code == 403 and r.headers.get("X-RateLimit-Remaining") == "0":
-                wait = max(5, int(r.headers.get("X-RateLimit-Reset", time.time() + 60)) - int(time.time()))
-                print(f"  rate limited, waiting {wait}s")
+            if r.status_code in (403, 429):
+                retry_after = r.headers.get("Retry-After")
+                if retry_after:                                   # secondary rate limit
+                    wait = int(retry_after)
+                elif r.headers.get("X-RateLimit-Remaining") == "0":  # primary rate limit
+                    wait = max(5, int(r.headers.get("X-RateLimit-Reset",
+                                                    time.time() + 60)) - int(time.time()))
+                else:
+                    print(f"  403 for {url}: {r.text[:120]}")
+                    return None
+                print(f"  rate limited, waiting {min(wait, 120)}s")
                 time.sleep(min(wait, 120))
                 continue
             if r.status_code in (404, 410, 422):
@@ -326,7 +334,7 @@ def merge():
             "id": rid, "framework": row["framework"],
             "log": log, "stacktrace": stack,
             "code_snippet": d.get("_code", ""),
-            "description": d.get("_title", ""),
+            "description": "",
             "label": label, "source": "github",
             "source_ref": row["issue_url"] + " | fix: " + row["fix_url"],
             "split": "",
