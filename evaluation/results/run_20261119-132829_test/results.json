@@ -1,0 +1,1486 @@
+{
+  "dataset": "v1",
+  "split": "test",
+  "n": 57,
+  "limit": 0,
+  "threshold": 0.7,
+  "by_source_counts": {
+    "synthetic": 50,
+    "github": 7
+  },
+  "by_label_counts": {
+    "bug": 29,
+    "failed_testcase": 28
+  },
+  "pipelines": {
+    "xgboost": {
+      "metrics": {
+        "n": 57,
+        "accuracy": 0.631578947368421,
+        "bug": {
+          "precision": 0.6428571428571429,
+          "recall": 0.6206896551724138,
+          "f1": 0.6315789473684211,
+          "support": 29
+        },
+        "failed_testcase": {
+          "precision": 0.6206896551724138,
+          "recall": 0.6428571428571429,
+          "f1": 0.6315789473684211,
+          "support": 28
+        },
+        "macro_f1": 0.6315789473684211
+      },
+      "accuracy_ci": [
+        0.49122807017543857,
+        0.7543859649122807
+      ],
+      "macro_f1_ci": [
+        0.4912123915335334,
+        0.7524813895781639
+      ],
+      "confusion": {
+        "bug": {
+          "bug": 18,
+          "failed_testcase": 11,
+          "unparsed": 0
+        },
+        "failed_testcase": {
+          "bug": 10,
+          "failed_testcase": 18,
+          "unparsed": 0
+        }
+      },
+      "by_framework": {
+        "api": {
+          "n": 12,
+          "accuracy": 0.5833333333333334,
+          "macro_f1": 0.5555555555555556
+        },
+        "db": {
+          "n": 11,
+          "accuracy": 1.0,
+          "macro_f1": 1.0
+        },
+        "playwright": {
+          "n": 13,
+          "accuracy": 0.6153846153846154,
+          "macro_f1": 0.606060606060606
+        },
+        "selenium": {
+          "n": 10,
+          "accuracy": 0.5,
+          "macro_f1": 0.3333333333333333
+        },
+        "unit": {
+          "n": 11,
+          "accuracy": 0.45454545454545453,
+          "macro_f1": 0.3125
+        }
+      },
+      "by_source": {
+        "github": {
+          "n": 7,
+          "accuracy": 0.8571428571428571,
+          "macro_f1": 0.8571428571428571
+        },
+        "synthetic": {
+          "n": 50,
+          "accuracy": 0.6,
+          "macro_f1": 0.6
+        }
+      },
+      "p50_seconds": 0.0018536000006861286,
+      "llm_calls": 0,
+      "llm_answers_used": 0,
+      "unparsed": 0,
+      "predictions": [
+        {
+          "id": "syn-api-bug-003",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.5986456871032715
+        },
+        {
+          "id": "syn-api-bug-006",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.5986456871032715
+        },
+        {
+          "id": "syn-api-bug-009",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.5986456871032715
+        },
+        {
+          "id": "syn-api-bug-012",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.5986456871032715
+        },
+        {
+          "id": "syn-api-bug-015",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.5986456871032715
+        },
+        {
+          "id": "syn-api-failed_testcase-001",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.5986456871032715
+        },
+        {
+          "id": "syn-api-failed_testcase-004",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.5986456871032715
+        },
+        {
+          "id": "syn-api-failed_testcase-007",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.5986456871032715
+        },
+        {
+          "id": "syn-api-failed_testcase-010",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.5986456871032715
+        },
+        {
+          "id": "syn-api-failed_testcase-013",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.5986456871032715
+        },
+        {
+          "id": "syn-db-bug-002",
+          "true": "bug",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.7470608949661255
+        },
+        {
+          "id": "syn-db-bug-005",
+          "true": "bug",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.7470608949661255
+        },
+        {
+          "id": "syn-db-bug-008",
+          "true": "bug",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.7470608949661255
+        },
+        {
+          "id": "syn-db-bug-011",
+          "true": "bug",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.7470608949661255
+        },
+        {
+          "id": "syn-db-bug-014",
+          "true": "bug",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.7470608949661255
+        },
+        {
+          "id": "syn-db-failed_testcase-003",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.639901340007782
+        },
+        {
+          "id": "syn-db-failed_testcase-006",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.639901340007782
+        },
+        {
+          "id": "syn-db-failed_testcase-009",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.639901340007782
+        },
+        {
+          "id": "syn-db-failed_testcase-012",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.639901340007782
+        },
+        {
+          "id": "syn-db-failed_testcase-015",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.639901340007782
+        },
+        {
+          "id": "syn-playwright-bug-001",
+          "true": "bug",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.7470608949661255
+        },
+        {
+          "id": "syn-playwright-bug-004",
+          "true": "bug",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.7470608949661255
+        },
+        {
+          "id": "syn-playwright-bug-007",
+          "true": "bug",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.7470608949661255
+        },
+        {
+          "id": "syn-playwright-bug-010",
+          "true": "bug",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.7470608949661255
+        },
+        {
+          "id": "syn-playwright-bug-013",
+          "true": "bug",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.7470608949661255
+        },
+        {
+          "id": "syn-playwright-failed_testcase-003",
+          "true": "failed_testcase",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.7470608949661255
+        },
+        {
+          "id": "syn-playwright-failed_testcase-006",
+          "true": "failed_testcase",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.7470608949661255
+        },
+        {
+          "id": "syn-playwright-failed_testcase-009",
+          "true": "failed_testcase",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.7470608949661255
+        },
+        {
+          "id": "syn-playwright-failed_testcase-012",
+          "true": "failed_testcase",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.7470608949661255
+        },
+        {
+          "id": "syn-playwright-failed_testcase-015",
+          "true": "failed_testcase",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.7470608949661255
+        },
+        {
+          "id": "syn-selenium-bug-002",
+          "true": "bug",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.8518919348716736
+        },
+        {
+          "id": "syn-selenium-bug-005",
+          "true": "bug",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.8518919348716736
+        },
+        {
+          "id": "syn-selenium-bug-008",
+          "true": "bug",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.8518919348716736
+        },
+        {
+          "id": "syn-selenium-bug-011",
+          "true": "bug",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.8518919348716736
+        },
+        {
+          "id": "syn-selenium-bug-014",
+          "true": "bug",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.8518919348716736
+        },
+        {
+          "id": "syn-selenium-failed_testcase-003",
+          "true": "failed_testcase",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.8518919348716736
+        },
+        {
+          "id": "syn-selenium-failed_testcase-006",
+          "true": "failed_testcase",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.8518919348716736
+        },
+        {
+          "id": "syn-selenium-failed_testcase-009",
+          "true": "failed_testcase",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.8518919348716736
+        },
+        {
+          "id": "syn-selenium-failed_testcase-012",
+          "true": "failed_testcase",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.8518919348716736
+        },
+        {
+          "id": "syn-selenium-failed_testcase-015",
+          "true": "failed_testcase",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.8518919348716736
+        },
+        {
+          "id": "syn-unit-bug-002",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.639901340007782
+        },
+        {
+          "id": "syn-unit-bug-005",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.639901340007782
+        },
+        {
+          "id": "syn-unit-bug-008",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.639901340007782
+        },
+        {
+          "id": "syn-unit-bug-011",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.639901340007782
+        },
+        {
+          "id": "syn-unit-bug-014",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.639901340007782
+        },
+        {
+          "id": "syn-unit-failed_testcase-003",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.639901340007782
+        },
+        {
+          "id": "syn-unit-failed_testcase-006",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.639901340007782
+        },
+        {
+          "id": "syn-unit-failed_testcase-009",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.639901340007782
+        },
+        {
+          "id": "syn-unit-failed_testcase-012",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.639901340007782
+        },
+        {
+          "id": "syn-unit-failed_testcase-015",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.639901340007782
+        },
+        {
+          "id": "gh-sam-dumont-immich-memories-2965",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.9393554329872131
+        },
+        {
+          "id": "gh-kaf-666-shopify-ui-automation-12",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.9393554329872131
+        },
+        {
+          "id": "gh-wladku-vereino-316",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.9393554329872131
+        },
+        {
+          "id": "gh-dj-bolt-django-bolt-649",
+          "true": "bug",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.6976006031036377
+        },
+        {
+          "id": "gh-jaylfc-taos-4259",
+          "true": "bug",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.6976006031036377
+        },
+        {
+          "id": "gh-coombzy-project-car-207",
+          "true": "bug",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.6976006031036377
+        },
+        {
+          "id": "gh-pechst1-conversationallanguagelearning-813",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.762353241443634
+        }
+      ],
+      "confusion_png": "confusion_xgboost.png"
+    },
+    "llm (ollama:llama3.2)": {
+      "metrics": {
+        "n": 57,
+        "accuracy": 0.6666666666666666,
+        "bug": {
+          "precision": 0.8571428571428571,
+          "recall": 0.41379310344827586,
+          "f1": 0.5581395348837208,
+          "support": 29
+        },
+        "failed_testcase": {
+          "precision": 0.6046511627906976,
+          "recall": 0.9285714285714286,
+          "f1": 0.7323943661971831,
+          "support": 28
+        },
+        "macro_f1": 0.645266950540452
+      },
+      "accuracy_ci": [
+        0.543859649122807,
+        0.7894736842105263
+      ],
+      "macro_f1_ci": [
+        0.5049474053295934,
+        0.7631611732820424
+      ],
+      "confusion": {
+        "bug": {
+          "bug": 12,
+          "failed_testcase": 17,
+          "unparsed": 0
+        },
+        "failed_testcase": {
+          "bug": 2,
+          "failed_testcase": 26,
+          "unparsed": 0
+        }
+      },
+      "by_framework": {
+        "api": {
+          "n": 12,
+          "accuracy": 0.5833333333333334,
+          "macro_f1": 0.5555555555555556
+        },
+        "db": {
+          "n": 11,
+          "accuracy": 0.8181818181818182,
+          "macro_f1": 0.8166666666666667
+        },
+        "playwright": {
+          "n": 13,
+          "accuracy": 0.6153846153846154,
+          "macro_f1": 0.380952380952381
+        },
+        "selenium": {
+          "n": 10,
+          "accuracy": 0.8,
+          "macro_f1": 0.7916666666666665
+        },
+        "unit": {
+          "n": 11,
+          "accuracy": 0.5454545454545454,
+          "macro_f1": 0.47619047619047616
+        }
+      },
+      "by_source": {
+        "github": {
+          "n": 7,
+          "accuracy": 0.5714285714285714,
+          "macro_f1": 0.5333333333333333
+        },
+        "synthetic": {
+          "n": 50,
+          "accuracy": 0.68,
+          "macro_f1": 0.6604414261460101
+        }
+      },
+      "p50_seconds": 6.008964900000137,
+      "llm_calls": 52,
+      "llm_answers_used": 57,
+      "unparsed": 0,
+      "predictions": [
+        {
+          "id": "syn-api-bug-003",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "llm",
+          "confidence": null
+        },
+        {
+          "id": "syn-api-bug-006",
+          "true": "bug",
+          "pred": "bug",
+          "source": "llm",
+          "confidence": null
+        },
+        {
+          "id": "syn-api-bug-009",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "llm",
+          "confidence": null
+        },
+        {
+          "id": "syn-api-bug-012",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "llm",
+          "confidence": null
+        },
+        {
+          "id": "syn-api-bug-015",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "llm",
+          "confidence": null
+        },
+        {
+          "id": "syn-api-failed_testcase-001",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "llm",
+          "confidence": null
+        },
+        {
+          "id": "syn-api-failed_testcase-004",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "llm",
+          "confidence": null
+        },
+        {
+          "id": "syn-api-failed_testcase-007",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "llm",
+          "confidence": null
+        },
+        {
+          "id": "syn-api-failed_testcase-010",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "llm",
+          "confidence": null
+        },
+        {
+          "id": "syn-api-failed_testcase-013",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "llm",
+          "confidence": null
+        },
+        {
+          "id": "syn-db-bug-002",
+          "true": "bug",
+          "pred": "bug",
+          "source": "llm",
+          "confidence": null
+        },
+        {
+          "id": "syn-db-bug-005",
+          "true": "bug",
+          "pred": "bug",
+          "source": "llm",
+          "confidence": null
+        },
+        {
+          "id": "syn-db-bug-008",
+          "true": "bug",
+          "pred": "bug",
+          "source": "llm",
+          "confidence": null
+        },
+        {
+          "id": "syn-db-bug-011",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "llm",
+          "confidence": null
+        },
+        {
+          "id": "syn-db-bug-014",
+          "true": "bug",
+          "pred": "bug",
+          "source": "llm",
+          "confidence": null
+        },
+        {
+          "id": "syn-db-failed_testcase-003",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "llm",
+          "confidence": null
+        },
+        {
+          "id": "syn-db-failed_testcase-006",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "llm",
+          "confidence": null
+        },
+        {
+          "id": "syn-db-failed_testcase-009",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "llm",
+          "confidence": null
+        },
+        {
+          "id": "syn-db-failed_testcase-012",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "llm",
+          "confidence": null
+        },
+        {
+          "id": "syn-db-failed_testcase-015",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "llm",
+          "confidence": null
+        },
+        {
+          "id": "syn-playwright-bug-001",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "llm",
+          "confidence": null
+        },
+        {
+          "id": "syn-playwright-bug-004",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "llm",
+          "confidence": null
+        },
+        {
+          "id": "syn-playwright-bug-007",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "llm",
+          "confidence": null
+        },
+        {
+          "id": "syn-playwright-bug-010",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "llm",
+          "confidence": null
+        },
+        {
+          "id": "syn-playwright-bug-013",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "llm",
+          "confidence": null
+        },
+        {
+          "id": "syn-playwright-failed_testcase-003",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "llm",
+          "confidence": null
+        },
+        {
+          "id": "syn-playwright-failed_testcase-006",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "llm",
+          "confidence": null
+        },
+        {
+          "id": "syn-playwright-failed_testcase-009",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "llm",
+          "confidence": null
+        },
+        {
+          "id": "syn-playwright-failed_testcase-012",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "llm",
+          "confidence": null
+        },
+        {
+          "id": "syn-playwright-failed_testcase-015",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "llm",
+          "confidence": null
+        },
+        {
+          "id": "syn-selenium-bug-002",
+          "true": "bug",
+          "pred": "bug",
+          "source": "llm",
+          "confidence": null
+        },
+        {
+          "id": "syn-selenium-bug-005",
+          "true": "bug",
+          "pred": "bug",
+          "source": "llm",
+          "confidence": null
+        },
+        {
+          "id": "syn-selenium-bug-008",
+          "true": "bug",
+          "pred": "bug",
+          "source": "llm",
+          "confidence": null
+        },
+        {
+          "id": "syn-selenium-bug-011",
+          "true": "bug",
+          "pred": "bug",
+          "source": "llm",
+          "confidence": null
+        },
+        {
+          "id": "syn-selenium-bug-014",
+          "true": "bug",
+          "pred": "bug",
+          "source": "llm",
+          "confidence": null
+        },
+        {
+          "id": "syn-selenium-failed_testcase-003",
+          "true": "failed_testcase",
+          "pred": "bug",
+          "source": "llm",
+          "confidence": null
+        },
+        {
+          "id": "syn-selenium-failed_testcase-006",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "llm",
+          "confidence": null
+        },
+        {
+          "id": "syn-selenium-failed_testcase-009",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "llm",
+          "confidence": null
+        },
+        {
+          "id": "syn-selenium-failed_testcase-012",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "llm",
+          "confidence": null
+        },
+        {
+          "id": "syn-selenium-failed_testcase-015",
+          "true": "failed_testcase",
+          "pred": "bug",
+          "source": "llm",
+          "confidence": null
+        },
+        {
+          "id": "syn-unit-bug-002",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "llm",
+          "confidence": null
+        },
+        {
+          "id": "syn-unit-bug-005",
+          "true": "bug",
+          "pred": "bug",
+          "source": "llm",
+          "confidence": null
+        },
+        {
+          "id": "syn-unit-bug-008",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "llm",
+          "confidence": null
+        },
+        {
+          "id": "syn-unit-bug-011",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "llm",
+          "confidence": null
+        },
+        {
+          "id": "syn-unit-bug-014",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "llm",
+          "confidence": null
+        },
+        {
+          "id": "syn-unit-failed_testcase-003",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "llm",
+          "confidence": null
+        },
+        {
+          "id": "syn-unit-failed_testcase-006",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "llm",
+          "confidence": null
+        },
+        {
+          "id": "syn-unit-failed_testcase-009",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "llm",
+          "confidence": null
+        },
+        {
+          "id": "syn-unit-failed_testcase-012",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "llm",
+          "confidence": null
+        },
+        {
+          "id": "syn-unit-failed_testcase-015",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "llm",
+          "confidence": null
+        },
+        {
+          "id": "gh-sam-dumont-immich-memories-2965",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "llm",
+          "confidence": null
+        },
+        {
+          "id": "gh-kaf-666-shopify-ui-automation-12",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "llm",
+          "confidence": null
+        },
+        {
+          "id": "gh-wladku-vereino-316",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "llm",
+          "confidence": null
+        },
+        {
+          "id": "gh-dj-bolt-django-bolt-649",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "llm",
+          "confidence": null
+        },
+        {
+          "id": "gh-jaylfc-taos-4259",
+          "true": "bug",
+          "pred": "bug",
+          "source": "llm",
+          "confidence": null
+        },
+        {
+          "id": "gh-coombzy-project-car-207",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "llm",
+          "confidence": null
+        },
+        {
+          "id": "gh-pechst1-conversationallanguagelearning-813",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "llm",
+          "confidence": null
+        }
+      ],
+      "confusion_png": "confusion_llm.png"
+    },
+    "hybrid (ollama:llama3.2)": {
+      "metrics": {
+        "n": 57,
+        "accuracy": 0.631578947368421,
+        "bug": {
+          "precision": 0.6428571428571429,
+          "recall": 0.6206896551724138,
+          "f1": 0.6315789473684211,
+          "support": 29
+        },
+        "failed_testcase": {
+          "precision": 0.6206896551724138,
+          "recall": 0.6428571428571429,
+          "f1": 0.6315789473684211,
+          "support": 28
+        },
+        "macro_f1": 0.6315789473684211
+      },
+      "accuracy_ci": [
+        0.5087719298245614,
+        0.7543859649122807
+      ],
+      "macro_f1_ci": [
+        0.50125,
+        0.7506714097394539
+      ],
+      "confusion": {
+        "bug": {
+          "bug": 18,
+          "failed_testcase": 11,
+          "unparsed": 0
+        },
+        "failed_testcase": {
+          "bug": 10,
+          "failed_testcase": 18,
+          "unparsed": 0
+        }
+      },
+      "by_framework": {
+        "api": {
+          "n": 12,
+          "accuracy": 0.5833333333333334,
+          "macro_f1": 0.5555555555555556
+        },
+        "db": {
+          "n": 11,
+          "accuracy": 0.9090909090909091,
+          "macro_f1": 0.9090909090909091
+        },
+        "playwright": {
+          "n": 13,
+          "accuracy": 0.6153846153846154,
+          "macro_f1": 0.606060606060606
+        },
+        "selenium": {
+          "n": 10,
+          "accuracy": 0.5,
+          "macro_f1": 0.3333333333333333
+        },
+        "unit": {
+          "n": 11,
+          "accuracy": 0.5454545454545454,
+          "macro_f1": 0.47619047619047616
+        }
+      },
+      "by_source": {
+        "github": {
+          "n": 7,
+          "accuracy": 0.5714285714285714,
+          "macro_f1": 0.5333333333333333
+        },
+        "synthetic": {
+          "n": 50,
+          "accuracy": 0.64,
+          "macro_f1": 0.639423076923077
+        }
+      },
+      "p50_seconds": 0.008912699999200413,
+      "llm_calls": 0,
+      "llm_answers_used": 28,
+      "unparsed": 0,
+      "predictions": [
+        {
+          "id": "syn-api-bug-003",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "syn-api-bug-006",
+          "true": "bug",
+          "pred": "bug",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "syn-api-bug-009",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "syn-api-bug-012",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "syn-api-bug-015",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "syn-api-failed_testcase-001",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "syn-api-failed_testcase-004",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "syn-api-failed_testcase-007",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "syn-api-failed_testcase-010",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "syn-api-failed_testcase-013",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "syn-db-bug-002",
+          "true": "bug",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.7470608949661255
+        },
+        {
+          "id": "syn-db-bug-005",
+          "true": "bug",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.7470608949661255
+        },
+        {
+          "id": "syn-db-bug-008",
+          "true": "bug",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.7470608949661255
+        },
+        {
+          "id": "syn-db-bug-011",
+          "true": "bug",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.7470608949661255
+        },
+        {
+          "id": "syn-db-bug-014",
+          "true": "bug",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.7470608949661255
+        },
+        {
+          "id": "syn-db-failed_testcase-003",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "syn-db-failed_testcase-006",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "syn-db-failed_testcase-009",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "syn-db-failed_testcase-012",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "syn-db-failed_testcase-015",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "syn-playwright-bug-001",
+          "true": "bug",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.7470608949661255
+        },
+        {
+          "id": "syn-playwright-bug-004",
+          "true": "bug",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.7470608949661255
+        },
+        {
+          "id": "syn-playwright-bug-007",
+          "true": "bug",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.7470608949661255
+        },
+        {
+          "id": "syn-playwright-bug-010",
+          "true": "bug",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.7470608949661255
+        },
+        {
+          "id": "syn-playwright-bug-013",
+          "true": "bug",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.7470608949661255
+        },
+        {
+          "id": "syn-playwright-failed_testcase-003",
+          "true": "failed_testcase",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.7470608949661255
+        },
+        {
+          "id": "syn-playwright-failed_testcase-006",
+          "true": "failed_testcase",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.7470608949661255
+        },
+        {
+          "id": "syn-playwright-failed_testcase-009",
+          "true": "failed_testcase",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.7470608949661255
+        },
+        {
+          "id": "syn-playwright-failed_testcase-012",
+          "true": "failed_testcase",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.7470608949661255
+        },
+        {
+          "id": "syn-playwright-failed_testcase-015",
+          "true": "failed_testcase",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.7470608949661255
+        },
+        {
+          "id": "syn-selenium-bug-002",
+          "true": "bug",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.8518919348716736
+        },
+        {
+          "id": "syn-selenium-bug-005",
+          "true": "bug",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.8518919348716736
+        },
+        {
+          "id": "syn-selenium-bug-008",
+          "true": "bug",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.8518919348716736
+        },
+        {
+          "id": "syn-selenium-bug-011",
+          "true": "bug",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.8518919348716736
+        },
+        {
+          "id": "syn-selenium-bug-014",
+          "true": "bug",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.8518919348716736
+        },
+        {
+          "id": "syn-selenium-failed_testcase-003",
+          "true": "failed_testcase",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.8518919348716736
+        },
+        {
+          "id": "syn-selenium-failed_testcase-006",
+          "true": "failed_testcase",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.8518919348716736
+        },
+        {
+          "id": "syn-selenium-failed_testcase-009",
+          "true": "failed_testcase",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.8518919348716736
+        },
+        {
+          "id": "syn-selenium-failed_testcase-012",
+          "true": "failed_testcase",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.8518919348716736
+        },
+        {
+          "id": "syn-selenium-failed_testcase-015",
+          "true": "failed_testcase",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.8518919348716736
+        },
+        {
+          "id": "syn-unit-bug-002",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "syn-unit-bug-005",
+          "true": "bug",
+          "pred": "bug",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "syn-unit-bug-008",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "syn-unit-bug-011",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "syn-unit-bug-014",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "syn-unit-failed_testcase-003",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "syn-unit-failed_testcase-006",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "syn-unit-failed_testcase-009",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "syn-unit-failed_testcase-012",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "syn-unit-failed_testcase-015",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "gh-sam-dumont-immich-memories-2965",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.9393554329872131
+        },
+        {
+          "id": "gh-kaf-666-shopify-ui-automation-12",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.9393554329872131
+        },
+        {
+          "id": "gh-wladku-vereino-316",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.9393554329872131
+        },
+        {
+          "id": "gh-dj-bolt-django-bolt-649",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "gh-jaylfc-taos-4259",
+          "true": "bug",
+          "pred": "bug",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "gh-coombzy-project-car-207",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "gh-pechst1-conversationallanguagelearning-813",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.762353241443634
+        }
+      ],
+      "confusion_png": "confusion_hybrid.png"
+    }
+  },
+  "mcnemar": {
+    "xgboost vs llm (ollama:llama3.2)": {
+      "p": 0.8145294189453125,
+      "only_a": 8,
+      "only_b": 10
+    },
+    "xgboost vs hybrid (ollama:llama3.2)": {
+      "p": 1.0,
+      "only_a": 2,
+      "only_b": 2
+    },
+    "llm (ollama:llama3.2) vs hybrid (ollama:llama3.2)": {
+      "p": 0.79052734375,
+      "only_a": 8,
+      "only_b": 6
+    }
+  }
+}
