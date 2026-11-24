@@ -1,0 +1,38 @@
+# Runs on every pull request and on pushes to main/dev:
+#   1. unit tests (pytest)
+#   2. regression gate: XGBoost macro-F1 on the frozen test split must not
+#      drop more than 3 points below evaluation/baseline.json
+# No LLM, no API keys, no network calls to model providers: fast and free.
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main, dev]
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      LANGSMITH_TRACING: "false"
+      LLM_PROVIDER: ollama          # never called in these steps
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"     # same as your laptop
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install pytest
+
+      - name: Unit tests
+        run: python -m pytest tests -q
+
+      - name: Regression gate (macro-F1 vs baseline)
+        run: python -m evaluation.ci_gate

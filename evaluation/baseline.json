@@ -1,0 +1,8 @@
+{
+  "dataset": "v1",
+  "pipeline": "xgboost",
+  "n": 57,
+  "accuracy": 0.6316,
+  "macro_f1": 0.6316,
+  "test_ids_sha256": "b20bdcf49161a160a6a7878e6d1ba2e92253bd24534ce2140609b732827d9072"
+}
