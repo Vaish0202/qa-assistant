@@ -8,7 +8,7 @@ import Settings from './pages/Settings'
 import ChatContext from './pages/ChatContext'
 
 function PrivateRoute({ children }) {
-  const isLoggedIn = !!localStorage.getItem('user_id')
+    const isLoggedIn = !!localStorage.getItem('token')
   return isLoggedIn ? children : <Navigate to="/login" />
 }
 

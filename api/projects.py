@@ -1,7 +1,8 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
 from pydantic import BaseModel
 from typing import Optional
 from database.models import Project, SessionLocal
+from auth.security import get_current_user_id
 import uuid
 
 router = APIRouter(prefix="/api/projects", tags=["projects"])
@@ -16,7 +17,6 @@ class ProjectCreate(BaseModel):
     test_framework: Optional[str] = "pytest"
     language: Optional[str] = "python"
     jira_project_key: Optional[str] = "QA"
-    user_id: str = "default_user"
 
 class ProjectResponse(BaseModel):
     id: str
@@ -29,7 +29,7 @@ class ProjectResponse(BaseModel):
     user_id: str
 
 @router.post("/create")
-def create_project(data: ProjectCreate):
+def create_project(data: ProjectCreate, user_id: str = Depends(get_current_user_id)):
     db = SessionLocal()
     try:
         project = Project(
@@ -45,7 +45,7 @@ def create_project(data: ProjectCreate):
             test_framework=data.test_framework,
             language=data.language,
             jira_project_key=data.jira_project_key,
-            user_id=data.user_id
+            user_id=user_id
         )
         db.add(project)
         db.commit()
@@ -58,7 +58,7 @@ def create_project(data: ProjectCreate):
         db.close()
 
 @router.get("/list")
-def list_projects(user_id: str = "default_user"):
+def list_projects(user_id: str = Depends(get_current_user_id)):
     db = SessionLocal()
     try:
         projects = db.query(Project)\
@@ -82,10 +82,11 @@ def list_projects(user_id: str = "default_user"):
         db.close()
 
 @router.get("/{project_id}")
-def get_project(project_id: str):
+def get_project(project_id: str, user_id: str = Depends(get_current_user_id)):
     db = SessionLocal()
     try:
-        project = db.query(Project).filter(Project.id == project_id).first()
+        project = db.query(Project).filter(Project.id == project_id,
+                                           Project.user_id == user_id).first()
         if not project:
             raise HTTPException(status_code=404, detail="Project not found")
         return {
@@ -101,10 +102,11 @@ def get_project(project_id: str):
         db.close()
 
 @router.delete("/{project_id}")
-def delete_project(project_id: str):
+def delete_project(project_id: str, user_id: str = Depends(get_current_user_id)):
     db = SessionLocal()
     try:
-        project = db.query(Project).filter(Project.id == project_id).first()
+        project = db.query(Project).filter(Project.id == project_id,
+                                           Project.user_id == user_id).first()
         if not project:
             raise HTTPException(status_code=404, detail="Project not found")
         db.delete(project)

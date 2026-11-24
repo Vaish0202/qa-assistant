@@ -1,4 +1,9 @@
-from fastapi import FastAPI, HTTPException
+from auth.security import get_current_user_id, analyze_limiter
+from agents.llm import get_model_info
+import os
+from database.models import init_db, AnalysisHistory, SessionLocal, JiraTicket
+
+from fastapi import Depends, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import Optional
@@ -43,7 +48,6 @@ def startup():
     print("✓ QA Assistant API v2.0 started")
 
 class AnalyzeRequest(BaseModel):
-    user_id: str = "default_user"
     project_id: Optional[str] = None
     testcase_logs: str
     testcase_description: str
@@ -54,14 +58,19 @@ def health():
     return {"status": "ok", "model": "llama3.2", "version": "2.0.0"}
 
 @app.post("/api/analyze")
-def analyze(request: AnalyzeRequest):
+def analyze(request: AnalyzeRequest, user_id: str = Depends(get_current_user_id)):
+    for name in ("testcase_logs", "testcase_description", "testcase_code"):
+        if len(getattr(request, name)) > MAX_INPUT_CHARS:
+            raise HTTPException(status_code=413,
+                                detail=f"{name} is longer than {MAX_INPUT_CHARS} characters")
+    analyze_limiter.check(user_id)            # 429 if this user sends too many
     start_time = time.time()
     try:
         result = run_analysis(
             testcase_logs=request.testcase_logs,
             testcase_description=request.testcase_description,
             testcase_code=request.testcase_code,
-            user_id=request.user_id,
+            user_id=user_id,
             project_id=request.project_id
         )
         processing_time = round(time.time() - start_time, 2)
@@ -85,7 +94,7 @@ def analyze(request: AnalyzeRequest):
 
         # Create conversation session
         session_id = create_session(
-            user_id=request.user_id,
+            user_id=user_id,
             logs=request.testcase_logs,
             description=request.testcase_description,
             code=request.testcase_code,
@@ -99,7 +108,7 @@ def analyze(request: AnalyzeRequest):
         db = SessionLocal()
         try:
             history = AnalysisHistory(
-                user_id=request.user_id,
+                user_id=user_id,
                 project_id=request.project_id,
                 session_id=session_id,
                 testcase_logs=request.testcase_logs,
@@ -121,6 +130,7 @@ def analyze(request: AnalyzeRequest):
             "status": "success",
             "session_id": session_id,        # NEW — for followup chat
             "classification": result.get('classification', 'unknown'),
+            "classification_confidence": result.get('classification_confidence'),
             "action_type": action_type,
             "framework": result.get('framework', 'unknown'),
             "payload": final,
@@ -131,15 +141,26 @@ def analyze(request: AnalyzeRequest):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-@app.post("/api/jira/create")
-def create_jira_manual(request: dict):
-    """Human-approved Jira ticket creation"""
-    from integrations.jira import create_jira_ticket
-    result = create_jira_ticket(request)
-    return result
+
+
+@app.get("/api/tickets")
+def list_tickets(user_id: str = Depends(get_current_user_id)):
+    """Tickets this user approved in the app, newest first."""
+    db = SessionLocal()
+    try:
+        rows = db.query(JiraTicket).filter(JiraTicket.user_id == user_id)\
+                 .order_by(JiraTicket.created_at.desc()).limit(50).all()
+        return {"tickets": [
+            {"key": t.ticket_key, "url": t.ticket_url, "summary": t.summary,
+             "priority": t.priority,
+             "status": "Demo (not sent)" if t.is_demo else "Created in Jira",
+             "created": t.created_at.strftime("%d %b %Y")}
+            for t in rows]}
+    finally:
+        db.close()
 
 @app.get("/api/history")
-def get_history(user_id: str = "default_user"):
+def get_history(user_id: str = Depends(get_current_user_id)):
     db = SessionLocal()
     try:
         records = db.query(AnalysisHistory)\
@@ -181,8 +202,13 @@ class JiraCreateRequest(BaseModel):
     due_date: Optional[str] = None
 
 @app.post("/api/jira/create")
-def create_jira_manual(request: JiraCreateRequest):
+def create_jira_manual(request: JiraCreateRequest,
+                       user_id: str = Depends(get_current_user_id)):
     """Human-approved Jira ticket creation with custom parameters"""
+    if DEMO_MODE:
+        return {"success": True, "demo": True, "ticket_key": "DEMO (not created)",
+                "ticket_url": "", "message": "Demo mode: the ticket was approved "
+                "but not sent to Jira."}
     from integrations.jira import create_jira_ticket
     payload = request.dict()
     result = create_jira_ticket(payload)
@@ -194,22 +220,24 @@ async def root():
 
 @app.get("/health")
 async def health():
-    return {"status": "healthy"}
+        return {"status": "ok", "model": get_model_info()["model"], "version": "2.0.0",
+            "demo_mode": DEMO_MODE}
 
-from fastapi.middleware.cors import CORSMiddleware
-
+# Only these websites may call the API from a browser.
+# Production: ALLOWED_ORIGINS=https://your-app.vercel.app
+ALLOWED_ORIGINS = [o.strip() for o in os.getenv(
+    "ALLOWED_ORIGINS", "http://localhost:5173,http://127.0.0.1:5173").split(",") if o.strip()]
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:5173",
-        "https://qa-assistant.vercel.app",
-        "https://*.vercel.app",
-        "*"  # Allow all for now
-    ],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"]
+    allow_origins=ALLOWED_ORIGINS,
+    allow_methods=["GET", "POST", "DELETE"],
+    allow_headers=["Authorization", "Content-Type"]
 )
+
+# DEMO_MODE=true: Jira tickets are drafted and approved in the UI but NOT
+# created in Jira (safe for a public demo).
+DEMO_MODE = os.getenv("DEMO_MODE", "false").lower() == "true"
+MAX_INPUT_CHARS = int(os.getenv("MAX_INPUT_CHARS", "20000"))   # per field
 
 if __name__ == "__main__":
     import os

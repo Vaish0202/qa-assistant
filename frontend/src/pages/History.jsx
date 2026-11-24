@@ -8,11 +8,11 @@ export default function History() {
   const [loading, setLoading] = useState(true);
   const [expanded, setExpanded] = useState(null);
   const [search, setSearch] = useState("");
-  const userId = localStorage.getItem("user_id") || "default_user";
+  // const userId = localStorage.getItem("user_id") || "default_user";
   const navigate = useNavigate();
 
   useEffect(() => {
-    getHistory(userId)
+    getHistory()
       .then((res) => setHistory(res.data.analyses || []))
       .catch((err) => console.error(err))
       .finally(() => setLoading(false));

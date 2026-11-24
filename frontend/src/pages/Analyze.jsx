@@ -1,7 +1,6 @@
 import { useState } from 'react'
-import { analyzeTestcase } from '../api'
+import { analyzeTestcase, sendFollowup } from '../api'
 import ResultCard from '../components/ResultCard'
-import axios from 'axios'
 
 export default function Analyze() {
   const [logs, setLogs] = useState('')
@@ -15,7 +14,7 @@ export default function Analyze() {
   const [chatInput, setChatInput] = useState('')
   const [chatLoading, setChatLoading] = useState(false)
 
-  const userId = localStorage.getItem('user_id') || 'default_user'
+  // const userId = localStorage.getItem('user_id') || 'default_user'
 
   const handleAnalyze = async () => {
     if (!logs || !description || !code) {
@@ -27,7 +26,7 @@ export default function Analyze() {
 
     try {
       const res = await analyzeTestcase({
-        user_id: userId,
+        // user_id: userId,
         testcase_logs: logs,
         testcase_description: description,
         testcase_code: code
@@ -54,10 +53,7 @@ export default function Analyze() {
     setChatMessages(prev => [...prev, { role: 'user', content: userMsg }])
     setChatLoading(true)
     try {
-      const res = await axios.post('/api/chat/followup', {
-        session_id: sessionId,
-        message: userMsg
-      })
+      const res = await sendFollowup(sessionId, userMsg)
       setChatMessages(prev => [...prev, { role: 'assistant', content: res.data.response }])
     } catch {
       setChatMessages(prev => [...prev, { role: 'system', content: 'Failed to get response.' }])
