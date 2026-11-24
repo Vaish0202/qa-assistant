@@ -2,6 +2,7 @@ import numpy as np
 import pickle
 import os
 from ml_classifier.feature_extractor import extract_features
+from langsmith import traceable
 
 MODEL_PATH = "ml_classifier/qa_classifier_model.pkl"
 
@@ -22,6 +23,12 @@ def get_model():
         _model = load_model()
     return _model
 
+@traceable(
+    name="xgboost_classifier",
+    run_type="tool",
+    tags=["classifier:xgboost"],
+    metadata={"classifier_model": "xgboost", "n_features": 52},
+)
 def predict_classification(
     logs: str,
     description: str,

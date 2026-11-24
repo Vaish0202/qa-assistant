@@ -1,0 +1,429 @@
+{
+  "dataset": "v1",
+  "selection": "test split",
+  "n": 47,
+  "by_source_counts": {
+    "synthetic": 40,
+    "github": 7
+  },
+  "by_label_counts": {
+    "bug": 24,
+    "failed_testcase": 23
+  },
+  "threshold": 0.7,
+  "pipelines": {
+    "xgboost": {
+      "metrics": {
+        "n": 47,
+        "accuracy": 0.723404255319149,
+        "bug": {
+          "precision": 0.7894736842105263,
+          "recall": 0.625,
+          "f1": 0.6976744186046512,
+          "support": 24
+        },
+        "failed_testcase": {
+          "precision": 0.6785714285714286,
+          "recall": 0.8260869565217391,
+          "f1": 0.7450980392156864,
+          "support": 23
+        },
+        "macro_f1": 0.7213862289101688
+      },
+      "accuracy_ci": [
+        0.574468085106383,
+        0.851063829787234
+      ],
+      "macro_f1_ci": [
+        0.5727272727272728,
+        0.8499772001823985
+      ],
+      "confusion": {
+        "bug": {
+          "bug": 15,
+          "failed_testcase": 9,
+          "unparsed": 0
+        },
+        "failed_testcase": {
+          "bug": 4,
+          "failed_testcase": 19,
+          "unparsed": 0
+        }
+      },
+      "confusion_png": "confusion_xgboost.png",
+      "by_framework": {
+        "api": {
+          "n": 10,
+          "accuracy": 0.6,
+          "macro_f1": 0.5833333333333333
+        },
+        "db": {
+          "n": 9,
+          "accuracy": 1.0,
+          "macro_f1": 1.0
+        },
+        "playwright": {
+          "n": 11,
+          "accuracy": 0.6363636363636364,
+          "macro_f1": 0.6333333333333333
+        },
+        "selenium": {
+          "n": 8,
+          "accuracy": 1.0,
+          "macro_f1": 1.0
+        },
+        "unit": {
+          "n": 9,
+          "accuracy": 0.4444444444444444,
+          "macro_f1": 0.30769230769230765
+        }
+      },
+      "by_source": {
+        "github": {
+          "n": 7,
+          "accuracy": 0.8571428571428571,
+          "macro_f1": 0.8571428571428571
+        },
+        "synthetic": {
+          "n": 40,
+          "accuracy": 0.7,
+          "macro_f1": 0.6969696969696968
+        }
+      },
+      "p50_seconds": 0.0042490999999245105,
+      "llm_calls": 0,
+      "predictions": [
+        {
+          "id": "syn-api-bug-003",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.5986456871032715
+        },
+        {
+          "id": "syn-api-bug-006",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.5986456871032715
+        },
+        {
+          "id": "syn-api-bug-009",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.5986456871032715
+        },
+        {
+          "id": "syn-api-bug-012",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.5986456871032715
+        },
+        {
+          "id": "syn-api-failed_testcase-002",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.5986456871032715
+        },
+        {
+          "id": "syn-api-failed_testcase-005",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.5986456871032715
+        },
+        {
+          "id": "syn-api-failed_testcase-008",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.5986456871032715
+        },
+        {
+          "id": "syn-api-failed_testcase-011",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.5986456871032715
+        },
+        {
+          "id": "syn-db-bug-003",
+          "true": "bug",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.9365922212600708
+        },
+        {
+          "id": "syn-db-bug-006",
+          "true": "bug",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.9365922212600708
+        },
+        {
+          "id": "syn-db-bug-009",
+          "true": "bug",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.9365922212600708
+        },
+        {
+          "id": "syn-db-bug-012",
+          "true": "bug",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.9365922212600708
+        },
+        {
+          "id": "syn-db-failed_testcase-003",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.639901340007782
+        },
+        {
+          "id": "syn-db-failed_testcase-006",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.639901340007782
+        },
+        {
+          "id": "syn-db-failed_testcase-009",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.639901340007782
+        },
+        {
+          "id": "syn-db-failed_testcase-012",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.639901340007782
+        },
+        {
+          "id": "syn-playwright-bug-001",
+          "true": "bug",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.7470608949661255
+        },
+        {
+          "id": "syn-playwright-bug-004",
+          "true": "bug",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.7470608949661255
+        },
+        {
+          "id": "syn-playwright-bug-007",
+          "true": "bug",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.7470608949661255
+        },
+        {
+          "id": "syn-playwright-bug-010",
+          "true": "bug",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.7470608949661255
+        },
+        {
+          "id": "syn-playwright-failed_testcase-003",
+          "true": "failed_testcase",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.7470608949661255
+        },
+        {
+          "id": "syn-playwright-failed_testcase-006",
+          "true": "failed_testcase",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.7470608949661255
+        },
+        {
+          "id": "syn-playwright-failed_testcase-009",
+          "true": "failed_testcase",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.7470608949661255
+        },
+        {
+          "id": "syn-playwright-failed_testcase-012",
+          "true": "failed_testcase",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.7470608949661255
+        },
+        {
+          "id": "syn-selenium-bug-001",
+          "true": "bug",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.9692957401275635
+        },
+        {
+          "id": "syn-selenium-bug-004",
+          "true": "bug",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.9692957401275635
+        },
+        {
+          "id": "syn-selenium-bug-007",
+          "true": "bug",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.9692957401275635
+        },
+        {
+          "id": "syn-selenium-bug-010",
+          "true": "bug",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.9692957401275635
+        },
+        {
+          "id": "syn-selenium-failed_testcase-002",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.9238545894622803
+        },
+        {
+          "id": "syn-selenium-failed_testcase-005",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.9238545894622803
+        },
+        {
+          "id": "syn-selenium-failed_testcase-008",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.9238545894622803
+        },
+        {
+          "id": "syn-selenium-failed_testcase-011",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.9238545894622803
+        },
+        {
+          "id": "syn-unit-bug-001",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.639901340007782
+        },
+        {
+          "id": "syn-unit-bug-004",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.639901340007782
+        },
+        {
+          "id": "syn-unit-bug-007",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.639901340007782
+        },
+        {
+          "id": "syn-unit-bug-010",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.639901340007782
+        },
+        {
+          "id": "syn-unit-failed_testcase-002",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.639901340007782
+        },
+        {
+          "id": "syn-unit-failed_testcase-005",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.639901340007782
+        },
+        {
+          "id": "syn-unit-failed_testcase-008",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.639901340007782
+        },
+        {
+          "id": "syn-unit-failed_testcase-011",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.639901340007782
+        },
+        {
+          "id": "gh-kaf-666-shopify-ui-automation-12",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.9393554329872131
+        },
+        {
+          "id": "gh-ourostack-ouro-ui-1857",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.9393554329872131
+        },
+        {
+          "id": "gh-pingdotgg-t3code-35581",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.9393554329872131
+        },
+        {
+          "id": "gh-dj-bolt-django-bolt-649",
+          "true": "bug",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.6976006031036377
+        },
+        {
+          "id": "gh-jaylfc-taos-4259",
+          "true": "bug",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.6976006031036377
+        },
+        {
+          "id": "gh-coombzy-project-car-207",
+          "true": "bug",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.6976006031036377
+        },
+        {
+          "id": "gh-pechst1-conversationallanguagelearning-813",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.762353241443634
+        }
+      ]
+    }
+  },
+  "mcnemar": {}
+}

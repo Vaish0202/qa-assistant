@@ -34,6 +34,12 @@ app.include_router(chat_router)
 @app.on_event("startup")
 def startup():
     init_db()
+    # Load the XGBoost model at startup so the first request isn't slow.
+    try:
+        from ml_classifier.predict import get_model
+        get_model()
+    except FileNotFoundError:
+        pass
     print("✓ QA Assistant API v2.0 started")
 
 class AnalyzeRequest(BaseModel):
@@ -118,7 +124,8 @@ def analyze(request: AnalyzeRequest):
             "action_type": action_type,
             "framework": result.get('framework', 'unknown'),
             "payload": final,
-            "processing_time_seconds": processing_time
+            "processing_time_seconds": processing_time,
+            "trace_run_id": result.get('trace_run_id')
         }
 
     except Exception as e:

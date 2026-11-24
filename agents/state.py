@@ -17,3 +17,4 @@ class AgentState(TypedDict):
     code_suggestions: Optional[list]
     channel_alert: Optional[str]
     final_output: Optional[dict]
+    trace_metadata: Optional[dict]      

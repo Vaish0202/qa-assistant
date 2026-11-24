@@ -2,18 +2,30 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 
-def get_llm():
-    groq_key = os.getenv("GROQ_API_KEY")
+# Groq retires models regularly, so the name lives in .env instead of code.
+DEFAULT_GROQ_MODEL = "llama-3.1-8b-instant"
+DEFAULT_OLLAMA_MODEL = "llama3.2"
 
-    if groq_key:
+
+def get_model_info() -> dict:
+    """Which provider/model the agents will use. Used for trace metadata."""
+    if os.getenv("GROQ_API_KEY"):
+        return {"provider": "groq",
+                "model": os.getenv("GROQ_MODEL", DEFAULT_GROQ_MODEL)}
+    return {"provider": "ollama",
+            "model": os.getenv("OLLAMA_MODEL", DEFAULT_OLLAMA_MODEL)}
+
+
+def get_llm():
+    info = get_model_info()
+
+    if info["provider"] == "groq":
         from langchain_groq import ChatGroq
-        print("Using Groq API (llama3-8b-8192)")
-        return ChatGroq(
-            model="llama3-8b-8192",
-            temperature=0,
-            api_key=groq_key
-        )
-    else:
-        from langchain_ollama import ChatOllama
-        print("Using local Ollama (llama3.2)")
-        return ChatOllama(model="llama3.2", temperature=0)
+        print(f"Using Groq API ({info['model']})")
+        return ChatGroq(model=info["model"], temperature=0,
+                        api_key=os.getenv("GROQ_API_KEY"))
+
+    from langchain_ollama import ChatOllama
+    print(f"Using local Ollama ({info['model']})")
+    return ChatOllama(model=info["model"], temperature=0,
+                      base_url=os.getenv("OLLAMA_BASE_URL", "http://localhost:11434"))

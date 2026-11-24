@@ -20,3 +20,11 @@ requests
 
 # Utilities
 scipy
+
+langsmith
+langchain-aws 
+boto3
+matplotlib
+
+pytest
+scipy
