@@ -7,3 +7,5 @@ __pycache__/
 *.csv
 .vscode/
 evaluation/eval_results_*.csv
+evaluation/datasets/github_candidates.*
+evaluation/results/cache/

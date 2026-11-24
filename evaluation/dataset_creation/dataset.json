@@ -1,0 +1,641 @@
+[
+  {
+    "logs": "",
+    "description": "",
+    "code": "",
+    "label": "",
+    "source": "stackoverflow.com/questions/62419998",
+    "_title": "How can I get pytest to not catch exceptions",
+    "_needs_review": true
+  },
+  {
+    "logs": "",
+    "description": "",
+    "code": "def parrot(i):\n    return i\n\ndef test_parrot():\n    assert parrot(0) == 0\n    assert parrot(1) == 1\n    assert parrot(2) == 1\n    assert parrot(2) == 2\n\n$ python -m pytest fail_me.py \n=================== test session starts ===================\nplatform linux2 -- Python 2.7.10, pytest-2.9.1, py-1.4.31, pluggy-0.3.1\nrootdir: /home/npsrt/Documents/repo/codewars, inifile: \ncollected 1 items \n\nfail_me.py F\n\n=================== FAILURES ===================\n___________________ test_parrot ___________________\n\n    def test_parrot():\n        assert parrot(0) == 0\n        assert parrot(1) == 1\n>       assert parrot(2) == 1\nE       assert 2 == 1\nE        +  where 2 = parrot(2)\n\nfail_me.py:7: AssertionError\n=================== 1 failed in 0.05 seconds ===================",
+    "label": "",
+    "source": "stackoverflow.com/questions/36749796",
+    "_title": "How to run all pytest assertions, even if some of them fail?",
+    "_needs_review": true
+  },
+  {
+    "logs": "FAILED test_assert_false_2 - AssertionError: assert 'abc' in 'defab'\n\nFAILED test_1 - assert 0\n\nFAILED test_2 - assert 3 < 2\n\nFAILED test_3 - assert 1 > 2",
+    "description": "",
+    "code": "def test_assert_false_2():\n    assert 'abc' in 'defab'\n\ndef test_1():\n    assert 1\n    assert 0\n\ndef test_2():\n    assert 3 < 2\n\ndef test_3():\n    a = 2\n    b = 1\n    assert b > a",
+    "label": "",
+    "source": "stackoverflow.com/questions/75380458",
+    "_title": "Assertion Error vs Assert in pytest, why do I get different error messages when running pytest",
+    "_needs_review": false
+  },
+  {
+    "logs": "",
+    "description": "",
+    "code": "class Something(object):\n    def __init__(self, a, b):\n        self.a, self.b = a, b\n\n    def __repr__(self):\n        return 'Something(a={}, b={})'.format(self.a, self.b)\n\ndef test_equality():\n    obj1 = Something(1, 2)\n    obj2 = Something(1, 2)\n    assert obj1.a == obj2.a\n    assert obj1 == obj2\n\n    def test_equality():\n        obj1 = Something(1, 2)\n        obj2 = Something(1, 2)\n        assert obj1.a == obj2.a\n        assert obj1.b == obj2.b                                                                                                                                                                                                               \n>       assert obj1 == obj2                                                                                                                                                                                                                   \nE       assert Something(a=1, b=2) == Something(a=1, b=2)                                                                                                                                                                                     \n\ntests/test_model.py:13: AssertionError",
+    "label": "",
+    "source": "stackoverflow.com/questions/48753967",
+    "_title": "Check if two objects have equal content in Pytest",
+    "_needs_review": true
+  },
+  {
+    "logs": "",
+    "description": "",
+    "code": "@pytest.fixture\ndef caplog(caplog: LogCaptureFixture):\n    \"\"\"Redefine caplog to work with loguru, taken from their docs\n    \"\"\"\n    handler_id = logger.add(\n        caplog.handler,\n        format=\"{message}\",\n        level=0,\n        filter=lambda record: record[\"level\"].no >= caplog.handler.level,\n        enqueue=True,  # Set to 'True' if your test is spawning child processes.\n    )\n    yield caplog\n    logger.remove(handler_id)\n\ndef test_errors_are_caught(caplog):\n    logger.debug(\"debug message\")\n    logger.info(\"an info\")\n    logger.error(\"an error\")\n    logger.critical(\"a very bad thing\")\n    with pytest.raises(AssertionError):\n        assert_no_errors_logged(caplog)\n\ndef assert_no_errors_logged(caplog):\n    error_messages = [record for record in caplog.records if record.levelno >= logging.ERROR]\n    num_errors = len(error_messages)\n    assert num_errors == 0\n\n============================== 1 failed in 0.28s ==============================\nFAILED                [100%]2024-07-15 14:38:33.327 | DEBUG    | test_compute_statistics:test_errors_are_caught:440 - debug message\n2024-07-15 14:38:33.327 | INFO     | test_compute_statistics:test_errors_are_caught:441 - an info\n2024-07-15 14:38:33.327 | ERROR    | test_compute_statistics:test_errors_are_caught:442 - an error\n2024-07-15 14:38:33.327 | CRITICAL | test_compute_statistics:test_errors_are_caught:443 - a very bad thing\n\ntests\\unit\\test_compute_statistics.py:438 (test_errors_are_caught)\ncaplog = <_pytest.logging.LogCaptureFixture object at 0x000001A41CBB4550>\n\n    def test_errors_are_caught(caplog):\n        logger.debug(\"debug message\")\n        logger.info(\"an info\")\n        logger.error(\"an error\")\n        logger.critical(\"a very bad thing\")\n>       with pytest.raises(AssertionError):\nE       Failed: DID NOT RAISE <class 'AssertionError'>\n\ntest_compute_statistics.py:444: Failed\n\nProcess finished with exit code 1",
+    "label": "",
+    "source": "stackoverflow.com/questions/78749876",
+    "_title": "Why does pytest not recognise AssertionError with loguru?",
+    "_needs_review": true
+  },
+  {
+    "logs": "",
+    "description": "",
+    "code": "if int(addresses.status_code) is 403:\n    fail(\"Auth Error: Missing Role {}\".format(response.json()))\n\nassert addresses.status_code is not 403\n\nassert addresses.status_code is not codes.forbidden\n\nassert addresses.status_code is codes.ok",
+    "label": "",
+    "source": "stackoverflow.com/questions/50181332",
+    "_title": "Python Requests: assert status_code is not failing",
+    "_needs_review": true
+  },
+  {
+    "logs": "==================================================================== short test summary info =====================================================================\nFAILED Easy/test_ransomNote.py::test_canConstruct - AssertionError: assert False == True\n======================================================================= 1 failed in 0.01s",
+    "description": "",
+    "code": "from RansomNote import Solution\n\n\ndef test_canConstruct():\n    sol = Solution()\n    assert sol.canConstruct('aa', 'aab') == True\n    assert sol.canConstruct('xx','aaabc') == True\n    assert sol.canConstruct('aab','ababa') == True",
+    "label": "",
+    "source": "stackoverflow.com/questions/78237225",
+    "_title": "Pytest: When writing many assert statements in the same test function, some of it fails, but how to know which assert statement/s is causing failure?",
+    "_needs_review": false
+  },
+  {
+    "logs": "",
+    "description": "",
+    "code": "...\ndef my_helper():\n    assert 'abcy' == 'abcx'\n\nfrom .helpers import my_helper\n\n\ndef test_assert_in_tc():\n    assert 'abcy' == 'abcx'\n\n\ndef test_assert_in_helper():\n    my_helper()\n\n=============================================================== FAILURES ================================================================\n___________________________________________________________ test_assert_in_tc ___________________________________________________________\n\n    def test_assert_in_tc():\n>       assert 'abcy' == 'abcx'\nE       assert 'abcy' == 'abcx'\nE         - abcy\nE         ?    ^\nE         + abcx\nE         ?    ^\n\ntests/test_pytest_assert.py:9: AssertionError\n_________________________________________________________ test_assert_in_helper _________________________________________________________\n\n    def test_assert_in_helper():\n>       my_helper()\n\ntests/test_pytest_assert.py:13: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n\n    def my_helper():\n>       assert 'abcy' == 'abcx'\nE       AssertionError\n\ntests/helpers.py:258: AssertionError\n======================================================= 2 failed in 0.24 seconds ========================================================\n\nimport pytest\nfrom .helpers import my_helper\npytest.register_assert_rewrite('helpers.my_helper')",
+    "label": "",
+    "source": "stackoverflow.com/questions/41522767",
+    "_title": "pytest assert introspection in helper function",
+    "_needs_review": true
+  },
+  {
+    "logs": "",
+    "description": "",
+    "code": "asyncio==3.4.3\nrequests==2.22.0\nresponses==0.10.6\npytest==4.6.3\npytest-asyncio==0.10.0\n\nasync def check_urls_tester(url: str) -> int:\n    with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:\n        loop = asyncio.get_event_loop()\n        futures = [loop.run_in_executor(executor, requests.head, url)]\n\n        response = await asyncio.gather(*futures, return_exceptions=True)\n        return int(response[0].status_code)\n\n@responses.activate\n@pytest.mark.asyncio\nasync def test_check_urls_async(self):\n    responses.add(responses.HEAD, \"https://www.google.com\", status=404)\n    resp = await check_urls_tester(\"https://www.google.com\")\n    assert resp == 404",
+    "label": "",
+    "source": "stackoverflow.com/questions/56689791",
+    "_title": "Mocking asyncio Python requests responses",
+    "_needs_review": true
+  },
+  {
+    "logs": "C:\\Python>pytest test_repeat.py --no-header --tb=no --count 2 --repeat-scope session \n...\n======================== short test summary info ========================\nFAILED test_repeat.py::test_one[1-2] - AssertionError: 1\nFAILED test_repeat.py::test_one[2-2] - AssertionError: 1\nFAILED test_repeat.py::test_two[1-2] - AssertionError: 2\nFAILED test_repeat.py::test_two[2-2] - AssertionError: 2\nFAILED test_repeat.py::test_three[1-2] - AssertionError: 3\nFAILED test_repeat.py::test_three[2-2] - AssertionError: 3\n======================== 6 failed in 0.03s ========================\n\n======================== test session starts ========================\nFAILED test_repeat.py::test_one[1-2] - AssertionError: 1\nFAILED test_repeat.py::test_two[1-2] - AssertionError: 2\nFAILED test_repeat.py::test_three[1-2] - AssertionError: 3\nFAILED test_repeat.py::test_one[2-2] - AssertionError: 1\nFAILED test_repeat.py::test_two[2-2] - AssertionError: 2\nFAILED test_repeat.py::test_three[2-2] - AssertionError: 3\n======================== 6 failed in 0.04s ========================",
+    "description": "",
+    "code": "import pytest\n\n@pytest.mark.order(1)\ndef test_one():\n    assert False, \"1\"\n\n@pytest.mark.order(2)\ndef test_two():\n    assert False, \"2\"\n    \n@pytest.mark.order(3)\ndef test_three():\n    assert False, \"3\"\n\nimport pytest\n\ndef test_one():\n    assert False, \"1\"\n\ndef test_two():\n    assert False, \"2\"\n    \ndef test_three():\n    assert False, \"3\"",
+    "label": "",
+    "source": "stackoverflow.com/questions/76043547",
+    "_title": "Pytest Repeatedly Run Tests Session with Pytest-order",
+    "_needs_review": false
+  },
+  {
+    "logs": "Creating djangoapp_run ... done                                                         ================================================= test session starts ==================================================\nplatform linux -- Python 3.8.5, pytest-6.2.1, py-1.10.0, pluggy-0.13.1\nrootdir: /\ncollected 0 items / 1 error\n\n======================================================== ERRORS ========================================================\n____________________________________________ ERROR collecting test session _____________________________________________\nusr/local/lib/python3.8/dist-packages/_pytest/runner.py:311: in from_call\n    result: Optional[TResult] = func()\nusr/local/lib/python3.8/dist-packages/_pytest/runner.py:341: in <lambda>\n    call = CallInfo.from_call(lambda: list(collector.collect()), \"collect\")\nusr/local/lib/python3.8/dist-packages/_pytest/main.py:710: in collect\n    for x in self._collectfile(path):\nusr/local/lib/python3.8/dist-packages/_pytest/main.py:546: in _collectfile\n    assert (\nE   AssertionError: local('/dev/console') is not a file (isdir=False, exists=True, islink=False)\n=============================================== short test summary info ================================================\nERROR  - AssertionError: local('/dev/console') is not a file (isdir=False, exists=True, islink=False)\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n=================================================== 1 error in 0.33s ===================================================",
+    "description": "",
+    "code": "version: '3'\n\nservices:\n  djangoapp:\n    build: .\n    container_name: djangoapp\n    ports:\n      - '8000:80'\n      - '1433:1433'\n    volumes: \n      - ./djangoapp:/var/www/html/djangoapp\n    environment:\n      - PYTHONUNBUFFERED=0",
+    "label": "",
+    "source": "stackoverflow.com/questions/65394782",
+    "_title": "Pytest not working with Django and Docker - AssertionError: local(&#39;/dev/console&#39;) is not a file",
+    "_needs_review": false
+  },
+  {
+    "logs": "",
+    "description": "",
+    "code": "INTERNALERROR> Traceback (most recent call last):\nINTERNALERROR>   File \"/home/test/project/env/lib/python3.8/site-packages/_pytest/main.py\", line 270, in wrap_session\nINTERNALERROR>     session.exitstatus = doit(config, session) or 0\nINTERNALERROR>   File \"/home/test/project/env/lib/python3.8/site-packages/_pytest/main.py\", line 324, in _main\nINTERNALERROR>     config.hook.pytest_runtestloop(session=session)\nINTERNALERROR>   File \"/home/test/project/env/lib/python3.8/site-packages/pluggy/_hooks.py\", line 265, in __call__\nINTERNALERROR>     return self._hookexec(self.name, self.get_hookimpls(), kwargs, firstresult)\nINTERNALERROR>   File \"/home/test/project/env/lib/python3.8/site-packages/pluggy/_manager.py\", line 80, in _hookexec\nINTERNALERROR>     return self._inner_hookexec(hook_name, methods, kwargs, firstresult)\nINTERNALERROR>   File \"/home/test/project/env/lib/python3.8/site-packages/pluggy/_callers.py\", line 60, in _multicall\nINTERNALERROR>     return outcome.get_result()\nINTERNALERROR>   File \"/home/test/project/env/lib/python3.8/site-packages/pluggy/_result.py\", line 60, in get_result\nINTERNALERROR>     raise ex[1].with_traceback(ex[2])\nINTERNALERROR>   File \"/home/test/project/env/lib/python3.8/site-packages/pluggy/_callers.py\", line 39, in _multicall\nINTERNALERROR>     res = hook_impl.function(*args)\nINTERNALERROR>   File \"/home/test/project/env/lib/python3.8/site-packages/_pytest/main.py\", line 349, in pytest_runtestloop\nINTERNALERROR>     item.config.hook.pytest_runtest_protocol(item=item, nextitem=nextitem)\nINTERNALERROR>   File \"/home/test/project/env/lib/python3.8/site-packages/pluggy/_hooks.py\", line 265, in __call__\nINTERNALERROR>     return self._hookexec(self.name, self.get_hookimpls(), kwargs, firstresult)\nINTERNALERROR>   File \"/home/test/project/env/lib/python3.8/site-packages/pluggy/_manager.py\", line 80, in _hookexec\nINTERNALERROR>     return self._inner_hookexec(hook_name, methods, kwargs, firstresult)\nINTERNALERROR>   File \"/home/test/project/env/lib/python3.8/site-packages/pluggy/_callers.py\", line 60, in _multicall\nINTERNALERROR>     return outcome.get_result()\nINTERNALERROR>   File \"/home/test/project/env/lib/python3.8/site-packages/pluggy/_result.py\", line 60, in get_result\nINTERNALERROR>     raise ex[1].with_traceback(ex[2])\nINTERNALERROR>   File \"/home/test/project/env/lib/python3.8/site-packages/pluggy/_callers.py\", line 39, in _multicall\nINTERNALERROR>     res = hook_impl.function(*args)\nINTERNALERROR>   File \"/home/test/project/env/lib/python3.8/site-packages/_pytest/runner.py\", line 113, in pytest_runtest_protocol\nINTERNALERROR>     ihook.pytest_runtest_logfinish(nodeid=item.nodeid, location=item.location)\nINTERNALERROR>   File \"/home/test/project/env/lib/python3.8/site-packages/pluggy/_hooks.py\", line 265, in __call__\nINTERNALERROR>     return self._hookexec(self.name, self.get_hookimpls(), kwargs, firstresult)\nINTERNALERROR>   File \"/home/test/project/env/lib/python3.8/site-packages/pluggy/_manager.py\", line 80, in _hookexec\nINTERNALERROR>     return self._inner_hookexec(hook_name, methods, kwargs, firstresult)\nINTERNALERROR>   File \"/home/test/project/env/lib/python3.8/site-packages/pluggy/_callers.py\", line 60, in _multicall\nINTERNALERROR>     return outcome.get_result()\nINTERNALERROR>   File \"/home/test/project/env/lib/python3.8/site-packages/pluggy/_result.py\", line 60, in get_result\nINTERNALERROR>     raise ex[1].with_traceback(ex[2])\nINTERNALERROR>   File \"/home/test/project/env/lib/python3.8/site-packages/pluggy/_callers.py\", line 39, in _multicall\nINTERNALERROR>     res = hook_impl.function(*args)\nINTERNALERROR>   File \"/home/test/project/env/lib/python3.8/site-packages/_pytest/terminal.py\", line 592, in pytest_runtest_logfinish\nINTERNALERROR>     assert self._session\nINTERNALERROR> AssertionError",
+    "label": "",
+    "source": "stackoverflow.com/questions/75818193",
+    "_title": "python pytest pluggy - pytest_runtest_logfinish AssertionError",
+    "_needs_review": true
+  },
+  {
+    "logs": "",
+    "description": "",
+    "code": "/<path>/python /<path>/_jb_pytest_runner.py --target my_function_test_base.py::MyFunctionTestBase",
+    "label": "",
+    "source": "stackoverflow.com/questions/54450362",
+    "_title": "In PyCharm, how do you add a custom parameter to pytest when running unittests?",
+    "_needs_review": true
+  },
+  {
+    "logs": "",
+    "description": "",
+    "code": "def test_func1(mocker):\n    side_effect = [\"Ok\",'','','Failed']\n    \n    # This line should be changed\n    fake_resp.status_code = 200\n    \n    fake_resp = mocker.Mock()\n    fake_resp.json = mocker.Mock(side_effect=side_effect)       \n    \n    mocker.patch(\"app.main.requests.get\", return_value=fake_resp)\n        \n    # func1 executes multiple API calls using requests.get()\n    # and status_code is needed\n    a = func1(a, b) \n    \n    assert a == \"something\"\n\ndef test_func1(mocker):\n    side_effect = [(status_code=200, return=\"Ok\"),\n                   (status_code=204, return=\"\"), \n                   (status_code=204, return=\"\"),\n                   (status_code=500, return=\"Failed\")]\n    ....\n\nfrom datetime import datetime, timedelta\nimport requests\n\ndef func1(days, delta_1):\n    \"\"\"\n    days: number of days before first search (80, 25, 3)\n    delta_1: number of days for the date range search (40, 20, 15)\n    \"\"\"\n    now = datetime.now()\n    start_date = now + timedelta(days=days)\n    \n    # Var to stop loop when price is found\n    loop_stop = 0\n    \n    # Var to stop loop when search date is more than a year later\n    delta_time = 0\n\n    price = 0\n    departureDate = \"n/a\"\n\n    # For loop to check prices till one year. \n    while loop_stop == 0 and delta_time < (365 - days):\n        date_range = (\n            (start_date + timedelta(days=delta_time)).strftime(\"%Y%m%d\")\n            + \"-\"\n            + (start_date + timedelta(days=delta_time + (delta_1 / 2))).strftime(\n                \"%Y%m%d\"\n            )\n        )\n        \n        # Needs to be mocked\n        response = requests.get(\"fake_url_using_date_range_var\")\n        \n        if response.status_code == 204:\n            print(\"No data found on this data range\")\n            delta_time += delta_1\n        elif response.status_code == 200:\n            price = response.json()[\"XXX\"][0]\n            departureDate = response.json()[\"YYY\"][0]\n            loop_stop = 1\n        else:\n            raise NameError(\n                response.status_code,\n                \"Error occured while querying API\",\n                response.json(),\n            )\n        \n    return price, departureDate",
+    "label": "",
+    "source": "stackoverflow.com/questions/74304500",
+    "_title": "Python - Mock requests with side_effect",
+    "_needs_review": true
+  },
+  {
+    "logs": "selenium.common.exceptions.NoSuchElementException: Message: no such element: Unable to locate element",
+    "description": "",
+    "code": "<span class=\"x1lliihq x6ikm8r x10wlt62 x1n2onr6 xlyipyv xuxw1ft\">Like</span>\n\ndef likePages(links, driver):\n    for link in links:\n        driver.get(link)\n        time.sleep(3)\n        driver.find_element(By.LINK_TEXT, 'Like').click()",
+    "label": "",
+    "source": "stackoverflow.com/questions/75363011",
+    "_title": "How to find and click the &quot;Like&quot; button on Facebook page using Selenium",
+    "_needs_review": false
+  },
+  {
+    "logs": "",
+    "description": "",
+    "code": "<button class=\"grid-button\" data-bind=\"click: function() { imagetrend.formComposer.controlHandlers.grid.addAnotherButtonClickHandler($context) }, css: { 'disabled' : imagetrend.FormComposer.isReadOnly($context) }, disableEvent: { 'click': imagetrend.FormComposer.isReadOnly.bind(null, $context) }\">                                    <i class=\"fa fa-lg fa-plus\"></i>                                    Add Another                                </button>",
+    "label": "",
+    "source": "stackoverflow.com/questions/75194772",
+    "_title": "Selenium (Python): Strategy for locating item with inconsistent Xpath",
+    "_needs_review": true
+  },
+  {
+    "logs": "",
+    "description": "",
+    "code": "",
+    "label": "",
+    "source": "stackoverflow.com/questions/50905875",
+    "_title": "Export pytest results even when AssertionError",
+    "_needs_review": true
+  },
+  {
+    "logs": "",
+    "description": "",
+    "code": "def get_print_date():\n    now = datetime.datetime.now()\n    return now.strftime(\"%d/%m/%Y %H:%M:%S\")\n\nimport datetime\nfrom unittest.mock import MagicMock\n\nFAKE_NOW = datetime.datetime(2022, 10, 21, 22, 22, 22)\n#fake_now = FAKE_NOW.strftime(\"%d/%m/%Y %H:%M:%S\")\n\n@pytest.fixture()\ndef mock_print_date(monkeypatch):\n    print_date_mock = MagicMock(wraps = datetime.datetime)\n    print_date_mock.now.return_value = FAKE_NOW\n    monkeypatch.setattr(datetime, \"datetime\", print_date_mock)\n\ndef test_get_print_date(mock_print_date):\n    assert get_print_date == FAKE_NOW",
+    "label": "",
+    "source": "stackoverflow.com/questions/74158430",
+    "_title": "Mocking a formatted datetime.datetime.now()",
+    "_needs_review": true
+  },
+  {
+    "logs": "",
+    "description": "",
+    "code": "import re, sys\n\nclass capture_print:\n    def __enter__(self):\n        self._original_stdout = sys.stdout\n        sys.stdout.flush()\n    def __exit__(self, exc_type, exc_value, traceback):\n        sys.stdout.flush()\n        sys.stdout = self._original_stdout\n\n\ndef regex_test():\n    out = '''[Task 0x7f6063018a90] Video stream download complete\n        [Task 0x7f6063018be0] Audio stream download complete\n        [Task 0x7f6062229d40] Merging streams complete\n        '''\n    l = re.compile(r'(\\[Task \\w+\\] (?:Video|Audio|Merging) streams?(?: download | )complete\\n)')\n    print(''.join(l.findall(out)))\n\n\ndef temp():\n    k, l, m = None, None, None\n    print(f\"[Task {hex(id(k))}] Downloading Video stream.....\", end='\\r')\n    print(f\"[Task {hex(id(k))}] Video stream download complete\")\n    print(f\"[Task {hex(id(l))}] Downloading Audio stream.....\", end='\\r')\n    print(f\"[Task {hex(id(l))}] Audio stream download complete\")\n    print(f\"[Task {hex(id(m))}] Merging streams.....\",end='\\r')\n    print(f\"[Task {hex(id(m))}] Merging streams complete\\n\")\n    \n    \n        \ndef test_pipeline(capsys):\n    with capture_print():\n        temp()\n        captured = capsys.readouterr()\n        #print(captured.out)\n        stdout_pattern = re.compile(r'(\\[Task \\w+\\] (?:Video|Audio|Merging) streams?(?: download | )complete\\n)')\n        assert ''.join(stdout_pattern.findall(captured.out)) == captured.out[:-1] \n\n[Task 0x90ea10] Video stream download complete\n[Task 0x90ea10] Audio stream download complete\n[Task 0x90ea10] Merging streams complete\n\n[Task 0x90ea10] Video stream download complete\n[Task 0x90ea10] Audio stream download complete\n[Task 0x90ea10] Merging streams complete",
+    "label": "",
+    "source": "stackoverflow.com/questions/73399532",
+    "_title": "pytest AssertionError raised when matching stdout using regex",
+    "_needs_review": true
+  },
+  {
+    "logs": "",
+    "description": "",
+    "code": "def test_api(self, query, expected):\n        username = \"jeff\"\n        password = \"test\"\n        client = Client()\n\n        response = client.post('/admin/login/', {'username': username, 'password': password})\n        self.assertEqual(response.status_code, 302)\n\n        balance_type_collection = [\n            'medical',\n            'dental'\n        ]\n\n        for balance_type in balance_type_collection:\n            if query == '':\n                query += '?'\n            else:\n                query += '&'\n\n            query += 'balance_type=' + balance_type\n            response = client.get('/api/v1/medical/clinicvisit/stats/'+ query)\n            self.assertEqual(response.status_code, 200)\n            content = json.loads(response.content)\n            self.assertEqual(content, expected[balance_type])",
+    "label": "",
+    "source": "stackoverflow.com/questions/73356495",
+    "_title": "AssertionError : List Differ in pytest django",
+    "_needs_review": true
+  },
+  {
+    "logs": "",
+    "description": "",
+    "code": "",
+    "label": "",
+    "source": "stackoverflow.com/questions/50908236",
+    "_title": "Repeat a test upon an AssertionError",
+    "_needs_review": true
+  },
+  {
+    "logs": "",
+    "description": "",
+    "code": "app.py\n\nfrom typing import Dict, Union\nfrom urllib.error import HTTPError\n\nimport requests\nimport structlog\n\nlogger = structlog.get_logger()\n\n\ndef get_access_token(\n    url: str, client_id: str, client_secret: str, grant_type: str\n) -> Union[Dict[str, Union[str, int]], None]:\n    try:\n        r = requests.post(\n            url,\n            data={\"grant_type\": grant_type},\n            auth=(client_id, client_secret),\n            verify=True,\n        )\n        logger.info(\"Fetching token status code\", status_code=r.status_code)\n    except HTTPError as http_err:\n        logger.error(\"HTTP error occurred\", http_error=str(http_err))\n    except Exception as err:\n        logger.error(\"Other error occurred\", exception=str(err))\n    else:\n        # The token expires in 10800 seconds\n        return r.json()\n\ntest_app.py\n\n# contents of test_app.py, a simple test for our API retrieval\nfrom typing import Dict, Union\n\nimport pytest\nimport requests\n\nfrom app import get_access_token\n\n\n# custom class to be the mock return value of requests.post()\nclass MockResponse:\n    status_code = 200\n    raise_for_status = None\n\n    @staticmethod\n    def json() -> Dict[str, Union[str, int]]:\n        return {\n            'access_token': 'fake-access-token',\n            'token_type': 'fake-token-type',\n            'expires_in': 10800,\n        }\n\n@pytest.fixture\ndef mock_response(monkeypatch):\n    \"\"\"Requests.post() mocked to return json.\"\"\"\n\n    def mock_post(*args, **kwargs):\n        return MockResponse()\n\n    monkeypatch.setattr(requests, \"post\", mock_post)\n\n\n# notice our test uses the custom fixture instead of monkeypatch directly\ndef test_get_access_token_success(mock_response) -> None:\n    result = get_access_token(\n        url=\"https://fakeurl\",\n        client_id=\"fake-client-id\",\n        client_secret=\"fake-client-secret\",\n        grant_type=\"fake-grant-type\",\n    )\n    assert result['access_token'] == \"fake-access-token\"\n    assert result['token_type'] == \"fake-token-type\"\n\nfrom typing import Dict, Union\n\nimport requests\nimport structlog\n\nlogger = structlog.get_logger()\n\n\ndef get_access_token(\n    url: str,\n    client_id: str,\n    client_secret: str,\n    grant_type: str = 'client_credentials',\n) -> Dict[str, Union[str, int]]:\n    try:\n        r = requests.post(\n            url,\n            data={\"grant_type\": grant_type},\n            auth=(client_id, client_secret),\n            verify=True,\n        )\n        logger.info(\"Fetching token status code\", status_code=r.status_code)\n        r.raise_for_status()\n        if r.status_code == 200:\n            # FIXME: The token expires in 10800 seconds\n            return r.json()\n    except requests.exceptions.HTTPError as err:\n        logger.error(\"HTTP error\", request=err.response.text)\n        raise requests.HTTPError(err)",
+    "label": "",
+    "source": "stackoverflow.com/questions/72933954",
+    "_title": "Pytest fixtures in requests post function",
+    "_needs_review": true
+  },
+  {
+    "logs": "",
+    "description": "",
+    "code": "14   assert status_code == 400\n15   AssertionError: assert (400, 'Please fulfill all parts!') == 400",
+    "label": "",
+    "source": "stackoverflow.com/questions/72309854",
+    "_title": "Pytest AssertionError even if status code is correct",
+    "_needs_review": true
+  },
+  {
+    "logs": "",
+    "description": "",
+    "code": "def test_me():\n    assert False\n\n>>> import pytest\n>>> pytest.main(['test_foo.py'])\n(...)\n    def test_me():\n>       assert False\nE       assert False\n\ntest_foo.py:2: AssertionError\n\n>>> pytest.main(['test_foo.py'])\n(...)\n    def test_me():\n>       assert True\nE       assert False\n\ntest_foo.py:2: AssertionError",
+    "label": "",
+    "source": "stackoverflow.com/questions/48389603",
+    "_title": "Running pytest repeatedly on changed test files",
+    "_needs_review": true
+  },
+  {
+    "logs": "",
+    "description": "",
+    "code": "def main():\n    weight = float(input('Enter weight (kg): '))\n    height = float(input('Enter height (cm): '))\n\n    bmi = calculate_bmi(weight, height)\n    bmi_index(bmi)\n    \ndef calculate_bmi(weight, height):\n    bmi = round(10000 * weight / (height ** 2))\n    return bmi\n\ndef bmi_index(bmi):\n    if bmi <= 18.5:\n        print('You are underweight.')\n    elif bmi <= 24.9:\n        print('You are normal weight.')\n    elif bmi <= 29.9:\n        print('You are overweight.')\n    else: \n        print('You are obese.') \n\nif __name__ == \"__main__\":\n    main()\n\nfrom practice4 import calculate_bmi, bmi_index\nimport pytest\nfrom pytest import approx\n\n\ndef test_calculate_bmi():\n    \"\"\"Verify that the calculate bmi function works correctly.\"\"\"\n    assert calculate_bmi(47, 154) == approx(20)\n    assert calculate_bmi(-95, 175) == approx(-31)\n    assert calculate_bmi(4.5, 1.54) == approx(18975)\n\ndef test_bmi_index():\n    \"\"\"Verify that the bmi_index function works correctly.\"\"\"\n    assert bmi_index(31) == 'You are obese.'\n\n\npytest.main([\"-v\", \"--tb=line\", \"-rN\", __file__])\n\n========================= test session starts ==========================\nplatform win32 -- Python 3.9.7, pytest-6.2.5, py-1.11.0, pluggy-1.0.0 -- C:\\Users\\iamsp\\AppData\\Local\\Programs\\Python\\Python39\\python.exe\ncachedir: .pytest_cache\nrootdir: C:\\Users\\iamsp\\Documents\\Intro To Python Development\ncollected 2 items\n\ntest_practice4.py::test_calculate_bmi PASSED                      [ 50%]\ntest_practice4.py::test_bmi_index FAILED                          [100%]\n\n=============================== FAILURES ===============================\nc:\\Users\\iamsp\\Documents\\Intro To Python Development\\test_practice4.py:14: AssertionError: assert None == 'You are obese.'\n===================== 1 failed, 1 passed in 0.06s ======================\nPS C:\\Users\\iamsp\\Documents\\Intro To Python Development> ",
+    "label": "",
+    "source": "stackoverflow.com/questions/71719228",
+    "_title": "How to Run Pytest On If Else Statement?",
+    "_needs_review": true
+  },
+  {
+    "logs": "",
+    "description": "",
+    "code": "import requests\nimport threading\n\nCFG=None\ntargets={}\n\ndef add_target(func):\n    targets[func.__name__] = func\n    return func\n\n\ndef parent_func(url):\n    for funct in set(targets):\n        threading.Thread(target=targets[funct], args=(CFG[url],)).start()\n\n@add_target\ndef child_func(url):\n    try:\n        response = requests.request(\"POST\", url,\n                                    headers={\"Content-Type\": \"application/json\"},\n                                    data=\"{\\\"text\\\": \\\"target py test\\\"}\")\n        response.raise_for_status()\n    except Exception as err:\n        raise RuntimeError(err)\n\nfrom unittest.mock import Mock, patch\nimport target\n\n# Third-party imports...\nfrom nose.tools import assert_true, assert_is_not_none\ntarget.CFG={'url':\"some valid url\"}\n@patch('target.child_func')\ndef test_child_func(mock_child_func):\n    parent_func(\"url\")\n    assert_true(mock_child_func.called)",
+    "label": "",
+    "source": "stackoverflow.com/questions/71228487",
+    "_title": "pytest : How to write pytest code to detect a &quot;func&quot; called without actually executing the &quot;func&quot;",
+    "_needs_review": true
+  },
+  {
+    "logs": "",
+    "description": "",
+    "code": "# app.py\ndef my_function(foo: int) -> int:\n   assert isinstance(foo, (int))\n\n   return foo * 2\n\n# test_my_function.py\nimport pytest\nfrom app import my_function\n\ndef test_wrong_type_input():\n    test_input = '3'\n\n    with pytest.raises(AssertionError):\n        my_function(test_input)\n\n# app.py\nimport logging\n\ndef my_function(foo: int) -> int:\n    try:\n        assert isinstance(foo, (int))\n    except:\n        logging.exception(\"Input `foo` did not meet the function's requirements\")\n\n    return foo * 2",
+    "label": "",
+    "source": "stackoverflow.com/questions/71102030",
+    "_title": "Logging AssertionError exceptions &amp; pytest unit testing in Python",
+    "_needs_review": true
+  },
+  {
+    "logs": "",
+    "description": "",
+    "code": "    def test_room():\n    gold = Room(\"GoldRoom\",\n        \"\"\"This room has gold in it you can grab.\n        There's a door to the north.\"\"\")\n#    assert_equal(gold.name, \"GoldRoom\")\n#    assert_equal(gold.paths, {})\n    assert gold.name, \"GoldRoom\"\n    assert gold.paths, {}\n\n>       assert gold.paths, {}\nE       AssertionError: {}\nE       assert {}\nE        +  where {} = <ex47.game.Room object at 0x7fd136193be0>.paths",
+    "label": "",
+    "source": "stackoverflow.com/questions/70414734",
+    "_title": "Pytest Triggers AssertionError: {}",
+    "_needs_review": true
+  },
+  {
+    "logs": "",
+    "description": "",
+    "code": "class foo:\n    def __enter__(self):\n        return self\n\n    def __exit__(self, exc_type, exc_value, traceback):\n        return self\n\ndef test_context_manager():\n    with foo():\n        assert False  # <- works outside the with statement but not here\n\nclass foo:\n    def __enter__(self):\n        return self\n\n    def __exit__(self, exc_type, exc_value, traceback):\n        pass  # <- this fixes it",
+    "label": "",
+    "source": "stackoverflow.com/questions/69849603",
+    "_title": "pytest: AssertionError inside Context Manager not raised",
+    "_needs_review": true
+  },
+  {
+    "logs": "",
+    "description": "",
+    "code": "    def getElementText(website, driver):\n        try:\n            # Open website\n            driver.get(website.link)\n            time.sleep(10)\n            element = driver.find_element_by_xpath(website.elementPath)\n            website.elementText = element.text\n            time.sleep(10)\n            logging.info(\"Element text: \" + str(website.elementText))\n            return website.elementText\n        except NoSuchElementException as error:\n            logging.error(error)\n            raise ValueError(\"There was a problem finding the element by the xpath on the \" + website.name + \" website. \", error)\n        except Exception as error:\n            logging.error(error)\n            raise ValueError(\"There may be a problem with the \" + website.name + \" website link. \", error)\n\nwait = WebDriverWait(driver, 10)\nelement = wait.until(EC.presence_of_element_located((By.XPATH, website.elementPath)))\n\nfrom selenium.webdriver.support.ui import WebDriverWait\ndef document_initialised(driver):\n    return driver.execute_script(\"return initialised\")\n\ndriver.navigate(\"file:///race_condition.html\")\nWebDriverWait(driver).until(document_initialised)\nel = driver.find_element(By.TAG_NAME, \"p\")\nassert el.text == \"Hello from JavaScript!\"",
+    "label": "",
+    "source": "stackoverflow.com/questions/69453775",
+    "_title": "Selenium returning &quot;NoSuchElementException&quot; ONLY when run from the AWS lambda function (and despite valid path)",
+    "_needs_review": true
+  },
+  {
+    "logs": "",
+    "description": "",
+    "code": "platform darwin -- Python 3.9.1, pytest-6.2.4, py-1.10.0, pluggy-0.13.1 -- /usr/local/opt/python@3.9/bin/python3.9\ncachedir: .pytest_cache\nrootdir: /Users/akhileshr/Projects/pytest_test, configfile: pytest.ini\nplugins: xdist-2.2.1, easyread-0.1.0, forked-1.3.0\n[gw0] darwin Python 3.9.1 cwd: /Users/akhileshr/Projects/pytest_test\n[gw1] darwin Python 3.9.1 cwd: /Users/akhileshr/Projects/pytest_test\n[gw0] Python 3.9.1 (default, Jan  8 2021, 17:17:43)  -- [Clang 12.0.0 (clang-1200.0.32.28)]\n[gw1] Python 3.9.1 (default, Jan  8 2021, 17:17:43)  -- [Clang 12.0.0 (clang-1200.0.32.28)]\ngw0 [6] / gw1 [6]\nscheduling tests via LoadScheduling\nINTERNALERROR> Traceback (most recent call last):\nINTERNALERROR>   File \"/usr/local/lib/python3.9/site-packages/_pytest/main.py\", line 269, in wrap_session\nINTERNALERROR>     session.exitstatus = doit(config, session) or 0\nINTERNALERROR>   File \"/usr/local/lib/python3.9/site-packages/_pytest/main.py\", line 323, in _main\nINTERNALERROR>     config.hook.pytest_runtestloop(session=session)\nINTERNALERROR>   File \"/usr/local/lib/python3.9/site-packages/pluggy/hooks.py\", line 286, in __call__\nINTERNALERROR>     return self._hookexec(self, self.get_hookimpls(), kwargs)\nINTERNALERROR>   File \"/usr/local/lib/python3.9/site-packages/pluggy/manager.py\", line 93, in _hookexec\nINTERNALERROR>     return self._inner_hookexec(hook, methods, kwargs)\nINTERNALERROR>   File \"/usr/local/lib/python3.9/site-packages/pluggy/manager.py\", line 84, in <lambda>\nINTERNALERROR>     self._inner_hookexec = lambda hook, methods, kwargs: hook.multicall(\nINTERNALERROR>   File \"/usr/local/lib/python3.9/site-packages/pluggy/callers.py\", line 208, in _multicall\nINTERNALERROR>     return outcome.get_result()\nINTERNALERROR>   File \"/usr/local/lib/python3.9/site-packages/pluggy/callers.py\", line 80, in get_result\nINTERNALERROR>     raise ex[1].with_traceback(ex[2])\nINTERNALERROR>   File \"/usr/local/lib/python3.9/site-packages/pluggy/callers.py\", line 187, in _multicall\nINTERNALERROR>     res = hook_impl.function(*args)\nINTERNALERROR>   File \"/usr/local/lib/python3.9/site-packages/xdist/dsession.py\", line 112, in pytest_runtestloop\nINTERNALERROR>     self.loop_once()\nINTERNALERROR>   File \"/usr/local/lib/python3.9/site-packages/xdist/dsession.py\", line 135, in loop_once\nINTERNALERROR>     call(**kwargs)\nINTERNALERROR>   File \"/Users/akhileshr/Projects/pytest_test/pytest_bypass.py\", line 62, in worker_workerfinished\nINTERNALERROR>     assert not crashitem, (crashitem, node)\nINTERNALERROR> AssertionError: ('dum_py.py::test_pytestDum', <WorkerController gw1>)",
+    "label": "",
+    "source": "stackoverflow.com/questions/68000667",
+    "_title": "Pytest-xdist throwing AssertionError when remote module has pytest_collection_modifyitems()",
+    "_needs_review": true
+  },
+  {
+    "logs": "",
+    "description": "",
+    "code": "dep_date_day_button = browser.find_element_by_xpath(\".//table[@class='BpkCalendarGrid_bpk-calendar-grid__3AlVL FlightDatepicker_fsc-datepicker__list-size__zQzUm']\")\ndep_date_day_button.click()\ndep_date_day_button2 = dep_date_day_button.find_element_by_xpath(\"//button[@class='BpkCalendarDate_bpk-calendar-date__3VYKN BpkCalendarDate_bpk-calendar-date--focused__4eiYn BpkCalendarDate_bpk-calendar-date--selected__3v5jT']\")\n\n \n\ndep_date_day_button = browser.find_element_by_xpath(\".//table[@class='BpkCalendarGrid_bpk-calendar-grid__3AlVL FlightDatepicker_fsc-datepicker__list-size__zQzUm']\")\ndep_date_day_button.click()  \ndtd0_button = dep_date_button.find_element_by_xpath(\".//button[contains(@class, 'BpkCalendarDate_bpk-calendar-date__3VYKN') and (@aria-label, 'Thursday, 12 September 2019')]\")",
+    "label": "",
+    "source": "stackoverflow.com/questions/56924411",
+    "_title": "Python Selenium: datepicker selecting day",
+    "_needs_review": true
+  },
+  {
+    "logs": "",
+    "description": "",
+    "code": "driver = webdriver.Chrome('C:/Users/bzholle/chromedriver.exe')\ndriver.get('https://www.transfermarkt.com/premierleague/startseite/wettbewerb/GB1/plus/?saison_id=2019')\n\n#click out of iframe pop-up window\ndriver.switch_to.frame(driver.find_element_by_css_selector('iframe[title=\"SP Consent Message\"]'))\naccept_button = driver.find_element_by_xpath(\"//button[@title='ACCEPT ALL']\")\naccept_button.click()\n\ndriver.find_element_by_id(\"choosen-country\").click()",
+    "label": "",
+    "source": "stackoverflow.com/questions/67627613",
+    "_title": "Issues with drop-down button with Selenium",
+    "_needs_review": true
+  },
+  {
+    "logs": "",
+    "description": "",
+    "code": "import click\nfrom click.testing import CliRunner\nfrom uptimer.uptimer import check\n\ndef test_check_one_url(mocker):\n    mocker.patch(\"requests.head\", return_value=mock_response_object(200))\n\n    runner = CliRunner()\n    result = runner.invoke(check, [\"dummyurl\"], color=True)\n\n    expected_message = click.style(\"dummyurl -> 200\", fg=\"green\")\n    assert result.output == f\"{expected_message}\\n\"\n\nE       AssertionError: assert 'dummyurl -> 200\\n' == '\\x1b[32mdumm... 200\\x1b[0m\\n'\nE         - dummyurl -> 200\nE         ? -----               ----\nE         + dummyurl -> 200",
+    "label": "",
+    "source": "stackoverflow.com/questions/67351635",
+    "_title": "Why is pytest outputting ANSI escape characters?",
+    "_needs_review": true
+  },
+  {
+    "logs": "",
+    "description": "",
+    "code": "<div data-test-modal=\"\" role=\"dialog\" tabindex=\"-1\" class=\"artdeco-modal artdeco-modal--layer-default send-invite\" size=\"medium\" aria-labelledby=\"send-invite-modal\">\n        <span class=\"a11y-text\">Dialog content start.</span>\n        <button data-test-modal-close-btn=\"\" aria-label=\"Dismiss\" id=\"ember414\" class=\"artdeco-modal__dismiss artdeco-button artdeco-button--circle artdeco-button--muted artdeco-button--2 artdeco-button--tertiary ember-view\">  <li-icon aria-hidden=\"true\" type=\"cancel-icon\" class=\"artdeco-button__icon\"><svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" data-supported-dps=\"24x24\" fill=\"currentColor\" class=\"mercado-match\" width=\"24\" height=\"24\" focusable=\"false\">\n  <path d=\"M13.42 12L20 18.58 18.58 20 12 13.42 5.42 20 4 18.58 10.58 12 4 5.42 5.42 4 12 10.58 18.58 4 20 5.42z\"></path>\n</svg></li-icon>\n\n<span class=\"artdeco-button__text\">\n    \n</span></button>\n        \n      <div id=\"ember415\" class=\"artdeco-modal__header ember-view\">\n        <h2 id=\"send-invite-modal\">\n            Your invitation is almost on its way\n        </h2>\n      </div>\n      <div id=\"ember416\" class=\"artdeco-modal__content ember-view\">\n<!----><!---->\n            <p class=\"display-flex\">\n                <li-icon aria-hidden=\"true\" type=\"success-pebble-icon\" class=\"connect-button-send-invite__success-icon mr1\" size=\"large\"><svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" data-supported-dps=\"24x24\" fill=\"currentColor\" class=\"mercado-match\" width=\"24\" height=\"24\" focusable=\"false\">\n  <path d=\"M12 2a10 10 0 1010 10A10 10 0 0012 2zm-1.25 15L7 13.25l1.41-1.41L10.59 14l4.84-6H18z\"></path>\n</svg></li-icon>\n                <span class=\"flex-1\">\n                  You can add a note to personalize your invitation to <strong>Zoe Yang</strong>.\n                </span>\n            </p>\n<!---->\n      </div>\n      <div id=\"ember417\" class=\"artdeco-modal__actionbar text-align-right ember-view\">\n          <button aria-label=\"Add a note\" id=\"ember418\" class=\"mr1 artdeco-button artdeco-button--muted artdeco-button--3 artdeco-button--secondary ember-view\"><!---->\n<span class=\"artdeco-button__text\">\n    Add a note\n</span></button>\n        <button aria-label=\"Send now\" id=\"ember419\" class=\"ml1 artdeco-button artdeco-button--3 artdeco-button--primary ember-view\"><!---->\n<span class=\"artdeco-button__text\">\n    Send\n</span></button>\n      </div>\n      \n        <span class=\"a11y-text\">Dialog content end.</span>\n      </div>\n\nconnect = more = driver.find_element_by_id(\"\"\"ember418\"\"\").click()",
+    "label": "",
+    "source": "stackoverflow.com/questions/67419772",
+    "_title": "How to parse id number before calling find element by id using python selenium?",
+    "_needs_review": true
+  },
+  {
+    "logs": "",
+    "description": "",
+    "code": "text = driver.find_element_by_xpath(\"//*[contains(text(),'valueValue-2KhwsEwE')]\").text\nprint(text)",
+    "label": "",
+    "source": "stackoverflow.com/questions/66752765",
+    "_title": "Get dynamic value with Selenium",
+    "_needs_review": true
+  },
+  {
+    "logs": "",
+    "description": "",
+    "code": "@app.route(\"/my-api/<token>\", methods=[\"GET\", \"POST\"])\ndef get_url(token):\n    s = TimedJSONWebSignatureSerializer(\"KEY\")\n    try:\n        url = s.loads(token)\n    except:\n        abort(400, \"URL not identified\")\n\n    head, tail = ntpath.split(url)\n    head = head + \"/\"\n    filename = ntpath.basename(url)\n\n    return send_from_directory(directory=head, filename=filename), 201\n\nclass BasicTests(unittest.TestCase):\n    def setUp(self):\n        self.test_token1 = \"eyJhbGciOiJIUzUxMiIsImlhdCI6MTYxNTA1NTA4NSwiZXhwIjoxNjE1MDc1MDg1fQ.InRlc3Qi.Nm37UI69YrvPdcKyr0iAOKY_m1AmqknydosWaJcuULxfxJcrVxTsXQor60nZjH0EBb3zWemD8LMKM1rzIdxf9B\"\n        self.test_token2 = \"abc123\"\n\n    def test_get_url_201(self):\n        with app.test_client() as client:\n            response = client.get(\n                f\"/my-api/{self.test_token1}\"\n            )\n\n        print(f\"RESPONSE: {response}\")\n\n        assert response.status_code == 201\n\n    def test_get_url_400(self):\n        with app.test_client() as client:\n            response = client.get(\n                f\"/my-api/{self.test_token2}\"\n            )\n\n        assert response.status_code == 400\n\ndef test_201(self):\n    with unittest.mock.patch(\"flask.send_from_directory\") as mocked:\n        mocked.return_value = \"Test Mock\"\n        response = app.test_client().get(f\"/my-api/{self.test_token1}\")\n        print(response)\n\n    self.assertTrue(mocked.called)\n    assert response.status_code == 201",
+    "label": "",
+    "source": "stackoverflow.com/questions/66509460",
+    "_title": "Flask unittest api url with variable",
+    "_needs_review": true
+  },
+  {
+    "logs": "",
+    "description": "",
+    "code": " def store_id(self, id):\n        try:\n            if id is None:\n                raise ValueError('Empty id')\n            self.id = id\n            return self.invoke()\n        except ValueError as e:\n            print(e)\n\ndef teststore_id(self):\n    with self.assertRaises(ValueError):\n        User().store_id(None)",
+    "label": "",
+    "source": "stackoverflow.com/questions/66294936",
+    "_title": "Testing if the exception is raised pytest",
+    "_needs_review": true
+  },
+  {
+    "logs": "E    assert False is False\nAssertionError\n\nE    assert True is True\nAssertionError",
+    "description": "",
+    "code": "Python 3.6.9 (default, Oct  8 2020, 12:12:24) \n>>> False is False\nTrue\n\nplatform linux -- Python 3.6.8, pytest-6.2.2, py-1.10.0, pluggy-0.13.1\nplugins: cov-2.11.1, instafail-0.4.2, timeout-1.4.2\n\nfrom typing import Tuple\nimport numpy as np\nimport pytest\n\nclass MyObject():\n    def function_to_text(self, input: list) -> Tuple[bool, float]:\n        val = np.array(0) > 10\n        return val, 1.0\n\n\n@pytest.fixture(scope='session')\ndef my_object():\n    my_obj = MyObject()\n    yield my_obj\n\n\ndef test_function_rejects_input(my_object):\n\n    assert my_object.function_to_text([])[0] is False",
+    "label": "",
+    "source": "stackoverflow.com/questions/66151567",
+    "_title": "Pytest Fails with AssertionError False is False",
+    "_needs_review": false
+  },
+  {
+    "logs": "",
+    "description": "",
+    "code": "def foo():\n    return 'foo'\n\ndef get_foo():\n    return foo()\n\nimport pytest\nimport mock\nfrom pytest_mock import mocker\n\nfrom base import get_foo\n\n@mock.patch('base.foo') \ndef test_get_foo(mock_foo):\n    mock_foo.return_value = 'bar'\n    assert get_foo() == 'bar'\n\ndef test_get_foo2(mocker):\n    m = mocker.patch('base.foo', return_value='bar')\n    assert get_foo() == 'bar'\n\ndef test_get_foo3():\n    with mock.patch('base.foo', return_value='bar') as mock_foo:\n        assert get_foo() == 'bar'\n\n============================================================= test session starts =============================================================\nplatform linux2 -- Python 2.7.13, pytest-3.0.7, py-1.4.33, pluggy-0.4.0\nrootdir: /projects/git/ABC/query, inifile:\nplugins: mock-1.6.0\ncollected 13 items \n\ntest_base.py .....FFF.....\n\n================================================================== FAILURES ===================================================================\n________________________________________________________________ test_get_foo _________________________________________________________________\n\nmock_foo = <MagicMock name='foo' id='140418877133648'>\n\n    @mock.patch('base.foo')\n    def test_get_foo(mock_foo):\n        mock_foo.return_value = 'bar'\n>       assert get_foo() == 'bar'\nE       AssertionError: assert 'foo' == 'bar'\nE         - foo\nE         + bar\n\ntest_base.py:67: AssertionError\n________________________________________________________________ test_get_foo2 ________________________________________________________________\n\nmocker = <pytest_mock.MockFixture object at 0x7fb5d14bc210>\n\n    def test_get_foo2(mocker):\n        m = mocker.patch('base.foo', return_value='bar')\n>       assert get_foo() == 'bar'\nE       AssertionError: assert 'foo' == 'bar'\nE         - foo\nE         + bar\n\ntest_base.py:71: AssertionError\n________________________________________________________________ test_get_foo3 ________________________________________________________________\n\n    def test_get_foo3():\n        with mock.patch('base.foo', return_value='bar') as mock_foo:\n>           assert get_foo() == 'bar'\nE           AssertionError: assert 'foo' == 'bar'\nE             - foo\nE             + bar\n\ntest_base.py:75: AssertionError",
+    "label": "",
+    "source": "stackoverflow.com/questions/44166134",
+    "_title": "Pytest with mock/pytest-mock",
+    "_needs_review": true
+  },
+  {
+    "logs": "",
+    "description": "",
+    "code": "def test_sum():\n    \n    test_list=[10,20,30,40,50]\n\n    result=sum(test_list)\n\n    assert result == 150\n\nMicrosoft Windows [Version 10.0.19041.630]\n(c) 2020 Microsoft Corporation. All rights reserved.\n\nC:\\Users\\97155>python -m pytest\n================================================= test session starts =================================================\nplatform win32 -- Python 3.7.4, pytest-6.1.2, py-1.9.0, pluggy-0.13.1\nrootdir: C:\\Users\\97155\ncollected 0 items / 1 error\n\n======================================================= ERRORS ========================================================\n____________________________________________ ERROR collecting test session ____________________________________________\nAppData\\Local\\Programs\\Python\\Python37\\lib\\site-packages\\_pytest\\runner.py:310: in from_call\n    result = func()  # type: Optional[TResult]\nAppData\\Local\\Programs\\Python\\Python37\\lib\\site-packages\\_pytest\\runner.py:340: in <lambda>\n    call = CallInfo.from_call(lambda: list(collector.collect()), \"collect\")\nAppData\\Local\\Programs\\Python\\Python37\\lib\\site-packages\\_pytest\\main.py:684: in collect\n    for direntry in visit(str(argpath), self._recurse):\nAppData\\Local\\Programs\\Python\\Python37\\lib\\site-packages\\_pytest\\pathlib.py:570: in visit\n    yield from visit(entry.path, recurse)\nAppData\\Local\\Programs\\Python\\Python37\\lib\\site-packages\\_pytest\\pathlib.py:570: in visit\n    yield from visit(entry.path, recurse)\nAppData\\Local\\Programs\\Python\\Python37\\lib\\site-packages\\_pytest\\pathlib.py:570: in visit\n    yield from visit(entry.path, recurse)\nAppData\\Local\\Programs\\Python\\Python37\\lib\\site-packages\\_pytest\\pathlib.py:566: in visit\n    entries = sorted(os.scandir(path), key=lambda entry: entry.name)\nE   PermissionError: [WinError 5] Access is denied: 'C:\\\\Users\\\\97155\\\\AppData\\\\Local\\\\Application Data'\n=============================================== short test summary info ===============================================\nERROR  - PermissionError: [WinError 5] Access is denied: 'C:\\\\Users\\\\97155\\\\AppData\\\\Local\\\\Application Data'\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n================================================== 1 error in 0.27s ===================================================",
+    "label": "",
+    "source": "stackoverflow.com/questions/65051798",
+    "_title": "I am running pytest on cmd and i&#39;m getting AssertionError",
+    "_needs_review": true
+  },
+  {
+    "logs": "",
+    "description": "",
+    "code": "   from selenium import webdriver\n    \n   from selenium.webdriver.common.by import By\n   from selenium.webdriver.support.ui import WebDriverWait\n   from selenium.webdriver.support import expected_conditions as EC\n\n   import time\n\n   PATH = \"C:\\\\Users\\\\MYUSERNAME\\\\Webdrivers\\\\chromedriver.exe\"\n   driver = webdriver.Chrome(PATH)\n\n   driver.get(\"https://www.gurufocus.com/insider/summary\")\n\n   driver.find_element_by_xpath(\"//ul[@class='el-pager']/li[text()='2']\").click\n\n    try:\n       element = WebDriverWait(driver, 10).until(\n    EC.presence_of_element_located((By.XPATH, \"//ul[@class='el-pager']/li[text()='2']\"))\n)\n       element.click() \n    except:\n        driver.quit() \n\n  ",
+    "label": "",
+    "source": "stackoverflow.com/questions/64795522",
+    "_title": "Clicking on LI link using Selenium Webdriver (Python)",
+    "_needs_review": true
+  },
+  {
+    "logs": "",
+    "description": "",
+    "code": "driver.get(\"https://gbs.autodesk.com/GBS/\")\nbtn = driver.find_element_by_link_text('Sign In')\nbtn.click()\n\n<input id=\"userName\" name=\"UserName\" autocomplete=\"off\" aria-label=\"Email text field\" tabindex=\"1\" placeholder=\"name@example.com\" type=\"text\" autofocus=\"autofocus\" autocorrect=\"off\" autocapitalize=\"off\" data-val=\"true\" data-val-required=\"Please enter an email\" data-val-length-max=\"200\" class=\"form-control  customInput2 populated valid\">\n\n<iframe frameborder=\"0\" hspace=\"0\" scrolling=\"no\" src=\"/GBS/Authentication/Authenticate?redirectUrl=%2FGBS%2FProject&amp;requestMode=Setup&amp;isIframe=True\" allowtransparency=\"true\" style=\"border: none; width: 345px; height: 513px;\">\n...\n</iframe>\n\nfrom selenium import webdriver\nfrom selenium.webdriver.common.by import By\nfrom selenium.webdriver.support import expected_conditions as EC\nfrom selenium.webdriver.support.wait import WebDriverWait as wait\n\nPATH = \"C:\\\\Program Files (x86)\\\\chromedriver.exe\"\ndriver = webdriver.Chrome(PATH)\n\ndriver.get(\"https://gbs.autodesk.com/GBS/\")\nbtn = driver.find_element_by_link_text('Sign In')\nbtn.click()\n\nwait(driver, 10).until(EC.frame_to_be_available_and_switch_to_it((By.XPATH, \"//div[@id='oxygen-container']/iframe\")))\n\nusername_field = driver.find_element_by_id(\"userName\")\nusername_field.send_keys(\"test@mail.com\")\n\ndriver.find_element_by_id(\"verify_user_btn\").click()\n\npassword = driver.find_element_by_id(\"password\")\npassword.send_keys(\"mypassword\")",
+    "label": "",
+    "source": "stackoverflow.com/questions/64744219",
+    "_title": "How to enter text in an iframe with Selenium and Python",
+    "_needs_review": true
+  },
+  {
+    "logs": "NoSuchElementException: Message: no such element: Unable to locate element: {\"method\":\"xpath\",\"selector\":\"./ancestor-or-self::form\"}\n\n---> 23     search.submit()\n     24 \n     25 \n\n~/anaconda3/lib/python3.7/site-packages/selenium/webdriver/remote/webelement.py in submit(self)\n     83         \"\"\"Submits a form.\"\"\"\n     84         if self._w3c:\n---> 85             form = self.find_element(By.XPATH, \"./ancestor-or-self::form\")\n     86             self._parent.execute_script(",
+    "description": "",
+    "code": "from selenium import webdriver\n\nquery = ' I want to try to translate this text'\nchrome_options = webdriver.ChromeOptions('/chromedriver')\ndriver = webdriver.Chrome()\ndriver.get('https://translate.google.com/')\nsearch = driver.find_element_by_css_selector('#source')\nsearch.send_keys(query)\nsearch.submit()\n\nWebDriverWait wait = new WebDriverWait(driver, 10);\n\nwait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(\"source\"));\n\ntry:\n    search = driver.find_element_by_css_selector('#source')\n\n    break\nexcept NoSuchElementException:\n    time.sleep(1)\n\ntry:\n    search = driver.find_element_by_css_selector('#source')\n\nexcept NoSuchElementException:         \n    pass",
+    "label": "",
+    "source": "stackoverflow.com/questions/63696173",
+    "_title": "NoSuchElementException and SyntaxError during web-scraping",
+    "_needs_review": false
+  },
+  {
+    "logs": "",
+    "description": "",
+    "code": "def test_ok():\n    assert 0 == 0\n\ndef test_failed():\n    assert 1 == 0\n\ndef test_different_exit_code():\n    open('/nonexistent', 'r')",
+    "label": "",
+    "source": "stackoverflow.com/questions/62432621",
+    "_title": "Different exit code with pytest when tests raise an unhandled exception (other than AssertionError)",
+    "_needs_review": true
+  },
+  {
+    "logs": "",
+    "description": "",
+    "code": "class Foo:\n    def __init__(self, val):\n        self.val = val\n\n    def test_compare12():\n        f1 = Foo(1)\n        f2 = Foo(2)\n        assert f1 == f2, \"F2 does not match F1\"\n\n    def test_compare34():\n        f3 = Foo(3)\n        f4 = Foo(4)\n        assert f3 == f4, \"F4 does not match F3\"\n\n========================= test session starts=================================\nplatform darwin -- Python 2.7.5 -- py-1.4.26 -- pytest-2.7.0 --    /Users/nehau/src/QA/bin/python\nrootdir: /Users/nehau/src/QA/test, inifile: \nplugins: capturelog\ncollected 2 items \n\ntest_foocompare.py::test_compare12 FAILED\ntest_foocompare.py::test_compare34 FAILED\n\n================================ FAILURES ===============================\n_______________________________ test_compare12 _________________________\n\ndef test_compare12():\n    f1 = Foo(1)\n    f2 = Foo(2)\n>       assert f1 == f2, \"F2 does not match F1\"\nE       AssertionError: F2 does not match F1\nE       assert <test.test_foocompare.Foo instance at 0x107640368> == <test.test_foocompare.Foo instance at 0x107640488>\n\ntest_foocompare.py:11: AssertionError\n_____________________________ test_compare34______________________________\n\ndef test_compare34():\n    f3 = Foo(3)\n    f4 = Foo(4)\n>       assert f3 == f4, \"F4 does not match F3\"\nE       AssertionError: F4 does not match F3\nE       assert <test.test_foocompare.Foo instance at 0x107640248> == <test.test_foocompare.Foo instance at 0x10761fe60>\n\ntest_foocompare.py:16: AssertionError\n\n=============================== 2 failed in 0.01 seconds ==========================\n\n::\ntest_foocompare.py::test_compare12 FAILED AssertionError:F2 does not match F1\ntest_foocompare.py::test_compare34 FAILED AssertionError:F2 does not match F1\n::",
+    "label": "",
+    "source": "stackoverflow.com/questions/30994622",
+    "_title": "Pytest report summary to display error information",
+    "_needs_review": true
+  },
+  {
+    "logs": "AssertionError: View function mapping is overwriting an existing endpoint function: api.todoitem",
+    "description": "",
+    "code": ".\n├── api_bp\n│   └── __init__.py\n├── app.py\n├── pytest.ini\n└── tests\n    ├── conftest.py\n    ├── __init__.py\n    ├── test_todo1.py\n    └── test_todo2.py\n\n# __init__.py\n\nfrom flask import Blueprint\n\napi_bp = Blueprint('api', __name__)\n\n# app.py\n\nfrom flask import Flask, Blueprint\nfrom flask_restful import Api, Resource\n\n\nclass TodoItem(Resource):\n    def get(self, id):\n        return {'task': 'Say \"Hello, World!\"'}\n\n\ndef create_app():\n    \"\"\"Initialize the app. \"\"\"\n    app = Flask(__name__)\n    from api_bp import api_bp\n    # api_bp = Blueprint('api', __name__)\n    api = Api(api_bp)\n\n    api.add_resource(TodoItem, '/todos/<int:id>')\n    app.register_blueprint(api_bp, url_prefix='/api')\n\n    return app\n\n\nif __name__ == '__main__':\n    app = create_app()\n    app.run(debug=True)\n\n# conftest.py\n\nimport pytest\n\nfrom app_factory import create_app\n\n@pytest.fixture(scope='module')\ndef client():\n    flask_app = create_app()\n\n    testing_client = flask_app.test_client()\n\n    context = flask_app.app_context()\n    context.push()\n\n    yield testing_client\n\n    context.pop()\n\n# test_todo1.py\n\nimport pytest\n\ndef test_todo2(client):\n    \"\"\"Test\"\"\"\n    response = client.get('/api/todos/1')\n    print(response)\n    assert response.status_code == 200\n\n# test_todo2.py\n\nimport pytest\n\ndef test_todo2(client):\n    \"\"\"Test\"\"\"\n    response = client.get('/api/todos/2')\n    print(response)\n    assert response.status_code == 200\n\n# app.py\n\nfrom flask import Flask, Blueprint\nfrom flask_restful import Api, Resource\n\n\nclass TodoItem(Resource):\n    def get(self, id):\n        return {'task': 'Say \"Hello, World!\"'}\n\n\ndef create_app():\n    \"\"\"Initialize the app. \"\"\"\n    app = Flask(__name__)\n    # note: I commented the line below and defined the blueprint in-place\n    # from api_bp import api_bp  \n    api_bp = Blueprint('api', __name__)\n    api = Api(api_bp)\n\n    api.add_resource(TodoItem, '/todos/<int:id>')\n    app.register_blueprint(api_bp, url_prefix='/api')\n\n    return app\n\n\nif __name__ == '__main__':\n    app = create_app()\n    app.run(debug=True)\n\n$ pytest -v\ntests/test_api1.py::test_todo2 PASSED    [ 50%]\ntests/test_api2.py::test_todo2 PASSED    [100%]\n\n# app.py\n\nfrom flask import Flask, Blueprint\nfrom flask_restful import Api, Resource\n\napp = Flask(__name__)\napi_bp = Blueprint('api', __name__)\napi = Api(api_bp)\n\n\nclass TodoItem(Resource):\n    def get(self, id):\n        return {'task': 'Say \"Hello, World!\"'}\n\n\napi.add_resource(TodoItem, '/todos/<int:id>')\napp.register_blueprint(api_bp, url_prefix='/api')\n\n# app.py\n\n...\n\ndef create_app():\n    \"\"\"Initialize the app. \"\"\"\n    app = Flask(__name__)\n\n    from api_bp import api_bp\n\n    api = Api(api_bp)\n\n    app.register_blueprint(api_bp, url_prefix='/api')\n    api.add_resource(TodoItem, '/todos/<int:id>')\n\n\n    return app\n\n...",
+    "label": "",
+    "source": "stackoverflow.com/questions/60549530",
+    "_title": "pytest `AssertionError: View function mapping is overwriting an existing endpoint function:` flask-restful while registring blueprint",
+    "_needs_review": false
+  },
+  {
+    "logs": "",
+    "description": "",
+    "code": "[imports and logging configuration omitted]\n\nlog.info(\"Started ...\")\n\nstart = time.time()\nresponse1 = requests.get(\"http://10.50.30.216:8080/sps/api/version\")\nassert response1.status_code == codes.OK\nlog.info(\"Using requests: %.3fs\" % (time.time() - start))\n\nstart = time.time()\nconn = httplib.HTTPConnection(\"10.50.30.216:8080\")\nconn.request(\"GET\", \"/sps/api/version\")\nresponse2 = conn.getresponse()\nassert response2.status == codes.OK\nlog.info(\"Using httplib: %.3fs\" % (time.time() - start))\n\nlog.info(\"Finished ...\")\n\n2015-09-11 14:50:00,832 - INFO - myscript - Started ...\n2015-09-11 14:50:05,355 - INFO - requests.packages.urllib3.connectionpool - Starting new HTTP connection (1): 10.50.30.216\n2015-09-11 14:50:05,364 - DEBUG - requests.packages.urllib3.connectionpool - \"GET /sps/api/version HTTP/1.1\" 200 None\n2015-09-11 14:50:05,365 - INFO - myscript - Using requests: 4.533s\n2015-09-11 14:50:05,374 - INFO - myscript - Using httplib: 0.008s\n2015-09-11 14:50:05,375 - INFO - myscript - Finished ...\n\n2015-09-11 14:57:45,789 - INFO - myscript - Started ...\n2015-09-11 14:57:45,799 - INFO - requests.packages.urllib3.connectionpool - Starting new HTTP connection (1): 10.50.30.216\n2015-09-11 14:57:45,806 - DEBUG - requests.packages.urllib3.connectionpool - \"GET /sps/api/version HTTP/1.1\" 200 None\n2015-09-11 14:57:45,809 - INFO - myscript - Using requests: 0.021s\n2015-09-11 14:57:45,815 - INFO - myscript - Using httplib: 0.004s\n2015-09-11 14:57:45,815 - INFO - myscript - Finished ...",
+    "label": "",
+    "source": "stackoverflow.com/questions/32505410",
+    "_title": "Python requests module is very slow on specific machine",
+    "_needs_review": true
+  },
+  {
+    "logs": "Test Name:  \nTest FullName:  ....Tests.Stories..\nTest Source:    C:\\\\\\\\\\src\\...\\Tests\\Stories\\.feature : line 36\nTest Outcome:   Failed\nTest Duration:  0:01:17.326\n\nResult StackTrace:  \nat ...Core.Utilities.Wait.ForElementToBeVisible(By elementLocator, Int32 timeout) in C:\\\\\\Shared\\...Core\\Utilities\\Wait.cs:line 96\n   at ...Core.Extensions.ElementLocatorExtensions.SendKeysWithWait(By elementLocator, String text) in C:\\\\\\Shared\\...Core\\Extensions\\ElementLocatorExtensions.cs:line 147\n   at ....Pages.Executors.LoginPage.Login(String userId) in C:\\\\\\\\\\src\\...\\Pages\\Executors\\LoginPage.cs:line 12\n   at ....Tests.Steps.LoginSteps.GivenIAmLoggedInAsCustomer(String id) in C:\\\\\\\\\\src\\...\\Tests\\Steps\\LoginSteps.cs:line 16\n   at lambda_method(Closure , IContextManager , String )\n   at TechTalk.SpecFlow.Bindings.BindingInvoker.InvokeBinding(IBinding binding, IContextManager contextManager, Object[] arguments, ITestTracer testTracer, TimeSpan& duration)\n   at TechTalk.SpecFlow.Infrastructure.TestExecutionEngine.ExecuteStepMatch(BindingMatch match, Object[] arguments)\n   at TechTalk.SpecFlow.Infrastructure.TestExecutionEngine.ExecuteStep(IContextManager contextManager, StepInstance stepInstance)\n   at TechTalk.SpecFlow.Infrastructure.TestExecutionEngine.OnAfterLastStep()\n   at TechTalk.SpecFlow.TestRunner.CollectScenarioErrors()\n   at ....Tests.Stories..ScenarioCleanup()\n   at ....Tests.Stories..() in C:\\\\\\\\\\src\\...\\Tests\\Stories\\.feature:line 41\n--WebDriverTimeoutException\n   at OpenQA.Selenium.Support.UI.DefaultWait`1.ThrowTimeoutException(String exceptionMessage, Exception lastException)\n   at OpenQA.Selenium.Support.UI.DefaultWait`1.Until[TResult](Func`2 condition)\n   at ...Core.Utilities.Wait.ForElementToBeVisible(By elementLocator, Int32 timeout) in C:\\\\\\Shared\\...Core\\Utilities\\Wait.cs:line 92\n--NoSuchElementException\n   at OpenQA.Selenium.Remote.RemoteWebDriver.UnpackAndThrowOnError(Response errorResponse)\n   at OpenQA.Selenium.Remote.RemoteWebDriver.Execute(String driverCommandToExecute, Dictionary`2 parameters)\n   at OpenQA.Selenium.Remote.RemoteWebDriver.FindElement(String mechanism, String value)\n   at OpenQA.Selenium.Remote.RemoteWebDriver.FindElementById(String id)\n   at OpenQA.Selenium.By.<>c__DisplayClass16_0.<Id>b__0(ISearchContext context)\n   at OpenQA.Selenium.By.FindElement(ISearchContext context)\n   at OpenQA.Selenium.Remote.RemoteWebDriver.FindElement(By by)\n   at SeleniumExtras.WaitHelpers.ExpectedConditions.<>c__DisplayClass7_0.<ElementIsVisible>b__0(IWebDriver driver)\n   at OpenQA.Selenium.Support.UI.DefaultWait`1.Until[TResult](Func`2 condition)\nResult Message: \nOpenQA.Selenium.WebDriverTimeoutException : Element with locator: 'By.Id: username' wasn't visible within timeout limit\n  ----> OpenQA.Selenium.WebDriverTimeoutException : Timed out after 30 seconds\n  ----> OpenQA.Selenium.NoSuchElementException : no such element: Unable to locate element: {\"method\":\"css selector\",\"selector\":\"#username\"}\n  (Session info: chrome=75.0.3770.100)\nResult StandardOutput:  \nGiven I am logged in as a 'NoWarningCode' customer\n-> error: Element with locator: 'By.Id: username' wasn't visible within timeout limit",
+    "description": "",
+    "code": "public void Login(SomeUser user)\n{\n    this.Username.SendKeys(user.Username);\n    this.Password.SendKeys(user.Password);\n    this.Login.Click();\n}",
+    "label": "",
+    "source": "stackoverflow.com/questions/56768281",
+    "_title": "Webdriver - &#39;NoSuchElementException&#39; for a web element that has already been interacted with?",
+    "_needs_review": false
+  },
+  {
+    "logs": "",
+    "description": "",
+    "code": "from flask import Flask\nfrom project.another_dir.another_script import another_function\n\napp = Flask(__name__)\n\n@app.route('/api/abcde', methods=['POST'])\ndef post_something():\n    another_function()\n\nimport requests\n\ndef another_function():\n    response = requests.post(<some_url>)    # this is the \"requests\" I want to mock\n\n    if response.status_code == 200:\n        # server working properly, commit database transaction / write to a file / trigger some other functions / ...\n    else:\n        # something's wrong with the server, send error for exception handling\n\nfrom unittest.mock import Mock\nimport pytest\n\nheaders = {'Authorization': 'Basic akd39K045Pw=='}\ndata = \"some_data\"\n\n@pytest.fixture\ndef client():\n    app.testing = True\n    client = app.test_client()\n\n    return client\n\n@pytest.mark.parametrize(\"h, d, status_code\", [\n    (None, None, 401),  # no auth header, no data\n    (None, data, 401),    # no auth header\n    (headers, data, 200)  # with auth header and data\n])\ndef test_views_post_something(client, h, d, status_code):\n\n    ##### This is what I want to mock to avoid actually committing to db\n    # from project.another_dir.another_script import requests\n    # mock_request = Mock()\n    # requests = mock_request\n    ##### But no luck\n\n    response = client.post('/api/abcde', headers=h, data=d)\n\n    assert response.status_code == status_code",
+    "label": "",
+    "source": "stackoverflow.com/questions/55481399",
+    "_title": "Mock Multiple API Requests Separately in Python Unit Tests",
+    "_needs_review": true
+  },
+  {
+    "logs": "",
+    "description": "",
+    "code": "   def upload_to_s3(self, local_file, bucket, dest_file):\n\n        self.local_file = local_file\n        self.bucket = bucket\n        self.dest_file = dest_file\n\n        s3_client = self.prime_s3_client() # this method returns the boto3 client\n        try:\n            s3_client.upload_file(local_file, bucket, dest_file)\n            LOG_IT.info('File uploaded to S3 from: %s to %s.', local_file, dest_file)\n        except Exception:\n            LOG_IT.critical('The %s failed to upload to S3.', local_file)\n\ndef test_upload_to_s3(self, monkeypatch, aws):\n        mock_s3_client = MagicMock()\n        monkeypatch.setattr(boto3, 'client', mock_s3_client)\n        mock_upload_file = MagicMock()\n        monkeypatch.setattr(mock_s3_client, 'upload_file', mock_upload_file)\n        push_to_s3 = aws.upload_to_s3('localfile', 'chumbucket', 'destfile')\n        mock_upload_file.assert_called() ",
+    "label": "",
+    "source": "stackoverflow.com/questions/54794617",
+    "_title": "pytest mocking with boto3",
+    "_needs_review": true
+  },
+  {
+    "logs": "",
+    "description": "",
+    "code": "<thead>\n    <td style=\"width: 40%;\">\n        <select name=\"product_size\" id=\"sct-size\" data-md-selectize>\n            <option value=\"-\">Choose Size</option>\n                                                    <option value=\"323\">XS</option>\n                                                    <option value=\"324\">S</option>\n                                                    <option value=\"325\">M</option>\n                                                    <option value=\"326\">L</option>\n                                                    <option value=\"327\">XL</option>\n                                                    <option value=\"328\">XXL</option>\n                                                    <option value=\"342\">1 years old</option>\n                                                    <option value=\"343\">5 years old</option>\n                                                    <option value=\"344\">8 years old</option>\n                                                    <option value=\"345\">12 years old</option>\n                                                </select>\n    </td>\n    <td style=\"width: 40%;\">\n        <select name=\"product_color\" id=\"sct-color\" data-md-selectize>\n            <option value=\"-\">Choose Color</option>\n                                                    <option value=\"594\">N/A</option>\n                                                </select>\n    </td>\n    <td style=\"width: 19%;\"><input type=\"text\" class=\"md-input\" name=\"product_stock_\" id=\"inp-stock\" placeholder=\"Stock\" style=\"margin-top: -11px;text-align: center;\"/></td>\n    <td style=\"width: 1%;\"><a href=\"#\" id=\"btn-addstock\" style=\"margin-top: 5px; display: block;\" title=\"Add Stock\"><i class=\"material-icons\">&#xE148;</i></a></td>\n</thead>\n\nfrom selenium import webdriver\nfrom selenium.webdriver.support.select import Select\n\nmySelect = Select(driver.find_element_by_id(\"sct-size\"))\nmySelect.select_by_visible_text(\"S\")\n\nmySelect = Select(driver.find_element_by_id(\"sct-size\"))\nmySelect.select_by_value(\"323\")\n\nobj = Select(driver.find_element_by_name('product_size'))\nobj.select_by_index(1)\n\n<thead>\n<td style=\"width: 40%;\">\n    <select name=\"product_size\" id=\"sct-size\" data-md-selectize>\n        <option value=\"-\">Choose Size</option>                                                    \n</td>\n<td style=\"width: 40%;\">\n    <select name=\"product_color\" id=\"sct-color\" data-md-selectize>\n        <option value=\"-\">Choose Color</option>\n                                                \n                                            </select>\n</td>\n<td style=\"width: 19%;\"><input type=\"text\" class=\"md-input\" name=\"product_stock_\" id=\"inp-stock\" placeholder=\"Stock\" style=\"margin-top: -11px;text-align: center;\"/></td>\n<td style=\"width: 1%;\"><a href=\"#\" id=\"btn-addstock\" style=\"margin-top: 5px; display: block;\" title=\"Add Stock\"><i class=\"material-icons\">&#xE148;</i></a></td>\n</thead>\n\nmySelect = Select(driver.find_element_by_id(\"sct-size\")) \nmySelect.click() \nmySelect.select_by_visible_text(\"S\")",
+    "label": "",
+    "source": "stackoverflow.com/questions/54459718",
+    "_title": "How to select dropdown menu in python using Selenium",
+    "_needs_review": true
+  },
+  {
+    "logs": " raise exception_class(message, screen, stacktrace)\nselenium.common.exceptions.InvalidSelectorException: Message: Given css selector expression \"span:contains('Control panel')\" is invalid: InvalidSelectorError: 'span:contains('Control panel')' is not a valid selector: \"span:contains('Control panel')\"",
+    "description": "",
+    "code": "element = \"span:contains('Control panel')\"\nmy_driver.find_element_by_css_selector(element)",
+    "label": "",
+    "source": "stackoverflow.com/questions/47883572",
+    "_title": "selenium.common.exceptions.InvalidSelectorException with &quot;span:contains(&#39;string&#39;)&quot;",
+    "_needs_review": false
+  },
+  {
+    "logs": "",
+    "description": "",
+    "code": "<TD class=A5e6df1155bcd42d5a8e2877b95dc04686l style=\"HEIGHT: 10mm; WIDTH: 136.98mm; MIN-WIDTH: 136.98mm\" abp=\"570\">Top N Destinations by Price</TD>",
+    "label": "",
+    "source": "stackoverflow.com/questions/26429022",
+    "_title": "Testing SSRS Reporting Services reports using Selenium Webdriver",
+    "_needs_review": true
+  },
+  {
+    "logs": "",
+    "description": "",
+    "code": "if request.headers['Set-Cookie'] in request.headers:\n    return True\nreturn False\n\ndef test_login_user():\n    assert login_user('right_user_name', 'btcas1A') is True\n    assert login_user('wrong_user_name', 'btcas1A') is False\n\n> assert login_user('right_user_name', 'btcas1A') is True`\nE     AssertionError: assert False is True`\nE   + where False = login_user('right_user_name', 'btcas1A')`\n\nif 'LOGIN' not in xmlFile:  \n    print ('Check the xml file used for request.')\n    return ResponseFiles.loginXmlResponseError\n\nfor i in xmlFile['LOGIN']: \n    if i == 'ANWENDUNG':\n        user = xmlFile['LOGIN']['ANWENDUNG']\n    elif i == 'BENUTZER':\n        user = xmlFile['LOGIN']['BENUTZER']\n\npassword = xmlFile['LOGIN']['PASSWORT']\n\nloginPassed = readUserRecordFiles(user, password)\n\nif loginPassed:\n    return LoginPassed(user)\nreturn LoginError()\n\nresponse.set_cookie('sessionid', sessionid, path= '/')",
+    "label": "",
+    "source": "stackoverflow.com/questions/48058785",
+    "_title": "Pytest - Check if user name and password return &#39;set cookie&#39; - AssertionError",
+    "_needs_review": true
+  },
+  {
+    "logs": "",
+    "description": "",
+    "code": "# read data from xlsx file \n\nbook = xlrd.open_workbook(\"nameEntityDataSet.xlsx\")\n\nfirst_sheet = book.sheet_by_index(0) # get first worksheet\n\n# take second element(index starts from 0) from first row\n\nse1 = first_sheet.row_values(1)[1]\n\nprint \"se1 \", se1 #returns me list:\n# take third element(index 2) from first row \n\nse2 = first_sheet.row_values(1)[2]\n\nexpected_output = first_sheet.row_values(1)[3]\n\n#expected output is printed as:  [['UAE', 'United'], ['UAE', 'Arab'], ['UAE', 'Emirates']]\n\ncurrent_output = [['UAE', 'United'], ['UAE', 'Arab'], ['UAE', 'Emirates']]\n\n#When I do assert to compare both outputs\nassert current_output == expected_output",
+    "label": "",
+    "source": "stackoverflow.com/questions/46984656",
+    "_title": "How to compare lists in pytest using assert statement (added double quotes)?",
+    "_needs_review": true
+  },
+  {
+    "logs": "",
+    "description": "",
+    "code": "import unittest\n\nclass TestErrorFail(unittest.TestCase):\n    def test_error(self):\n        raise Exception('oops')\n\n    def test_fail(self):\n        self.assertTrue(False)\n\n================================ test session starts =================================\nplatform linux2 -- Python 2.7.3 -- py-1.4.20 -- pytest-2.5.2\nplugins: django\ncollected 2 items \n\nsometests.py FF\n\n====================================== FAILURES ======================================\n______________________________ TestErrorFail.test_error ______________________________\n\nself = <sometests.TestErrorFail testMethod=test_error>\n\n    def test_error(self):\n>       raise Exception('oops')\nE       Exception: oops\n\nsometests.py:5: Exception\n______________________________ TestErrorFail.test_fail _______________________________\n\nself = <sometests.TestErrorFail testMethod=test_fail>\n\n    def test_fail(self):\n>       self.assertTrue(False)\nE       AssertionError: False is not true\n\nsometests.py:8: AssertionError\n============================== 2 failed in 0.69 seconds ==============================",
+    "label": "",
+    "source": "stackoverflow.com/questions/21513718",
+    "_title": "Pytest - error vs fail",
+    "_needs_review": true
+  },
+  {
+    "logs": "",
+    "description": "",
+    "code": "    def test_pytest():\n>      assert 2 == 3\nE      AssertionError\n\n>       assert rec.action == 'updater'\nE       assert 'update' == 'updater'\nE         - update\nE         + updater\nE         ?       +\n\n    def test_pytest():\n>       assert 2 == 3\nE       assert 2 == 3\n\n[pytest]\npython_files =\n  tests/*.py\n  tests*.py\n  test_*.py\nminversion = 3",
+    "label": "",
+    "source": "stackoverflow.com/questions/40979315",
+    "_title": "Pytest does not rewrite AssertionError",
+    "_needs_review": true
+  },
+  {
+    "logs": "",
+    "description": "",
+    "code": "class CustomAsserts(object):\n    def silly_assert(self, foo, bar):\n        assert foo == bar , 'some error message'\n\n>       assert 'foo' == 'bar', 'some error message'\nE       AssertionError: some error message\nE       assert 'foo' == 'bar'\nE         - foo\nE         + bar\n\nfrom custom_asserts import CustomAsserts\nasserts = CustomAsserts()\ndef test_silly():\n    asserts.silly_assert('foo', 'bar')\n\n>       assert 'foo' == 'bar', 'some error message'\nE       AssertionError: some error message",
+    "label": "",
+    "source": "stackoverflow.com/questions/38134430",
+    "_title": "How to let pytest rewrite assert in non-test modules",
+    "_needs_review": true
+  },
+  {
+    "logs": "",
+    "description": "",
+    "code": "",
+    "label": "",
+    "source": "stackoverflow.com/questions/38995522",
+    "_title": "How to detect when pytest test case got AssertionError?",
+    "_needs_review": true
+  },
+  {
+    "logs": "",
+    "description": "",
+    "code": "using (IWebDriver driver = new ChromeDriver(@\"<my path>\"))\n{\n    driver.Manage().Window.Maximize();\n\n    driver.Navigate().GoToUrl(\"<my url>\");\n\n    var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(600));\n    var userName = wait.Until(x => x.FindElement(By.Id(\"UserName\")));\n\n    userName.SendKeys(\"username\");\n\n    IWebElement pass = driver.FindElement(By.Id(\"Password\"));\n    pass.SendKeys(\"password\");\n}",
+    "label": "",
+    "source": "stackoverflow.com/questions/38773372",
+    "_title": "NoSuchElementException despite using WebDriverWait",
+    "_needs_review": true
+  },
+  {
+    "logs": "",
+    "description": "",
+    "code": "class Post(models.Model):\n    body = models.TextField()\n    value = models.CharField(max_length=5)\n\n    def __unicode__(self):\n        return self.body\n\nclass TestPost:\n    def test_model(self):\n        obj = mixer.blend('birdie.Post')\n        assert obj.pk == 1, 'should create a post instance '\n\n    def test_uniccode(self):\n        obj = mixer.blend('birdie.Post',body='hello')\n        result = obj.__unicode__\n        assert result == 'hello', 'should return body unicode",
+    "label": "",
+    "source": "stackoverflow.com/questions/37992133",
+    "_title": "Django pytest AssertionError: should return body unicode",
+    "_needs_review": true
+  },
+  {
+    "logs": "",
+    "description": "",
+    "code": "import py.test\nimport unittest\nfrom requests import get, post, delete, put\n\nlocalhost = 'http://localhost:5000'\n\nclass TestApi(unittest.TestCase):\n    def test_list_puppies(self):\n        index = get(localhost)\n        assert index.status_code == 200\n\n    def test_get_puppy(self):\n        puppy1 = get(localhost + '/rover')\n        puppy2 = get(localhost + '/spot')\n        assert puppy1.status_code == 200 and puppy2.status_code == 200\n\n    def test_create_puppy(self):\n        create = post(localhost, data={\n            'name': 'lassie', 'image_url': 'lassie_url'})\n        assert create.status_code == 201\n\n    @py.test.mark.skip('cannot fix it')\n    def test_edit_puppy(self):\n        ret = put(localhost + '/lassie',\n                  data={'name': 'xxx', 'image_url': 'yyy'})\n        assert ret.status_code == 201\n\n    def test_puppy_exits(self):\n        lassie = get(localhost + '/lassie').status_code\n        assert lassie == 200\n\n    def test_delete_puppy(self):\n        ret = delete(localhost + '/lassie')\n        assert ret.status_code == 200\n\n@app.route('/', methods=['POST'])\ndef create_puppy():\n    puppy, errors = puppy_schema.load(request.form)\n    if errors:\n    response = jsonify(errors)\n    response.status_code = 400\n    return response\n\n    puppy.slug = slugify(puppy.name)\n\n    # create in database\n    db.session.add(puppy)\n    db.session.commit()\n\n    # return an HTTP response\n    response = jsonify( {'message': 'puppy created'} )\n    response.status_code = 201\n    location = url_for('get_puppy', slug=puppy.slug)\n    response.headers['location'] = location\n\n    return response\n\n@app.route('/<slug>', methods=['DELETE'])\ndef delete_puppy(slug):\n    puppy = Puppy.query.filter(Puppy.slug == slug).first_or_404()\n    db.session.delete(puppy)\n    db.session.commit()\n\n    return jsonify( {'message': '{} deleted'.format(puppy.name)} )",
+    "label": "",
+    "source": "stackoverflow.com/questions/38437820",
+    "_title": "Preserve changes in multiple function when testing a Flask app",
+    "_needs_review": true
+  },
+  {
+    "logs": "",
+    "description": "",
+    "code": "def home(request):\n    list = Question.objects.all()\n    context = {'list': list}\n    return render(request,'index.html',context)\n\n@pytest.mark.django_db\n    class TestUsers:\n\n        def test_user(self,client):\n            response = client.get(\"/test\", follow=True)\n            assert len(response.context['list'])==1",
+    "label": "",
+    "source": "stackoverflow.com/questions/37987368",
+    "_title": "django-pytest: AssertionError",
+    "_needs_review": true
+  },
+  {
+    "logs": "NoSuchElementException: Message: u'Unable to locate element:{\"method\":\"xpath\",\"selector\":\"//td[@class=\\'rd-xc-Kd-...\\']\"}' ; Stacktrace: at FirefoxDriver.prototype.findElementInternal...",
+    "description": "",
+    "code": "<body>\n<tbody>\n<tr><td class=\"rd-xc-Kd-kl-lf\"><table style=\"position: relative; left: 0px;\" id=\":a\" class=\"rd-xc-Kd-kl\" cellpadding=\"0\" cellspacing=\"0\"><tbody><tr><td><div class=\"rd-xc-Kd-Bj-Gm\">Drag a photo here</div><div class=\"rd-xc-Kd-Bj-Fm\">Or, if you prefer...</div><div id=\":d\"><div style=\"-moz-user-select: none;\" role=\"button\" class=\"a-b-c d-u d-u-F\">Select a photo from your computer</div></div>   </td></tr></tbody></table><div id=\":c\" style=\"display:none\" class=\"d-Zb rd-jl-Ub-Yd\"><div class=\"rd-jl-Li\">Uploading...</div><div aria-valuenow=\"0\" aria-live=\"polite\" role=\"progressbar\" class=\"a-b-c Ub-Vb-Wb rd-d-Yb-Zb\"><div style=\"width: 0%;\" class=\"Ub-Vb-O\"></div></div></div></td></tr>\n</tbody>\n\n</body>\n\nfrom selenium import webdriver\nfrom selenium.webdriver.common.keys import Keys\nfrom selenium.webdriver import ActionChains\nimport os\n\n\ndriver = webdriver.Firefox()\ndriver.implicitly_wait(20)\n\ndriver.get(os.getcwd()+\"\\index.html\")\n\nelement = driver.find_element_by_xpath(\"//td[@class='rd-xc-Kd-kl-lf']\")\nprint element\nprint element.text",
+    "label": "",
+    "source": "stackoverflow.com/questions/19023545",
+    "_title": "Selenium Webdriver Python not finding element despite correct(?) xpath",
+    "_needs_review": false
+  },
+  {
+    "logs": "",
+    "description": "",
+    "code": "public IEnumerable<MyItem> MyList =>\n        webDriverInstance.FindListElementsWithWait<MyItem>(By.ClassName(\"my-item\"));\n\npublic static IEnumerable<T> FindListElementsWithWait<T>(this IWebDriver driver, By locator, int timeOutMilliseconds = 10000)\n{\n    var elements = new List<T>();\n    var wait = new WebDriverWait(driver, TimeSpan.FromMilliseconds(timeOutMilliseconds));\n    wait.Until(d =>\n        {\n            try\n            {  \n                elements = d.FindElements(locator).Select(x => (T)Activator.CreateInstance(typeof(T), x)).ToList();\n                return true;\n            }\n            catch (TargetInvocationException)\n            {\n                return false;\n            }\n        }\n    );\n\n    return elements;\n} \n\npublic class MyItem\n{\n    public string Name { get; private set; }\n\n    public MyItem(IWebElement webElement)\n    {\n        Name = webElement.FindElement(By.TagName(\"H4\")).Text;\n    }\n}",
+    "label": "",
+    "source": "stackoverflow.com/questions/33785591",
+    "_title": "Selenium Web Driver Stale Reference exception in List of WebElements",
+    "_needs_review": true
+  },
+  {
+    "logs": "",
+    "description": "",
+    "code": "<button type=\"button\" id=\"ext-gen1078\" class=\"x-btn-text\">Add</button>\n\ndriver.findElement(By.xpath(\"//button[@class='x-btn-text' and text()='Add']\")).click();\n\nList<WebElement> listOfElements = driver.findElements(By.xpath(\"//*[@class=' x-btn-text' and text()='Add']\"));\nSystem.out.println(\"There are \"+listOfElements.size()+\" buttons with the text 'Add'\");\n\nif(listOfElements.size() >= 2) {\n  listOfElements.get(1).click();\n}",
+    "label": "",
+    "source": "stackoverflow.com/questions/33394776",
+    "_title": "find element with exactly the same properties",
+    "_needs_review": true
+  },
+  {
+    "logs": "",
+    "description": "",
+    "code": "<a class=\"ms-listlink ms-draggable\" onmousedown=\"return VerifyHref(this,event,'1','SharePoint.OpenDocuments','')\" onclick=\"return DispEx(this,event,'TRUE','FALSE','FALSE','SharePoint.OpenDocuments.3','1','SharePoint.OpenDocuments','','','','2027','0','0','0xb008431061')\" href=\"/sites/market/Market_And_Customer_Information/MCIR Library/01 2015 AL Changes.xlsx\" DragId=\"3\">01 2015 AL Changes</a>​\n\nself.driver.get(url_path)\nself.driverfind_element_by_partial_link_text('AL Changes.xlsx').click()",
+    "label": "",
+    "source": "stackoverflow.com/questions/31859710",
+    "_title": "Grabbing an html element using Selenium and partial_link_text",
+    "_needs_review": true
+  },
+  {
+    "logs": "Traceback (most revent call last):\n    functions and lines, etc.\nAssertionError",
+    "description": "",
+    "code": "import py.test\n\nblah(x):\n    return x+1\n\ntest_blah():\n    assert blah(1)==6\n\ntest_blah()",
+    "label": "",
+    "source": "stackoverflow.com/questions/26515053",
+    "_title": "Pytest not giving proper output in terminal",
+    "_needs_review": false
+  },
+  {
+    "logs": "",
+    "description": "",
+    "code": "def raise_assertionerror():\n    assert False\n\nimport pytest\n\nimport pyximport\npyximport.install()\n\nfrom python_assert import raise_assertionerror as python_assert\nfrom cython_assert import raise_assertionerror as cython_assert\n\ndef test_assertion():\n    with pytest.raises(AssertionError):\n        python_assert()\n\ndef test_cython_assertion():\n    with pytest.raises(AssertionError):\n        cython_assert()\n\n===================================== FAILURES ======================================\n_______________________________ test_cython_assertion _______________________________\n\n    def test_cython_assertion():\n        with pytest.raises(AssertionError):\n>           cython_assert()\n\ntest_pytest_assertion.py:15: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n\n>   assert False\nE   AssertionError\n\ncython_assert.pyx:2: AssertionError\n======================== 1 failed, 1 passed in 0.61 seconds =========================\n\nimport unittest\n\nimport pyximport\npyximport.install()\n\nfrom python_assert import raise_assertionerror as python_assert\nfrom cython_assert import raise_assertionerror as cython_assert\n\nclass MyTestCase(unittest.TestCase):\n    def test_cython(self):\n        self.assertRaises(AssertionError, cython_assert)\n\n    def test_python(self):\n        self.assertRaises(AssertionError, python_assert)\n\nif __name__ == \"__main__\":\n    unittest.main()",
+    "label": "",
+    "source": "stackoverflow.com/questions/11857953",
+    "_title": "pytest.raises(AssertionError) fails with cython modules",
+    "_needs_review": true
+  },
+  {
+    "logs": "",
+    "description": "",
+    "code": "$ ./jython easy_install pytest\n\ndef test_answer():\n\n  assert func(3) == 5\n\ndef __init__(self, *args):\n    BuiltinAssertionError.__init__(self, *args)\n    if args:\n        try:\n            self.msg = str(args[0])\n        except py.builtin._sysex:\n            raise\n        except:\n            self.msg = \"<[broken __repr__] %s at %0xd>\" %(\n                args[0].__class__, id(args[0]))\n    else:\n        f = py.code.Frame(sys._getframe(1))\n        try:\n            source = f.code.fullsource\n            if source is not None:\n                try:\n                    source = source.getstatement(f.lineno, assertion=True)\n                except IndexError:\n                    source = None\n                else:\n                    source = str(source.deindent()).strip()\n        except py.error.ENOENT:\n            source = None\n            # this can also occur during reinterpretation, when the\n            # co_filename is set to \"<run>\".\n        if source:\n\n          self.msg = reinterpret(source, f, should_fail=True)\n\ndef interpret(source, frame, should_fail=False):\n    mod = ast.parse(source)\n    visitor = DebugInterpreter(frame)\n    try:\n\n      visitor.visit(mod)\n\ndef visit_Name(self, name):\n\n  explanation, result = self.generic_visit(name)\n\ndef generic_visit(self, node):\n    # Fallback when we don't have a special implementation.\n    if _is_ast_expr(node):\n        mod = ast.Expression(node)\n        co = self._compile(mod)\n        try:\n            result = self.frame.eval(co)\n        except Exception:\n            raise Failure()\n        explanation = self.frame.repr(result)\n        return explanation, result\n    elif _is_ast_stmt(node):\n        mod = ast.Module([node])\n        co = self._compile(mod, \"exec\")\n        try:\n            self.frame.exec_(co)\n        except Exception:\n            raise Failure()\n        return None, None\n    else:\n\n      raise AssertionError(\"can't handle %s\" %(node,))",
+    "label": "",
+    "source": "stackoverflow.com/questions/13250258",
+    "_title": "Using pytest with Jython",
+    "_needs_review": true
+  }
+]

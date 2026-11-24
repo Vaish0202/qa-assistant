@@ -1,0 +1,94 @@
+{
+  "dataset": "v1",
+  "selection": "test split, first 3",
+  "n": 3,
+  "by_source_counts": {
+    "synthetic": 3
+  },
+  "by_label_counts": {
+    "bug": 3
+  },
+  "threshold": 0.7,
+  "pipelines": {
+    "llm (ollama:llama3.2)": {
+      "metrics": {
+        "n": 3,
+        "accuracy": 0.3333333333333333,
+        "bug": {
+          "precision": 1.0,
+          "recall": 0.3333333333333333,
+          "f1": 0.5,
+          "support": 3
+        },
+        "failed_testcase": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "macro_f1": 0.25
+      },
+      "accuracy_ci": [
+        0.0,
+        1.0
+      ],
+      "macro_f1_ci": [
+        0.0,
+        1.0
+      ],
+      "confusion": {
+        "bug": {
+          "bug": 1,
+          "failed_testcase": 2,
+          "unparsed": 0
+        },
+        "failed_testcase": {
+          "bug": 0,
+          "failed_testcase": 0,
+          "unparsed": 0
+        }
+      },
+      "confusion_png": "confusion_llm.png",
+      "by_framework": {
+        "api": {
+          "n": 3,
+          "accuracy": 0.3333333333333333,
+          "macro_f1": 0.25
+        }
+      },
+      "by_source": {
+        "synthetic": {
+          "n": 3,
+          "accuracy": 0.3333333333333333,
+          "macro_f1": 0.25
+        }
+      },
+      "p50_seconds": 22.36522270000023,
+      "llm_calls": 3,
+      "predictions": [
+        {
+          "id": "syn-api-bug-003",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "llm",
+          "confidence": null
+        },
+        {
+          "id": "syn-api-bug-006",
+          "true": "bug",
+          "pred": "bug",
+          "source": "llm",
+          "confidence": null
+        },
+        {
+          "id": "syn-api-bug-009",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "llm",
+          "confidence": null
+        }
+      ]
+    }
+  },
+  "mcnemar": {}
+}

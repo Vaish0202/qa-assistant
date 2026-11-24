@@ -1,0 +1,58 @@
+{
+  "summaries": [
+    {
+      "provider": "ollama",
+      "model": "llama3.2",
+      "n": 3,
+      "accuracy": 1.0,
+      "macro_f1": 0.5,
+      "unparsed": 0,
+      "errors": 0,
+      "p50_s": 37.271522300000015,
+      "p95_s": 67.85992993999993,
+      "avg_tokens": 530.6666666666666,
+      "cost_per_1k_usd": 0.0,
+      "price_known": true
+    }
+  ],
+  "predictions": {
+    "ollama:llama3.2": [
+      {
+        "id": "legacy-TC001",
+        "framework": "selenium",
+        "source": "legacy_sample",
+        "true": "failed_testcase",
+        "pred": "failed_testcase",
+        "seconds": 71.25864189999993,
+        "prompt_tokens": 467,
+        "completion_tokens": 30,
+        "cost_usd": 0.0,
+        "error": null
+      },
+      {
+        "id": "legacy-TC002",
+        "framework": "selenium",
+        "source": "legacy_sample",
+        "true": "failed_testcase",
+        "pred": "failed_testcase",
+        "seconds": 22.380772999999863,
+        "prompt_tokens": 482,
+        "completion_tokens": 29,
+        "cost_usd": 0.0,
+        "error": null
+      },
+      {
+        "id": "legacy-TC003",
+        "framework": "api",
+        "source": "legacy_sample",
+        "true": "failed_testcase",
+        "pred": "failed_testcase",
+        "seconds": 37.271522300000015,
+        "prompt_tokens": 550,
+        "completion_tokens": 34,
+        "cost_usd": 0.0,
+        "error": null
+      }
+    ]
+  }
+}
