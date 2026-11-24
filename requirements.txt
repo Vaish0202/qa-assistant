@@ -28,3 +28,6 @@ matplotlib
 
 pytest
 scipy
+bcrypt
+PyJWT
+httpx

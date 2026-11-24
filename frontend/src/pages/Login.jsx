@@ -22,6 +22,7 @@ export default function Login() {
       } else {
         const res = await loginUser(username, password)
         localStorage.setItem('user_id', res.data.user_id)
+        localStorage.setItem('token', res.data.token)
         localStorage.setItem('username', res.data.username)
         navigate('/analyze')
       }

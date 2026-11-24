@@ -1,6 +1,6 @@
 import { useState } from "react";
 import JiraApprovalModal from "./JiraApprovalModal";
-import axios from "axios";
+import { createJiraTicket } from "../api";
 
 export default function ResultCard({ result }) {
   if (!result) return null;
@@ -11,37 +11,37 @@ export default function ResultCard({ result }) {
   const changesMade = payload.changes_made || [];
   const bestPractices = payload.best_practices || [];
   const suggestions = payload.suggestions || [];
-  const confidence = Math.round(
-    (result.classification_confidence || 0.96) * 100,
-  );
+  // Real model confidence from the API; no made-up default
+  const confidence =
+    typeof result.classification_confidence === "number"
+      ? `${Math.round(result.classification_confidence * 100)}%`
+      : "—";
 
   const [showJiraModal, setShowJiraModal] = useState(false);
+  const [jiraError, setJiraError] = useState("");
   const [jiraResult, setJiraResult] = useState(
     payload.jira_ticket
       ? { ticket_key: payload.jira_ticket, ticket_url: payload.jira_url }
       : null,
   );
 
-  
   const jiraPayloadReady = payload.jira_payload_ready || payload;
   const [activeTab, setActiveTab] = useState("overview");
   const [copied, setCopied] = useState(false);
 
   const handleJiraApprove = async (approvedData) => {
+    setJiraError("");
     try {
-      const res = await axios.post("/api/jira/create", {
-        ...approvedData,
-        project_key: "QA",
-      });
+      const res = await createJiraTicket({ ...approvedData, project_key: "QA" });
       if (res.data.success) {
-        setJiraResult({
-          ticket_key: res.data.ticket_key,
-          ticket_url: res.data.ticket_url,
-        });
-        setShowJiraModal(false);
+        setJiraResult({ ticket_key: res.data.ticket_key, ticket_url: res.data.ticket_url });
+      } else {
+        setJiraError(res.data.error || "Jira did not create the ticket");
       }
     } catch (err) {
-      console.error("Jira creation failed:", err);
+      const d = err.response?.data?.detail;
+      setJiraError(typeof d === "string" ? d : JSON.stringify(d) || err.message);
+    } finally {
       setShowJiraModal(false);
     }
   };
@@ -59,7 +59,7 @@ export default function ResultCard({ result }) {
       high: "text-orange-400",
       medium: "text-yellow-400",
       low: "text-green-400",
-    }[payload.severity?.toLowerCase()] || "text-orange-400";
+    }[payload.severity?.toLowerCase()] || "text-gray-400";
 
   return (
     <>
@@ -90,7 +90,7 @@ export default function ResultCard({ result }) {
                 {isBug ? "🐛 BUG DETECTED" : "⚠️ TEST ISSUE"}
               </span>
               <span className="text-[#6b7280] text-xs">
-                Analysis ID: AN-{Date.now().toString().slice(-8)}
+                Analysis ID: AN-{(result.session_id || "").slice(-8).toUpperCase() || "—"}
               </span>
             </div>
             <span className="text-[#6b7280] text-xs">
@@ -109,12 +109,12 @@ export default function ResultCard({ result }) {
             </div>
             <div className="bg-[#0f0f1a] rounded-xl p-3 text-center">
               <p className="text-xs text-[#6b7280] mb-1">Confidence</p>
-              <p className="text-sm font-bold text-green-400">{confidence}%</p>
+              <p className="text-sm font-bold text-green-400">{confidence}</p>
             </div>
             <div className="bg-[#0f0f1a] rounded-xl p-3 text-center">
               <p className="text-xs text-[#6b7280] mb-1">Severity</p>
               <p className={`text-sm font-bold ${severityColor}`}>
-                {(payload.severity || "HIGH").toUpperCase()}
+                {(payload.severity || "—").toUpperCase()}
               </p>
             </div>
           </div>
@@ -236,12 +236,12 @@ export default function ResultCard({ result }) {
                           "Validate logic",
                           "Re-run test after fix",
                         ].map((s) => (
-                          <button
+                          <span
                             key={s}
-                            className="text-xs bg-[#1e1e30] border border-[#2a2a3d] text-[#9ca3af] px-3 py-1.5 rounded-lg hover:text-white transition"
+                            className="text-xs bg-[#1e1e30] border border-[#2a2a3d] text-[#9ca3af] px-3 py-1.5 rounded-lg"
                           >
                             {s}
-                          </button>
+                          </span>
                         ))}
                       </div>
                     </div>
@@ -338,7 +338,7 @@ export default function ResultCard({ result }) {
             <div className="bg-[#13131f] border border-[#2a2a3d] rounded-2xl p-5">
               <h3 className="text-white font-semibold mb-4">Quick Actions</h3>
               <div className="space-y-2">
-                {/* Jira button — shows modal if no ticket yet */}
+                {/* 1. Bug, no ticket yet -> button that opens the approval window */}
                 {isBug && !jiraResult && (
                   <button
                     onClick={() => setShowJiraModal(true)}
@@ -348,16 +348,28 @@ export default function ResultCard({ result }) {
                   </button>
                 )}
 
-                {/* Already created */}
-                {isBug && jiraResult && (
+                {/* 2. Ticket created in Jira -> link to it */}
+                {isBug && jiraResult && jiraResult.ticket_url && (
                   <a
                     href={jiraResult.ticket_url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-full flex items-center gap-3 bg-green-900/40 border border-green-700 text-green-300 px-4 py-3 rounded-xl text-sm font-medium transition hover:bg-green-900/60 block"
+                    className="w-full flex items-center gap-3 bg-green-900/40 border border-green-700 text-green-300 px-4 py-3 rounded-xl text-sm font-medium transition hover:bg-green-900/60"
                   >
                     <span>✓</span> {jiraResult.ticket_key} — View in Jira
                   </a>
+                )}
+
+                {/* 3. Demo mode -> no link, just a note */}
+                {isBug && jiraResult && !jiraResult.ticket_url && (
+                  <div className="w-full flex items-center gap-3 bg-green-900/40 border border-green-700 text-green-300 px-4 py-3 rounded-xl text-sm font-medium">
+                    <span>✓</span> {jiraResult.ticket_key} — demo, not sent to Jira
+                  </div>
+                )}
+
+                {/* Error from the last attempt */}
+                {jiraError && (
+                  <p className="text-xs text-red-400">Jira: {jiraError}</p>
                 )}
 
                 <button
@@ -382,17 +394,13 @@ export default function ResultCard({ result }) {
               <h3 className="text-white font-semibold mb-4">Test Summary</h3>
               <div className="space-y-3 text-sm">
                 <div>
-                  <p className="text-[#6b7280] text-xs">Test Case</p>
-                  <p className="text-white">Test Analysis</p>
-                </div>
-                <div>
                   <p className="text-[#6b7280] text-xs">Status</p>
                   <p className="text-red-400 flex items-center gap-1">
                     <span>⊗</span> FAILED
                   </p>
                 </div>
                 <div>
-                  <p className="text-[#6b7280] text-xs">Execution Time</p>
+                  <p className="text-[#6b7280] text-xs">Analysis Time</p>
                   <p className="text-white">
                     {result.processing_time_seconds}s
                   </p>
@@ -400,7 +408,7 @@ export default function ResultCard({ result }) {
                 <div>
                   <p className="text-[#6b7280] text-xs">Framework</p>
                   <p className="text-white capitalize">
-                    {result.framework || "selenium"}
+                    {result.framework || "—"}
                   </p>
                 </div>
               </div>

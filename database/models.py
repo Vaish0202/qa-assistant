@@ -3,6 +3,9 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from datetime import datetime
 import uuid
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
 Base = declarative_base()
 
@@ -58,7 +61,23 @@ class User(Base):
     password = Column(String, nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow)
 
-engine = create_engine("sqlite:///qa_assistant.db", echo=False)
+class JiraTicket(Base):
+    """Tickets a user approved in the app (real Jira tickets, or demo ones)."""
+    __tablename__ = "jira_tickets"
+    id = Column(String, primary_key=True, default=lambda: str(uuid.uuid4()))
+    user_id = Column(String, nullable=False)
+    ticket_key = Column(String)
+    ticket_url = Column(String)
+    summary = Column(String)
+    priority = Column(String)
+    is_demo = Column(Boolean, default=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    
+DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///qa_assistant.db")
+engine = create_engine(
+    DATABASE_URL, echo=False,
+    connect_args={"check_same_thread": False} if DATABASE_URL.startswith("sqlite") else {})
 SessionLocal = sessionmaker(bind=engine)
 
 def init_db():

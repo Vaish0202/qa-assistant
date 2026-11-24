@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import axios from 'axios'
+import { getChatSession, sendFollowup } from '../api' 
 
 export default function ChatContext() {
   const { sessionId } = useParams()
@@ -12,7 +12,7 @@ export default function ChatContext() {
   const [messages, setMessages] = useState([])
 
   useEffect(() => {
-    axios.get(`/api/chat/session/${sessionId}`)
+    getChatSession(sessionId)
       .then(res => {
         setSession(res.data)
         setMessages(res.data.messages || [])
@@ -29,10 +29,7 @@ export default function ChatContext() {
     setChatLoading(true)
 
     try {
-      const res = await axios.post('/api/chat/followup', {
-        session_id: sessionId,
-        message: userMsg
-      })
+      const res = await sendFollowup(sessionId, userMsg)
       setMessages(prev => [...prev, { role: 'assistant', content: res.data.response }])
     } catch {
       setMessages(prev => [...prev, { role: 'system', content: 'Failed to get response.' }])
