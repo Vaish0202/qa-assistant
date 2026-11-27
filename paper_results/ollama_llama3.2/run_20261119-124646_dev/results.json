@@ -1,0 +1,1194 @@
+{
+  "dataset": "v1",
+  "split": "dev",
+  "n": 155,
+  "limit": 0,
+  "threshold": 0.8,
+  "by_source_counts": {
+    "legacy_sample": 30,
+    "synthetic": 100,
+    "github": 25
+  },
+  "by_label_counts": {
+    "failed_testcase": 78,
+    "bug": 77
+  },
+  "pipelines": {
+    "hybrid (ollama:llama3.2)": {
+      "metrics": {
+        "n": 155,
+        "accuracy": 0.7096774193548387,
+        "bug": {
+          "precision": 0.7857142857142857,
+          "recall": 0.5714285714285714,
+          "f1": 0.6616541353383457,
+          "support": 77
+        },
+        "failed_testcase": {
+          "precision": 0.6666666666666666,
+          "recall": 0.8461538461538461,
+          "f1": 0.7457627118644068,
+          "support": 78
+        },
+        "macro_f1": 0.7037084236013762
+      },
+      "accuracy_ci": [
+        0.632258064516129,
+        0.7806451612903226
+      ],
+      "macro_f1_ci": [
+        0.625407292709376,
+        0.7728556821640187
+      ],
+      "confusion": {
+        "bug": {
+          "bug": 44,
+          "failed_testcase": 33,
+          "unparsed": 0
+        },
+        "failed_testcase": {
+          "bug": 12,
+          "failed_testcase": 66,
+          "unparsed": 0
+        }
+      },
+      "by_framework": {
+        "api": {
+          "n": 30,
+          "accuracy": 0.5333333333333333,
+          "macro_f1": 0.5248868778280543
+        },
+        "db": {
+          "n": 26,
+          "accuracy": 0.7307692307692307,
+          "macro_f1": 0.7097288676236044
+        },
+        "playwright": {
+          "n": 32,
+          "accuracy": 0.8125,
+          "macro_f1": 0.75
+        },
+        "selenium": {
+          "n": 30,
+          "accuracy": 1.0,
+          "macro_f1": 1.0
+        },
+        "unit": {
+          "n": 37,
+          "accuracy": 0.5135135135135135,
+          "macro_f1": 0.4178321678321678
+        }
+      },
+      "by_source": {
+        "github": {
+          "n": 25,
+          "accuracy": 0.72,
+          "macro_f1": 0.6880570409982175
+        },
+        "legacy_sample": {
+          "n": 30,
+          "accuracy": 0.7333333333333333,
+          "macro_f1": 0.7222222222222223
+        },
+        "synthetic": {
+          "n": 100,
+          "accuracy": 0.7,
+          "macro_f1": 0.6980676328502415
+        }
+      },
+      "p50_seconds": 5.091222799999741,
+      "llm_calls": 24,
+      "llm_answers_used": 79,
+      "unparsed": 0,
+      "predictions": [
+        {
+          "id": "legacy-TC001",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.9637844562530518
+        },
+        {
+          "id": "legacy-TC002",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.9374865889549255
+        },
+        {
+          "id": "legacy-TC003",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "legacy-TC004",
+          "true": "bug",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.8518919348716736
+        },
+        {
+          "id": "legacy-TC005",
+          "true": "bug",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.8518919348716736
+        },
+        {
+          "id": "legacy-TC006",
+          "true": "bug",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.9365922212600708
+        },
+        {
+          "id": "legacy-TC007",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.9238545894622803
+        },
+        {
+          "id": "legacy-TC008",
+          "true": "bug",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.9692957401275635
+        },
+        {
+          "id": "legacy-TC009",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "legacy-TC010",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "legacy-TC011",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "legacy-TC012",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "legacy-TC013",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.930038571357727
+        },
+        {
+          "id": "legacy-TC014",
+          "true": "bug",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.9693059325218201
+        },
+        {
+          "id": "legacy-TC015",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "legacy-TC016",
+          "true": "failed_testcase",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.9253630042076111
+        },
+        {
+          "id": "legacy-TC017",
+          "true": "bug",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.9693059325218201
+        },
+        {
+          "id": "legacy-TC018",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "legacy-TC019",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.9406094551086426
+        },
+        {
+          "id": "legacy-TC020",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "legacy-TC021",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "legacy-TC022",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.9238545894622803
+        },
+        {
+          "id": "legacy-TC023",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "legacy-TC024",
+          "true": "bug",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.8518919348716736
+        },
+        {
+          "id": "legacy-TC025",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.9406094551086426
+        },
+        {
+          "id": "legacy-TC026",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "legacy-TC027",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "legacy-TC028",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "legacy-TC029",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.9238545894622803
+        },
+        {
+          "id": "legacy-TC030",
+          "true": "bug",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.9693059325218201
+        },
+        {
+          "id": "syn-api-bug-001",
+          "true": "bug",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.9365922212600708
+        },
+        {
+          "id": "syn-api-bug-002",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "syn-api-bug-004",
+          "true": "bug",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.9365922212600708
+        },
+        {
+          "id": "syn-api-bug-005",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "syn-api-bug-007",
+          "true": "bug",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.9365922212600708
+        },
+        {
+          "id": "syn-api-bug-008",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "syn-api-bug-010",
+          "true": "bug",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.9365922212600708
+        },
+        {
+          "id": "syn-api-bug-011",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "syn-api-bug-013",
+          "true": "bug",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.9365922212600708
+        },
+        {
+          "id": "syn-api-bug-014",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "syn-api-failed_testcase-002",
+          "true": "failed_testcase",
+          "pred": "bug",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "syn-api-failed_testcase-003",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "syn-api-failed_testcase-005",
+          "true": "failed_testcase",
+          "pred": "bug",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "syn-api-failed_testcase-006",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "syn-api-failed_testcase-008",
+          "true": "failed_testcase",
+          "pred": "bug",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "syn-api-failed_testcase-009",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "syn-api-failed_testcase-011",
+          "true": "failed_testcase",
+          "pred": "bug",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "syn-api-failed_testcase-012",
+          "true": "failed_testcase",
+          "pred": "bug",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "syn-api-failed_testcase-014",
+          "true": "failed_testcase",
+          "pred": "bug",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "syn-api-failed_testcase-015",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "syn-db-bug-001",
+          "true": "bug",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.9253630042076111
+        },
+        {
+          "id": "syn-db-bug-003",
+          "true": "bug",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.9365922212600708
+        },
+        {
+          "id": "syn-db-bug-004",
+          "true": "bug",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.9253630042076111
+        },
+        {
+          "id": "syn-db-bug-006",
+          "true": "bug",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.9365922212600708
+        },
+        {
+          "id": "syn-db-bug-007",
+          "true": "bug",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.9253630042076111
+        },
+        {
+          "id": "syn-db-bug-009",
+          "true": "bug",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.9365922212600708
+        },
+        {
+          "id": "syn-db-bug-010",
+          "true": "bug",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.9253630042076111
+        },
+        {
+          "id": "syn-db-bug-012",
+          "true": "bug",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.9365922212600708
+        },
+        {
+          "id": "syn-db-bug-013",
+          "true": "bug",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.9253630042076111
+        },
+        {
+          "id": "syn-db-bug-015",
+          "true": "bug",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.9365922212600708
+        },
+        {
+          "id": "syn-db-failed_testcase-001",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.9406094551086426
+        },
+        {
+          "id": "syn-db-failed_testcase-002",
+          "true": "failed_testcase",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.9253630042076111
+        },
+        {
+          "id": "syn-db-failed_testcase-004",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.9406094551086426
+        },
+        {
+          "id": "syn-db-failed_testcase-005",
+          "true": "failed_testcase",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.9253630042076111
+        },
+        {
+          "id": "syn-db-failed_testcase-007",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.9406094551086426
+        },
+        {
+          "id": "syn-db-failed_testcase-008",
+          "true": "failed_testcase",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.9253630042076111
+        },
+        {
+          "id": "syn-db-failed_testcase-010",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.9406094551086426
+        },
+        {
+          "id": "syn-db-failed_testcase-011",
+          "true": "failed_testcase",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.9253630042076111
+        },
+        {
+          "id": "syn-db-failed_testcase-013",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.9406094551086426
+        },
+        {
+          "id": "syn-db-failed_testcase-014",
+          "true": "failed_testcase",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.9253630042076111
+        },
+        {
+          "id": "syn-playwright-bug-002",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "syn-playwright-bug-003",
+          "true": "bug",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.9253630042076111
+        },
+        {
+          "id": "syn-playwright-bug-005",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "syn-playwright-bug-006",
+          "true": "bug",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.9253630042076111
+        },
+        {
+          "id": "syn-playwright-bug-008",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "syn-playwright-bug-009",
+          "true": "bug",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.9253630042076111
+        },
+        {
+          "id": "syn-playwright-bug-011",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "syn-playwright-bug-012",
+          "true": "bug",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.9253630042076111
+        },
+        {
+          "id": "syn-playwright-bug-014",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "syn-playwright-bug-015",
+          "true": "bug",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.9253630042076111
+        },
+        {
+          "id": "syn-playwright-failed_testcase-001",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "syn-playwright-failed_testcase-002",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "syn-playwright-failed_testcase-004",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "syn-playwright-failed_testcase-005",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "syn-playwright-failed_testcase-007",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "syn-playwright-failed_testcase-008",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "syn-playwright-failed_testcase-010",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "syn-playwright-failed_testcase-011",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "syn-playwright-failed_testcase-013",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "syn-playwright-failed_testcase-014",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "syn-selenium-bug-001",
+          "true": "bug",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.9692957401275635
+        },
+        {
+          "id": "syn-selenium-bug-003",
+          "true": "bug",
+          "pred": "bug",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "syn-selenium-bug-004",
+          "true": "bug",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.9692957401275635
+        },
+        {
+          "id": "syn-selenium-bug-006",
+          "true": "bug",
+          "pred": "bug",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "syn-selenium-bug-007",
+          "true": "bug",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.9692957401275635
+        },
+        {
+          "id": "syn-selenium-bug-009",
+          "true": "bug",
+          "pred": "bug",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "syn-selenium-bug-010",
+          "true": "bug",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.9692957401275635
+        },
+        {
+          "id": "syn-selenium-bug-012",
+          "true": "bug",
+          "pred": "bug",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "syn-selenium-bug-013",
+          "true": "bug",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.9692957401275635
+        },
+        {
+          "id": "syn-selenium-bug-015",
+          "true": "bug",
+          "pred": "bug",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "syn-selenium-failed_testcase-001",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.9238545894622803
+        },
+        {
+          "id": "syn-selenium-failed_testcase-002",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.9238545894622803
+        },
+        {
+          "id": "syn-selenium-failed_testcase-004",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.9238545894622803
+        },
+        {
+          "id": "syn-selenium-failed_testcase-005",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.9238545894622803
+        },
+        {
+          "id": "syn-selenium-failed_testcase-007",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.9238545894622803
+        },
+        {
+          "id": "syn-selenium-failed_testcase-008",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.9238545894622803
+        },
+        {
+          "id": "syn-selenium-failed_testcase-010",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.9238545894622803
+        },
+        {
+          "id": "syn-selenium-failed_testcase-011",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.9238545894622803
+        },
+        {
+          "id": "syn-selenium-failed_testcase-013",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.9238545894622803
+        },
+        {
+          "id": "syn-selenium-failed_testcase-014",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.9238545894622803
+        },
+        {
+          "id": "syn-unit-bug-001",
+          "true": "bug",
+          "pred": "bug",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "syn-unit-bug-003",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "syn-unit-bug-004",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "syn-unit-bug-006",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "syn-unit-bug-007",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "syn-unit-bug-009",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "syn-unit-bug-010",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "syn-unit-bug-012",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "syn-unit-bug-013",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "syn-unit-bug-015",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "syn-unit-failed_testcase-001",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "syn-unit-failed_testcase-002",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "syn-unit-failed_testcase-004",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "syn-unit-failed_testcase-005",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "syn-unit-failed_testcase-007",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "syn-unit-failed_testcase-008",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "syn-unit-failed_testcase-010",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "syn-unit-failed_testcase-011",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "syn-unit-failed_testcase-013",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "syn-unit-failed_testcase-014",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "gh-kaf-666-shopify-ui-automation-13",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.9393554329872131
+        },
+        {
+          "id": "gh-david2069-franklinwh-direct-connect-bridge-664",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.9393554329872131
+        },
+        {
+          "id": "gh-taucad-tau-2136",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.9393554329872131
+        },
+        {
+          "id": "gh-unslothai-unsloth-15032",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.9393554329872131
+        },
+        {
+          "id": "gh-ngethsereyboth-online-invitation-platform-26",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.9393554329872131
+        },
+        {
+          "id": "gh-ourostack-ouro-ui-1857",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.9393554329872131
+        },
+        {
+          "id": "gh-backnotprop-plannotator-3608",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.9393554329872131
+        },
+        {
+          "id": "gh-pingdotgg-t3code-35360",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.9393554329872131
+        },
+        {
+          "id": "gh-rhecosystemappeng-exploit-iq-agent-453",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.9393554329872131
+        },
+        {
+          "id": "gh-camunda-camunda-68992",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.9393554329872131
+        },
+        {
+          "id": "gh-workadventure-workadventure-6911",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.9393554329872131
+        },
+        {
+          "id": "gh-pingdotgg-t3code-35581",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.9393554329872131
+        },
+        {
+          "id": "gh-kutschersteffen-cmd-agentic-research-pipeline-531",
+          "true": "bug",
+          "pred": "bug",
+          "source": "xgboost",
+          "confidence": 0.8438903093338013
+        },
+        {
+          "id": "gh-lablup-backend.ai-17125",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "gh-getsentry-sentry-129892",
+          "true": "bug",
+          "pred": "bug",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "gh-camilordz1-falabella-sdk-2",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "gh-jaylfc-taos-3940",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "gh-brooklynd23-asclexis-505",
+          "true": "bug",
+          "pred": "bug",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "gh-samuel-geraldo-ctrl-coco-27",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "xgboost",
+          "confidence": 0.9393554329872131
+        },
+        {
+          "id": "gh-equrbanov7-educationmanagementstudentarena-177",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "gh-coombzy-project-car-188",
+          "true": "bug",
+          "pred": "bug",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "gh-pechst1-conversationallanguagelearning-786",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "gh-camilordz1-meli-sdk-4",
+          "true": "bug",
+          "pred": "bug",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "gh-tlamdson-repopulse-88",
+          "true": "failed_testcase",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        },
+        {
+          "id": "gh-damianvtran-local-operator-4010",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "llm (fallback)",
+          "confidence": null
+        }
+      ],
+      "confusion_png": "confusion_hybrid.png"
+    }
+  },
+  "mcnemar": {}
+}
