@@ -6,6 +6,7 @@ import History from './pages/History'
 import MyTickets from './pages/MyTickets'
 import Settings from './pages/Settings'
 import ChatContext from './pages/ChatContext'
+import AnalysisView from './pages/AnalysisView'
 
 function PrivateRoute({ children }) {
     const isLoggedIn = !!localStorage.getItem('token')
@@ -30,6 +31,7 @@ function App() {
                     <Route path="/settings" element={<Settings />} />
                     <Route path="/chat/:sessionId" element={<ChatContext />} />
                     <Route path="/" element={<Navigate to="/analyze" />} />
+                    <Route path="/analysis/:sessionId" element={<AnalysisView />} />
                   </Routes>
                 </div>
               </div>

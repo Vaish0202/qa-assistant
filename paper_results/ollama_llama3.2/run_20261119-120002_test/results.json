@@ -1,0 +1,111 @@
+{
+  "dataset": "v1",
+  "split": "test",
+  "n": 5,
+  "limit": 5,
+  "threshold": 0.7,
+  "by_source_counts": {
+    "synthetic": 5
+  },
+  "by_label_counts": {
+    "bug": 5
+  },
+  "pipelines": {
+    "llm (ollama:llama3.2)": {
+      "metrics": {
+        "n": 5,
+        "accuracy": 0.2,
+        "bug": {
+          "precision": 1.0,
+          "recall": 0.2,
+          "f1": 0.33333333333333337,
+          "support": 5
+        },
+        "failed_testcase": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        },
+        "macro_f1": 0.16666666666666669
+      },
+      "accuracy_ci": [
+        0.0,
+        0.6
+      ],
+      "macro_f1_ci": [
+        0.0,
+        0.37499999999999994
+      ],
+      "confusion": {
+        "bug": {
+          "bug": 1,
+          "failed_testcase": 4,
+          "unparsed": 0
+        },
+        "failed_testcase": {
+          "bug": 0,
+          "failed_testcase": 0,
+          "unparsed": 0
+        }
+      },
+      "by_framework": {
+        "api": {
+          "n": 5,
+          "accuracy": 0.2,
+          "macro_f1": 0.16666666666666669
+        }
+      },
+      "by_source": {
+        "synthetic": {
+          "n": 5,
+          "accuracy": 0.2,
+          "macro_f1": 0.16666666666666669
+        }
+      },
+      "p50_seconds": 22.36522270000023,
+      "llm_calls": 1,
+      "llm_answers_used": 5,
+      "unparsed": 0,
+      "predictions": [
+        {
+          "id": "syn-api-bug-003",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "llm",
+          "confidence": null
+        },
+        {
+          "id": "syn-api-bug-006",
+          "true": "bug",
+          "pred": "bug",
+          "source": "llm",
+          "confidence": null
+        },
+        {
+          "id": "syn-api-bug-009",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "llm",
+          "confidence": null
+        },
+        {
+          "id": "syn-api-bug-012",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "llm",
+          "confidence": null
+        },
+        {
+          "id": "syn-api-bug-015",
+          "true": "bug",
+          "pred": "failed_testcase",
+          "source": "llm",
+          "confidence": null
+        }
+      ],
+      "confusion_png": "confusion_llm.png"
+    }
+  },
+  "mcnemar": {}
+}
