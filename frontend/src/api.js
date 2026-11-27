@@ -46,3 +46,4 @@ export const getChatSession = (sessionId) => API.get(`/chat/session/${sessionId}
 export const createJiraTicket = (data) => API.post('/jira/create', data)
 
 export const healthCheck = () => API.get('/health')
+export const getAnalysis = (sessionId) => API.get(`/analysis/${sessionId}`)

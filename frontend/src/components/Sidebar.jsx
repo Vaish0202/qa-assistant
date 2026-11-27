@@ -61,26 +61,13 @@ export default function Sidebar() {
         })}
       </nav>
 
-      <div className="p-4 border-t border-[#2a2a3d]">
-        <div className="bg-[#1e1e30] rounded-lg p-3 mb-4">
-          <div className="flex justify-between items-center mb-2">
-            <span className="text-xs text-[#9ca3af]">Pro Plan</span>
-            <span className="text-xs text-indigo-400">Active</span>
-          </div>
-          <div className="w-full bg-[#2a2a3d] rounded-full h-1.5">
-            <div className="bg-indigo-500 h-1.5 rounded-full w-3/4"></div>
-          </div>
-          <p className="text-xs text-[#6b7280] mt-1">78% of limit used</p>
-        </div>
+            <div className="p-4 border-t border-[#2a2a3d]">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 bg-indigo-700 rounded-full flex items-center justify-center text-xs font-bold">
               {username[0].toUpperCase()}
             </div>
-            <div>
-              <p className="text-xs font-medium text-white">{username}</p>
-              <p className="text-xs text-[#6b7280]">QA Engineer</p>
-            </div>
+            <p className="text-xs font-medium text-white">{username}</p>
           </div>
           <button onClick={logout} className="text-[#6b7280] hover:text-red-400 transition" title="Logout">
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">

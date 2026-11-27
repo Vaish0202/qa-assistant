@@ -2,6 +2,15 @@ import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { getChatSession, sendFollowup } from '../api' 
 
+
+function displayText(content) {
+  try {
+    const o = JSON.parse(content)
+    if (o && typeof o === 'object') return o.summary || o.root_cause || o.message || content
+  } catch {}
+  return content
+}
+
 export default function ChatContext() {
   const { sessionId } = useParams()
   const navigate = useNavigate()
@@ -95,7 +104,7 @@ export default function ChatContext() {
           </div>
 
           <button
-            onClick={() => navigate('/analyze')}
+            onClick={() => navigate(`/analysis/${sessionId}`)}
             className="w-full bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-medium py-2 rounded-lg transition mt-4"
           >
             View Full Analysis
@@ -142,7 +151,7 @@ export default function ChatContext() {
                     </p>
                   </div>
                 )}
-                <p className="whitespace-pre-wrap">{msg.content}</p>
+                <p className="whitespace-pre-wrap">{displayText(msg.content)}</p>
                 {msg.role === 'user' && (
                   <span className="text-indigo-300 text-xs ml-2">✓</span>
                 )}
